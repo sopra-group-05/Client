@@ -195,7 +195,7 @@ class Login extends React.Component {
       <BaseContainer>
         <FormContainer>
           <Form>
-            <Title>Your turn to play!</Title>
+            <Title>Group 05</Title>
             {this.state.error && (
               <ErrorMessage>{this.state.error}</ErrorMessage>
             )}
