@@ -10,6 +10,7 @@ import Avatar from "../../../views/Avatar";
 import IconBar from "./IconBar";
 import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Container = styled(BaseContainer)`
   color: black;
@@ -86,39 +87,42 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <BaseContainer>
-        <Container>
-          {this.state.user ? (
-            <React.Fragment>
-              <IconBar
-                user={this.state.user}
-                edit={this.state.edit}
-                handleEdit={this.handleEdit}
-              />
-              <MessageHandler
-                message="Profile Updated"
-                success={true}
-                show={this.state.changedMsg && !this.state.edit}
-              />
-              <ProfileContainer>
-                <Avatar user={this.state.user} />
-                <ProfileContent>
-                  {this.state.edit ? (
-                    <EditProfile
-                      user={this.state.user}
-                      profileUpdated={this.profileUpdated}
-                    />
-                  ) : (
-                    <ShowProfile user={this.state.user} />
-                  )}
-                </ProfileContent>
-              </ProfileContainer>
-            </React.Fragment>
-          ) : (
-            <Spinner />
-          )}
-        </Container>
-      </BaseContainer>
+      <React.Fragment>
+        <Sidebar />
+        <BaseContainer>
+          <Container>
+            {this.state.user ? (
+              <React.Fragment>
+                <IconBar
+                  user={this.state.user}
+                  edit={this.state.edit}
+                  handleEdit={this.handleEdit}
+                />
+                <MessageHandler
+                  message="Profile Updated"
+                  success={true}
+                  show={this.state.changedMsg && !this.state.edit}
+                />
+                <ProfileContainer>
+                  <Avatar user={this.state.user} />
+                  <ProfileContent>
+                    {this.state.edit ? (
+                      <EditProfile
+                        user={this.state.user}
+                        profileUpdated={this.profileUpdated}
+                      />
+                    ) : (
+                      <ShowProfile user={this.state.user} />
+                    )}
+                  </ProfileContent>
+                </ProfileContainer>
+              </React.Fragment>
+            ) : (
+              <Spinner />
+            )}
+          </Container>
+        </BaseContainer>
+      </React.Fragment>
     );
   }
 }

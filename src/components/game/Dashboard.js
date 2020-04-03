@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import OnlineUsers from "./Dashboard/OnlineUsers";
 import CreateLobby from "./Dashboard/CreateLobby";
 import OpenLobbies from "./Dashboard/OpenLobbies";
+import Sidebar from "./Sidebar/Sidebar";
 
 const BoxContainer = styled.div`
   display: flex;
@@ -47,22 +48,25 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <Container>
-        <BoxContainer>
-          <OnlineUsers />
-          <OpenLobbies />
-          <CreateLobby />
-        </BoxContainer>
+      <React.Fragment>
+        <Sidebar />
+        <Container>
+          <BoxContainer>
+            <OnlineUsers />
+            <OpenLobbies />
+            <CreateLobby />
+          </BoxContainer>
 
-        <Button
-          width="100%"
-          onClick={() => {
-            this.logout();
-          }}
-        >
-          Logout
-        </Button>
-      </Container>
+          <Button
+            width="100%"
+            onClick={() => {
+              this.logout();
+            }}
+          >
+            Logout
+          </Button>
+        </Container>
+      </React.Fragment>
     );
   }
 }
