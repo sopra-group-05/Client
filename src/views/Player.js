@@ -4,33 +4,55 @@ import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
 
 const Container = styled.div`
-  margin: 6px 0;
-  width: 300px;
-  padding: 10px;
-  border-radius: 6px;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 15px;
   display: flex;
-  border: 1px solid #ffffff26;
+  background-color: #454c62;
   a {
     color: #ce552e;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    width: 100%;
+    min-width: 300px;
     text-decoration: none;
     margin: 0;
     padding: 0;
   }
 `;
 
-const UserName = styled.div`
-  font-weight: lighter;
-  margin-left: 1rem;
+const UserName = styled.p`
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  color: #fff;
 `;
 
-const Id = styled.div`
-  margin-left: auto;
-  margin-right: 10px;
+const UserScore = styled.p`
+  font-weight: lighter;
+  margin: 0;
+  padding: 0;
+  color: #8f8f8f;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+`;
+
+const Button = styled.div`
+  align-self: flex-end;
   font-weight: bold;
+  border-radius: 15px;
+  background-color: #3b85ff;
+  color: #fff;
+  display: block;
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  margin-left: auto;
 `;
 
 /**
@@ -46,8 +68,11 @@ const Player = ({ user }) => {
     <Container>
       <Link title={"To the profile"} to={"/game/dashboard/profile/" + user.id}>
         <Avatar size={40} user={user} />
-        <UserName>{user.username}</UserName>
-        <Id>Id: {user.id}</Id>
+        <UserInfo>
+          <UserName>{user.username}</UserName>
+          <UserScore>Score: XY</UserScore>
+        </UserInfo>
+        <Button>VIEW PROFILE</Button>
       </Link>
     </Container>
   );
