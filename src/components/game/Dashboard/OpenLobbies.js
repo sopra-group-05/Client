@@ -88,7 +88,7 @@ class OpenLobbies extends React.Component {
 
   render() {
     return (
-      <Box title="Online">
+      <Box title="Open Lobbies">
         <MessageHandler
           success={false}
           show={this.state.error}

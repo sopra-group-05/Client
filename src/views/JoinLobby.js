@@ -71,6 +71,7 @@ const Flag = styled.img`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
+// todo: Shouldn't just redirect to lobby, it should JOIN that Lobby via the API and then redirect if it's allowed to join.
 const JoinLobby = ({ lobby }) => {
   const availableLobby = new Lobby(lobby);
   return (

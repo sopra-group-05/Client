@@ -124,7 +124,7 @@ class CreateLobby extends React.Component {
     super();
     this.state = {
       score: null,
-      lobbyName: null,
+      lobbyName: localStorage.getItem("username") + " Lobby",
       language: "EN",
       gameMode: 0,
       error: null
@@ -194,7 +194,7 @@ class CreateLobby extends React.Component {
             </Circle>
             <TextInput
               field="lobbyName"
-              label="Lobbyname"
+              label="Name of lobby"
               state={this.state.lobbyName}
               handleChange={this.handleInputChange}
             />
