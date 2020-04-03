@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Avatar from "./Avatar";
+import Lobby from "../components/shared/models/Lobby";
+import GermanFlag from "../images/lang_DE.png";
+import EnglishFlag from "../images/lang_EN.png";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -21,21 +23,21 @@ const Container = styled.div`
   }
 `;
 
-const UserName = styled.p`
+const LobbyName = styled.p`
   font-weight: bold;
   margin: 0;
   padding: 0;
   color: #fff;
 `;
 
-const UserScore = styled.p`
+const LobbyInfo = styled.p`
   font-weight: lighter;
   margin: 0;
   padding: 0;
   color: #8f8f8f;
 `;
 
-const UserInfo = styled.div`
+const LobbyMeta = styled.div`
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
@@ -55,6 +57,12 @@ const Button = styled.div`
   margin-left: auto;
 `;
 
+const Flag = styled.img`
+  width: 25px;
+  height: 25px;
+  margin-bottom: -8px;
+`;
+
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
  * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
@@ -63,19 +71,34 @@ const Button = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Player = ({ user }) => {
+const JoinLobby = ({ lobby }) => {
+  const availableLobby = new Lobby(lobby);
   return (
     <Container>
-      <Link title={"To the profile"} to={"/game/dashboard/profile/" + user.id}>
-        <Avatar size={40} user={user} />
-        <UserInfo>
-          <UserName>{user.username}</UserName>
-          <UserScore>Score: XY</UserScore>
-        </UserInfo>
-        <Button>VIEW PROFILE</Button>
+      <Link
+        onClick={() =>
+          alert(
+            "This will redirect to /game/lobby/id. Maybe that Component was not yet implemented."
+          )
+        }
+        title={"Join this Lobby"}
+        to={"/game/lobby/" + availableLobby.id}
+      >
+        <LobbyMeta>
+          <LobbyName>{availableLobby.lobbyName}</LobbyName>
+          <LobbyInfo>
+            {availableLobby.players ? availableLobby.players.length : "1"}/7
+            Players | {availableLobby.gameMode === 0 ? "No Bots" : "With Bots"}{" "}
+            |{" "}
+            <Flag
+              src={availableLobby.language == "EN" ? GermanFlag : EnglishFlag}
+            />
+          </LobbyInfo>
+        </LobbyMeta>
+        <Button>Join</Button>
       </Link>
     </Container>
   );
 };
 
-export default Player;
+export default JoinLobby;
