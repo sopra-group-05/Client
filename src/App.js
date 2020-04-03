@@ -10,7 +10,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header height={"200"} />
+        /*<Header height={"200"} />*/
         <AppRouter />
       </div>
     );
