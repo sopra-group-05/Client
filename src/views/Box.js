@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const BoxOuter = styled.div`
-  margin-top:20px;
+  margin-top: 20px;
   min-width: 350px;
 `;
 
@@ -35,20 +35,16 @@ const BoxContainer = styled.div`
  * @param size: default 150, how big should the avatar be?
  * @returns a div with the avatar imported from the adorable api
  */
-const Box = ({children, title }) => {
-    const boxTitle = title ? title : "No Title";
-    return (
-        <BoxOuter>
-            <BoxHeader>
-                <BoxTitle>
-                    {boxTitle}
-                </BoxTitle>
-            </BoxHeader>
-            <BoxContainer>
-                {children}
-            </BoxContainer>
-        </BoxOuter>
-    );
+const Box = ({ children, title }) => {
+  const boxTitle = title ? title : "No Title";
+  return (
+    <BoxOuter>
+      <BoxHeader>
+        <BoxTitle>{boxTitle}</BoxTitle>
+      </BoxHeader>
+      <BoxContainer>{children}</BoxContainer>
+    </BoxOuter>
+  );
 };
 
 export default Box;
