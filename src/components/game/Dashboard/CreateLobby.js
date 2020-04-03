@@ -165,7 +165,7 @@ class CreateLobby extends React.Component {
           requestBody
       );
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.post("/lobby", requestBody);
+      const response = await api.post("/lobbies", requestBody);
       console.log(response.data);
       // todo: if creation was successful, redirect to Lobby Management Page via respone.data lobby id => /game/lobby/id (?)
     } catch (error) {
