@@ -7,7 +7,7 @@ import { Button } from "../../views/design/Button";
 import { BaseContainer } from "../../helpers/layout";
 
 const FormContainer = styled.div`
-  margin-top: 2em;
+  padding-top: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
