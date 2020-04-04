@@ -9,6 +9,8 @@ import Diamond from "../../../images/Diamond.png";
 import GermanFlag from "../../../images/lang_DE.png";
 import EnglishFlag from "../../../images/lang_EN.png";
 import Label from "../../../views/design/Label";
+import Lobby from "../../shared/models/Lobby";
+import { withRouter } from "react-router-dom";
 
 const Container = styled.div`
   text-align: center;
@@ -160,14 +162,13 @@ class CreateLobby extends React.Component {
         gameMode: this.state.gameMode,
         language: this.state.language
       });
-      alert(
-        "This function is trying to create a new lobby. Might get an error since not everything was implemented (handle API Answer , Lobby Management). You're trying to create a lobby with the following data: " +
-          requestBody
-      );
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.post("/lobbies", requestBody);
       console.log(response.data);
-      // todo: if creation was successful, redirect to Lobby Management Page via respone.data lobby id => /game/lobby/id (?)
+      const lobby = new Lobby(response.data);
+      console.log(lobby);
+
+      this.props.history.push("/game/lobby/" + lobby.id);
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -238,4 +239,4 @@ class CreateLobby extends React.Component {
   }
 }
 
-export default CreateLobby;
+export default withRouter(CreateLobby);
