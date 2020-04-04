@@ -6,7 +6,6 @@ export const Button = styled.button`
   }
   padding: 6px;
   font-weight: 700;
-  text-transform: uppercase;
   font-size: 13px;
   text-align: center;
   color: rgba(255, 255, 255, 1);

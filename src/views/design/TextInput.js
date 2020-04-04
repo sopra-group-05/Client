@@ -5,6 +5,7 @@ import Label from "./Label";
 const InputField = styled.input`
   &::placeholder {
     color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
   }
   padding: 0.8rem 1.2rem;
   border: none;
@@ -16,17 +17,22 @@ const InputField = styled.input`
 
 const Wrapper = styled.div`
   display: flex;
-  text-align: center;
+  text-align: left;
   flex-direction: column;
 `;
 
-const TextInput = ({ field, label, state, handleChange }) => {
-  return (
+const TextInput = ({ field, label, state, handleChange, placeholder, hiddenText, labelAlign }) => {
+    const placeHolderText = placeholder ? placeholder : "Enter here...";
+    const fieldType = hiddenText ? "password": "text";
+    const labelAlignment = labelAlign ? labelAlign : "left";
+    return (
     <Wrapper>
-      <Label>{label}</Label>
+      <Label style={{textAlign:labelAlignment}}>{label}</Label>
       <InputField
-        placeholder="Enter here.."
+        placeholder= {placeHolderText}
         value={state}
+        type = {fieldType}
+
         onChange={e => {
           handleChange(field, e.target.value);
         }}

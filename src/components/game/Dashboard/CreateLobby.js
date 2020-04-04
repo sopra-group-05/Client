@@ -197,6 +197,7 @@ class CreateLobby extends React.Component {
               field="lobbyName"
               label="Name of lobby"
               state={this.state.lobbyName}
+              labelAlign={"center"}
               handleChange={this.handleInputChange}
             />
             <GameMode onClick={() => this.toggleCheckbox()}>

@@ -8,7 +8,6 @@ import { BaseContainer } from "../../helpers/layout";
 import Box from "../../views/Box";
 import TextInput from "../../views/design/TextInput";
 import JO_LOGO from "../../images/JO_LOGO.png";
-import {Spinner} from "../../views/design/Spinner";
 
 const Image = styled.img`
  position: relative;
@@ -54,7 +53,7 @@ const ErrorMessage = styled.div`
  * https://reactjs.org/docs/react-component.html
  * @Class
  */
-class Login extends React.Component {
+class Register extends React.Component {
   /**
    * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
    * The constructor for a React component is called before it is mounted (rendered).
@@ -66,6 +65,7 @@ class Login extends React.Component {
     this.state = {
       username: null,
       password: null,
+      password2: null,
       error: null,
       registered: null
     };
@@ -76,34 +76,30 @@ class Login extends React.Component {
    * If the request is successful, a new user is returned to the front-end
    * and its token is stored in the localStorage.
    */
-  async login() {
+
+  async register() {
     try {
       const requestBody = JSON.stringify({
         username: this.state.username,
         password: this.state.password
       });
 
-      const response = await api.put("/login", requestBody);
+      const response = await api.post("/users", requestBody);
+      console.log(response.data);
 
-      // Get the returned user and update a new object.
-      const user = new User(response.data);
+      this.setState({ username: "", password: "", registered: true });
+      setTimeout(() => {
+        this.setState({ registered: null });
+      }, 3500);
 
-      // Store the token into the local storage.
-      localStorage.setItem("token", user.token);
-      localStorage.setItem("userId", user.id);
-      localStorage.setItem("username", user.username);
-
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      this.props.history.push(`/game`);
+      // Register successfully worked --> navigate to the login
+      this.props.history.push(`/login`);
     }
-
     catch (error) {
+      // show error message and make is disappear after 3.5 seconds
       this.setState({
         error: error.response ? error.response.data : "Error"
       });
-//      setTimeout(() => {
-//        this.setState({ error: null });
-//      }, 3500);
       console.log(
         `Something went wrong during the login: \n${handleError(error)}`
       );
@@ -134,9 +130,9 @@ class Login extends React.Component {
     return (
       <OuterContainer>
 
-      <Image src={JO_LOGO} style={{zIndex:0}}/>
+        <Image src={JO_LOGO} style={{zIndex:0}}/>
 
-      <Box title="Hello and welcome to" titleWidth={'85%'} titleAlign={'left'}>
+      <Box title="Create your account" titleWidth={'85%'} titleAlign={'left'}>
         <Container>
           {this.state.error ? (<ErrorMessage>{this.state.error}</ErrorMessage>) : ""}
 
@@ -157,22 +153,31 @@ class Login extends React.Component {
                 handleChange={this.handleInputChange}
             />
 
-            <ButtonContainer>
-              <Button
-                disabled={!this.state.username || !this.state.password}
-                width="50%"
-                onClick={() => {this.login();}}>
-                Login
-              </Button>
+            <TextInput
+                field="password2"
+                label="Reenter your password"
+                placeholder="Enter Password..."
+                hiddenText={true}
+                state={this.state.password2}
+                handleChange={this.handleInputChange}
+            />
 
-              <ul> </ul>
-
-              <Button
+          <ButtonContainer>
+            <Button
+                disabled={!this.state.username || !this.state.password || (this.state.password != this.state.password2)}
                 width="50%"
-                onClick={() => {this.props.history.push(`/register`);}}>
-                Register
-              </Button>
-            </ButtonContainer>
+                onClick={() => {this.register();}}>
+              Register
+            </Button>
+
+            <ul> </ul>
+
+            <Button
+                width="50%"
+                onClick={() => {this.props.history.push(`/login`);}}>
+              Back
+            </Button>
+          </ButtonContainer>
         </Container>
       </Box>
       </OuterContainer>
@@ -184,4 +189,4 @@ class Login extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Login);
+export default withRouter(Register);

@@ -17,7 +17,6 @@ const BoxTitle = styled.h3`
   color: #fff;
   padding: 1rem 2rem 1rem 2rem;
   margin: 0;
-  text-transform: uppercase;
 `;
 
 const BoxContainer = styled.div`
@@ -35,11 +34,13 @@ const BoxContainer = styled.div`
  * @param size: default 150, how big should the avatar be?
  * @returns a div with the avatar imported from the adorable api
  */
-const Box = ({ children, title }) => {
+const Box = ({ children, title, titleWidth, titleAlign }) => {
   const boxTitle = title ? title : "No Title";
+  const headerTitleWidth = titleWidth ? titleWidth : 'auto';
+  const align = titleAlign ? titleAlign : 'center'
   return (
     <BoxOuter>
-      <BoxHeader>
+      <BoxHeader style={{width:headerTitleWidth, textAlign:align}}>
         <BoxTitle>{boxTitle}</BoxTitle>
       </BoxHeader>
       <BoxContainer>{children}</BoxContainer>
