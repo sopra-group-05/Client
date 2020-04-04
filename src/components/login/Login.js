@@ -7,7 +7,7 @@ import { Button } from "../../views/design/Button";
 import { BaseContainer } from "../../helpers/layout";
 
 const FormContainer = styled.div`
-  margin-top: 2em;
+  padding-top: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -126,6 +126,7 @@ class Login extends React.Component {
       // Store the token into the local storage.
       localStorage.setItem("token", user.token);
       localStorage.setItem("userId", user.id);
+      localStorage.setItem("username", user.username);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       this.props.history.push(`/game`);
@@ -195,7 +196,7 @@ class Login extends React.Component {
       <BaseContainer>
         <FormContainer>
           <Form>
-            <Title>Your turn to play!</Title>
+            <Title>Group 05</Title>
             {this.state.error && (
               <ErrorMessage>{this.state.error}</ErrorMessage>
             )}
