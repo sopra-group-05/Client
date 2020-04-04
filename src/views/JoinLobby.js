@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import Lobby from "../components/shared/models/Lobby";
 import GermanFlag from "../images/lang_DE.png";
 import EnglishFlag from "../images/lang_EN.png";
+import { handleError, api } from "../helpers/api";
+import { withRouter } from "react-router-dom";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -11,16 +12,7 @@ const Container = styled.div`
   border-radius: 15px;
   display: flex;
   background-color: #454c62;
-  a {
-    color: #ce552e;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    min-width: 300px;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-  }
+  cursor: pointer;
 `;
 
 const LobbyName = styled.p`
@@ -32,6 +24,7 @@ const LobbyName = styled.p`
 
 const LobbyInfo = styled.p`
   font-weight: lighter;
+  font-size: 0.8rem;
   margin: 0;
   padding: 0;
   color: #8f8f8f;
@@ -58,8 +51,8 @@ const Button = styled.div`
 `;
 
 const Flag = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   margin-bottom: -8px;
 `;
 
@@ -71,35 +64,43 @@ const Flag = styled.img`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-// todo: Shouldn't just redirect to lobby, it should JOIN that Lobby via the API and then redirect if it's allowed to join.
-const JoinLobby = ({ lobby }) => {
-  const availableLobby = new Lobby(lobby);
-  return (
-    <Container>
-      <Link
-        onClick={() =>
-          alert(
-            "This will redirect to /game/lobby/id. Maybe that Component was not yet implemented."
-          )
-        }
-        title={"Join this Lobby"}
-        to={"/game/lobby/" + availableLobby.id}
-      >
+class JoinLobby extends React.Component {
+  async joinThisLobby(l) {
+    console.log("join lobby function was run with lobby id " + l.id);
+    try {
+      const lobby = new Lobby(l);
+
+      // join lobby via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put("/lobbies/" + lobby.id + "/join");
+      console.log(response);
+
+      // Redirect to Lobby Page
+      this.props.history.push("/game/lobby/" + lobby.id);
+    } catch (error) {
+      //todo better error handling
+      alert(error);
+      console.log(
+        `Something went wrong while join a lobby: \n${handleError(error)}`
+      );
+      clearInterval(this.interval);
+    }
+  }
+  render() {
+    const lobby = new Lobby(this.props.lobby);
+    return (
+      <Container onClick={() => this.joinThisLobby(lobby)}>
         <LobbyMeta>
-          <LobbyName>{availableLobby.lobbyName}</LobbyName>
+          <LobbyName>{lobby.lobbyName}</LobbyName>
           <LobbyInfo>
-            {availableLobby.players ? availableLobby.players.length : "1"}/7
-            Players | {availableLobby.gameMode === 0 ? "No Bots" : "With Bots"}{" "}
-            |{" "}
-            <Flag
-              src={availableLobby.language == "EN" ? GermanFlag : EnglishFlag}
-            />
+            {lobby.players ? lobby.players.length : "1"}/7 Players |{" "}
+            {lobby.gameMode === "HUMANS" ? "No Bots" : "With Bots"} |{" "}
+            <Flag src={lobby.language === "DE" ? GermanFlag : EnglishFlag} />
           </LobbyInfo>
         </LobbyMeta>
         <Button>Join</Button>
-      </Link>
-    </Container>
-  );
-};
-
-export default JoinLobby;
+      </Container>
+    );
+  }
+}
+export default withRouter(JoinLobby);

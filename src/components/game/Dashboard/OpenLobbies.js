@@ -4,8 +4,8 @@ import { handleError, api } from "../../../helpers/api";
 import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Box from "../../../views/Box";
-import Lobby from "../../shared/models/Lobby";
 import JoinLobby from "../../../views/JoinLobby";
+import Lobby from "../../shared/models/Lobby";
 
 const Users = styled.ul`
   list-style: none;
@@ -25,7 +25,7 @@ class OpenLobbies extends React.Component {
   async getLobbies() {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.get("/lobby");
+      const response = await api.get("/lobbies");
 
       if (this.state.lobbies === null && response.data) {
         // make API call every 1s to get Updated lobbies List.
@@ -36,16 +36,7 @@ class OpenLobbies extends React.Component {
 
       // Get the returned lobbies and update the state.
       this.setState({ lobbies: response.data, error: null });
-
-      // This is just some data for you to see what is available.
-      // Feel free to remove it.
-      console.log("request to:", response.request.responseURL);
-      console.log("status code:", response.status);
-      console.log("status text:", response.statusText);
-      console.log("requested data:", response.data);
-
-      // See here to get more data.
-      console.log(response);
+      //console.log(response);
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -58,26 +49,7 @@ class OpenLobbies extends React.Component {
   }
 
   componentDidMount() {
-    // todo: make actual call to api as soon as it's ready
-    //this.getLobbies();
-
-    // todo: remove when actual api call can be made
-    const lobby1 = new Lobby({
-      id: 1,
-      lobbyName: "Lobby1",
-      language: "EN",
-      gameMode: 0
-    });
-    const lobby2 = new Lobby({
-      id: 2,
-      lobbyName: "Some Other Name",
-      language: "DE",
-      gameMode: 1
-    });
-    const someLobbies = [lobby1, lobby2];
-    setTimeout(() => {
-      this.setState({ lobbies: someLobbies });
-    }, 500);
+    this.getLobbies();
   }
 
   componentWillUnmount() {
@@ -101,7 +73,9 @@ class OpenLobbies extends React.Component {
             <Users>
               {this.state.lobbies.length
                 ? this.state.lobbies.map(l => {
-                    return <JoinLobby lobby={l} />;
+                    return (
+                      <JoinLobby joinLobby={this.joinLobbyFunction} lobby={l} />
+                    );
                   })
                 : "There are no Lobbies for you to join"}
             </Users>
