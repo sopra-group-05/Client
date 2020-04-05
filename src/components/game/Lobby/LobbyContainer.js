@@ -26,10 +26,11 @@ class LobbyContainer extends React.Component {
     super(props);
     this.state = {
       lobby: null,
-      creator: null,
+      nonCreators: null,
       error: null
     };
     this.getLobby = this.getLobby.bind(this);
+    this.getNonCreator = this.getNonCreator.bind(this);
   }
 
   async getLobby() {
@@ -47,7 +48,7 @@ class LobbyContainer extends React.Component {
       }
 
       // Get the returned lobby and update the state.
-      this.setState({ lobby: l, creator: l.creator, error: null });
+      this.setState({ lobby: l, nonCreators: this.getNonCreator(l), error: null });
       console.log(this.state.lobby);
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
@@ -56,6 +57,14 @@ class LobbyContainer extends React.Component {
       );
       clearInterval(this.interval);
     }
+  }
+
+  getNonCreator(l){
+    let nonCreators = Array.from(l.players);
+    const creator = l.creator;
+    const index = nonCreators.findIndex(player => player.id == creator.id);
+    nonCreators.splice(index,1);
+    return nonCreators;
   }
 
   componentDidMount() {
@@ -69,7 +78,9 @@ class LobbyContainer extends React.Component {
   }
 
   render() {
-    return <Box title={"this.state.lobby.lobbyName"}>
+    if (!this.state.lobby)
+      return null;
+    return <Box title={this.state.lobby.lobbyName}>
       <MessageHandler
         success={false}
         show={this.state.error}
@@ -80,14 +91,15 @@ class LobbyContainer extends React.Component {
       ) : (
         <div>
           <Players>
-            {this.state.lobby.players.map(player => {
-              if (player!==this.state.creator)
+            <PlayerContainer key={this.state.lobby.creator.id}>
+              <PlayerInLobby player={this.state.lobby.creator} lobby={this.state.lobby}/>
+            </PlayerContainer>
+            {this.state.nonCreators.map(player => {
               return (
-                <PlayerContainer key={player.playerId}>
-                  <PlayerInLobby player={player} isCreator={this.creator === localStorage.getItem("userId")}/>
+                <PlayerContainer key={player.id}>
+                  <PlayerInLobby player={player} lobby={this.state.lobby}/>
                 </PlayerContainer>
               );
-              else return null;
             })}
           </Players>
         </div>

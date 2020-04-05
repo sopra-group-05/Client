@@ -65,6 +65,7 @@ const Flag = styled.img`
  * @FunctionalComponent
  */
 class JoinLobby extends React.Component {
+
   async joinThisLobby(l) {
     console.log("join lobby function was run with lobby id " + l.id);
     try {
@@ -86,6 +87,7 @@ class JoinLobby extends React.Component {
       clearInterval(this.interval);
     }
   }
+
   render() {
     const lobby = new Lobby(this.props.lobby);
     return (
