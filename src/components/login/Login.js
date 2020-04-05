@@ -134,9 +134,9 @@ class Login extends React.Component {
     return (
       <OuterContainer>
 
-      <Image src={JO_LOGO} style={{zIndex:0}}/>
+      <Image src={JO_LOGO}/>
 
-      <Box title="Hello and welcome to" titleWidth={'85%'} titleAlign={'left'}>
+      <Box title="Hello and welcome to" titleWidth={'85%'} texttrans={'none'} titleAlign={'left'}>
         <Container>
           {this.state.error ? (<ErrorMessage>{this.state.error}</ErrorMessage>) : ""}
 

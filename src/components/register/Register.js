@@ -130,9 +130,9 @@ class Register extends React.Component {
     return (
       <OuterContainer>
 
-        <Image src={JO_LOGO} style={{zIndex:0}}/>
+        <Image src={JO_LOGO}/>
 
-      <Box title="Create your account" titleWidth={'85%'} titleAlign={'left'}>
+      <Box title="Create your account" titleWidth={'85%'} titleAlign={'left'} texttrans={'none'}>
         <Container>
           {this.state.error ? (<ErrorMessage>{this.state.error}</ErrorMessage>) : ""}
 
