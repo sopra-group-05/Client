@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../../game/Dashboard";
 import Profile from "../../game/profile/Profile";
+import Lobby from "../models/Lobby";
+import LobbyPage from "../../game/Lobby/LobbyPage";
 
 const Container = styled.div`
   display: flex;
@@ -33,6 +35,12 @@ class GameRouter extends React.Component {
             exact
             path={`${this.props.base}`}
             render={() => <Redirect to={`${this.props.base}/dashboard`} />}
+          />
+
+          <Route
+            exact
+            path={`${this.props.base}/lobby/:id`}
+            component={LobbyPage}
           />
         </Switch>
       </Container>

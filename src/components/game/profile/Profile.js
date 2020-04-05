@@ -36,7 +36,7 @@ const Container = styled(BaseContainer)`
   flex-direction: column;
   padding-top: 2em;
   padding-bottom: 2em;
-  width=50%;
+  width: 50%;
   align-items: center;
 `;
 
@@ -137,7 +137,7 @@ class Profile extends React.Component {
 
                     <Button
                       colorDef={"red"}
-                      onClick={() => {this.props.history.push(`/game/dashboard`);}}>
+                      onClick={() => {this.props.history.goBack();}}>
                       Back
                     </Button>
 
