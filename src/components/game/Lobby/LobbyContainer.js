@@ -9,6 +9,53 @@ import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 
 
+const PlayerStatus = styled.div`
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  display: inline-flex;
+  margin-bottom: 1rem;
+  cursor: pointer;
+`;
+
+const CheckBox = styled.div`
+  height: 25px;
+  width: 25px;
+  background: #353a49;
+  border-radius: 25%;
+  display: block;
+  margin-right: 0.75rem;
+`;
+
+const CheckboxTick = styled.div`
+  visibility: ${props => (props.checked ? "visible" : "hidden")};
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+  :before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 12px;
+    background-color: #3bff65;
+    left: 12px;
+    top: 6px;
+  }
+  :after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #3bff65;
+    left: 8px;
+    top: 13px;
+  }
+`;
+
 const Players = styled.ul`
   list-style: none;
   padding-left: 0;
@@ -27,10 +74,13 @@ class LobbyContainer extends React.Component {
     this.state = {
       lobby: null,
       nonCreators: null,
+      lobbyStatus: null,
+      playerStatus: null,
       error: null
     };
     this.getLobby = this.getLobby.bind(this);
     this.getNonCreator = this.getNonCreator.bind(this);
+    this.toggleCheckbox = this.toggleCheckbox.bind(this);
   }
 
   async getLobby() {
@@ -49,7 +99,6 @@ class LobbyContainer extends React.Component {
 
       // Get the returned lobby and update the state.
       this.setState({ lobby: l, nonCreators: this.getNonCreator(l), error: null });
-      console.log(this.state.lobby);
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -65,6 +114,11 @@ class LobbyContainer extends React.Component {
     const index = nonCreators.findIndex(player => player.id == creator.id);
     nonCreators.splice(index,1);
     return nonCreators;
+  }
+
+  toggleCheckbox() {
+    this.setState({ playerStatus: this.state.playerStatus === 0 ? 1 : 0 });
+    console.log("need to update player?");
   }
 
   componentDidMount() {
@@ -102,6 +156,12 @@ class LobbyContainer extends React.Component {
               );
             })}
           </Players>
+          <PlayerStatus onClick={() => this.toggleCheckbox()}>
+            <CheckBox>
+              <CheckboxTick checked={this.state.playerStatus === 1} />
+            </CheckBox>
+            Set ready
+          </PlayerStatus>
         </div>
       )}
     </Box>;
