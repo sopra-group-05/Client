@@ -97,6 +97,7 @@ class JoinLobby extends React.Component {
       }
     }
   }
+
   render() {
     const lobby = new Lobby(this.props.lobby);
     if (

@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
 const Icon = styled.img`
   width: 40px;
-  heigh: 40px;
+  height: 40px;
   margin-top: 1rem;
 `;
 

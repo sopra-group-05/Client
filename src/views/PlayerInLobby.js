@@ -2,14 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import DeleteIcon from "../images/delete.png"
-import { Button } from "./design/Button";
-import * as PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { api, handleError } from "../helpers/api";
 
 const Container = styled.div`
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 15px;
   display: flex;
+  flex-direction: row;
   background-color: #454c62;
   a {
     color: #ce552e;
@@ -25,7 +26,7 @@ const Container = styled.div`
 
 const PlayerName = styled.p`
   font-weight: bold;
-  margin: 0;
+  margin: 10px;
   padding: 0;
   color: #fff;
   min-width: 50px;
@@ -43,44 +44,54 @@ const IconPlaceholder = styled.div`
   margin-top: 1rem;
 `;
 
-/**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://reactjs.org/docs/components-and-props.html
- * @FunctionalComponent
- */
+const PlayerInfo = styled.p`
+  font-weight: lighter;
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+  color: #8f8f8f;
+`;
+
 class PlayerInLobby extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCreator: this.props.isCreator
+      player: this.props.player,
+      lobby: this.props.lobby,
+      creator: this.props.lobby.creator,
+      error: null
     };
     this.removePlayerFromLobby = this.removePlayerFromLobby.bind(this);
   }
 
   async removePlayerFromLobby(){
+    console.log("removePlayerFromLobby was run with lobby id " + this.state.lobby.id);
     try {
-      console.log("will delete player; still todo")
+      // kick player via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put("/lobbies/" + this.state.lobby.id + "/kick/" + this.state.player.id);
+      console.log(response);
+
     } catch (error) {
-      console.log("an error happened: " + error.getMessage())
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while kicking the player: \n${handleError(error)}`
+      );
     }
   }
 
   render() {
-    let { player } = this.props;
+    const kickPlayer = (this.state.creator.id == localStorage.getItem("userId"))?
+      <Icon src={DeleteIcon} onClick={()=>this.removePlayerFromLobby()}/>:
+      <IconPlaceholder/>;
     return (
       <Container>
-        <Avatar size={40} user={player}/>
-        <PlayerName>{player.username}</PlayerName>
-        {(this.state.isCreator)? (
-          <Icon src={DeleteIcon}/>
-        ):
-          (<IconPlaceholder/>)}
+        <Avatar size={40} user={this.state.player}/>
+        <PlayerName>{this.state.player.username}</PlayerName>
+        {kickPlayer}
       </Container>
     );
   }
 }
 
-export default PlayerInLobby;
+export default withRouter(PlayerInLobby);

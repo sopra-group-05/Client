@@ -26,6 +26,7 @@ class Dashboard extends React.Component {
   removeLocalStorage() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("username");
     this.props.history.push("/login");
   }
 
