@@ -36,12 +36,18 @@ const BoxContainer = styled.div`
  */
 const Box = ({ children, title, titleWidth, titleAlign, texttrans }) => {
   const boxTitle = title ? title : "No Title";
-  const headerTitleWidth = titleWidth ? titleWidth : 'auto';
-  const align = titleAlign ? titleAlign : 'center';
-  const textTransformation = texttrans ? '': 'uppercase';
+  const headerTitleWidth = titleWidth ? titleWidth : "auto";
+  const align = titleAlign ? titleAlign : "center";
+  const textTransformation = texttrans ? "" : "uppercase";
   return (
     <BoxOuter>
-      <BoxHeader style={{width:headerTitleWidth, textAlign:align, textTransform: textTransformation}}>
+      <BoxHeader
+        style={{
+          width: headerTitleWidth,
+          textAlign: align,
+          textTransform: textTransformation
+        }}
+      >
         <BoxTitle>{boxTitle}</BoxTitle>
       </BoxHeader>
       <BoxContainer>{children}</BoxContainer>
