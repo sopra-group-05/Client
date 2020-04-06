@@ -28,9 +28,6 @@ const BoxContainer = styled.div`
   margin: -25px 0 0 0;
   padding: 2.5rem 1rem 1rem 1rem;
   color: #fff;
-  display: flex;
-  max-width: 100%;
-  overflow: hidden;
 `;
 
 /**
@@ -46,7 +43,7 @@ const Box = ({
   titleAlign,
   texttrans,
   maxWidth,
-                 hideHeader
+  hideHeader
 }) => {
   const boxTitle = title ? title : "No Title";
   const headerTitleWidth = titleWidth ? titleWidth : "auto";
@@ -55,7 +52,7 @@ const Box = ({
   return (
     <BoxOuter maxWidth={maxWidth}>
       <BoxHeader
-          hideHeader={hideHeader}
+        hideHeader={hideHeader}
         style={{
           width: headerTitleWidth,
           textAlign: align,
