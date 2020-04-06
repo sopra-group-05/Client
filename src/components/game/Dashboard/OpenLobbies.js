@@ -34,6 +34,8 @@ class OpenLobbies extends React.Component {
         this.interval = setInterval(this.getLobbies, 1000);
       }
 
+      // todo filter lobbies so only open ones are inside
+
       // Get the returned lobbies and update the state.
       this.setState({ lobbies: response.data, error: null });
       //console.log(response);
