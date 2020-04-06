@@ -43,7 +43,7 @@ const Button = styled.div`
   align-self: flex-end;
   font-weight: bold;
   border-radius: 15px;
-  background-color: #3b85ff;
+  background-color: ${props => (props.myLobby ? "#ff3b3b" : "#3b85ff")};
   color: #fff;
   display: block;
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
@@ -65,31 +65,50 @@ const Flag = styled.img`
  * @FunctionalComponent
  */
 class JoinLobby extends React.Component {
-  async joinThisLobby(l) {
-    console.log("join lobby function was run with lobby id " + l.id);
-    try {
-      const lobby = new Lobby(l);
+  constructor() {
+    super();
+    this.state = {
+      myLobby: false
+    };
+    this.joinThisLobby = this.joinThisLobby.bind(this);
+  }
 
-      // join lobby via put request
-      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.put("/lobbies/" + lobby.id + "/join");
-      console.log(response);
-
-      // Redirect to Lobby Page
+  async joinThisLobby(l, myLobby) {
+    const lobby = new Lobby(l);
+    if (myLobby) {
+      // just redirect to your own lobby
       this.props.history.push("/game/lobby/" + lobby.id);
-    } catch (error) {
-      //todo better error handling
-      alert(error);
-      console.log(
-        `Something went wrong while join a lobby: \n${handleError(error)}`
-      );
-      clearInterval(this.interval);
+    } else {
+      // join lobby normally
+      try {
+        // join lobby via put request
+        api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+        const response = await api.put("/lobbies/" + lobby.id + "/join");
+        console.log(response);
+
+        // Redirect to Lobby Page
+        this.props.history.push("/game/lobby/" + lobby.id);
+      } catch (error) {
+        //todo better error handling
+        alert(error);
+        console.log(
+          `Something went wrong while join a lobby: \n${handleError(error)}`
+        );
+      }
     }
   }
   render() {
     const lobby = new Lobby(this.props.lobby);
+    if (
+      !this.state.myLobby &&
+      lobby.players.find(x => x.id == localStorage.getItem("userId"))
+    ) {
+      // set boolean to true if User is in that Lobby
+      this.setState({ myLobby: true });
+      console.log("You're in that lobby!");
+    }
     return (
-      <Container onClick={() => this.joinThisLobby(lobby)}>
+      <Container onClick={() => this.joinThisLobby(lobby, this.state.myLobby)}>
         <LobbyMeta>
           <LobbyName>{lobby.lobbyName}</LobbyName>
           <LobbyInfo>
@@ -98,7 +117,9 @@ class JoinLobby extends React.Component {
             <Flag src={lobby.language === "DE" ? GermanFlag : EnglishFlag} />
           </LobbyInfo>
         </LobbyMeta>
-        <Button>Join</Button>
+        <Button myLobby={this.state.myLobby}>
+          {this.state.myLobby ? "Enter" : "Join"}
+        </Button>
       </Container>
     );
   }
