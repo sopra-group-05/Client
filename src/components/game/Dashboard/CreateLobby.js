@@ -210,13 +210,13 @@ class CreateLobby extends React.Component {
             <Languages>
               <Flag
                 src={EnglishFlag}
-                active={this.state.language == "EN"}
+                active={this.state.language === "EN"}
                 onClick={() => this.changeLanguage("EN")}
                 title="English"
               />
               <Flag
                 src={GermanFlag}
-                active={this.state.language == "DE"}
+                active={this.state.language === "DE"}
                 onClick={() => this.changeLanguage("DE")}
                 title="German"
               />
