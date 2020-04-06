@@ -4,12 +4,14 @@ import styled from "styled-components";
 const BoxOuter = styled.div`
   margin-top: 20px;
   min-width: 350px;
+  max-width: ${props => (props.maxWidth ? props.maxWidth : "100%")};
 `;
 
 const BoxHeader = styled.div`
   background-color: #454c62;
   border-radius: 20px;
   display: inline-block;
+  visibility: ${props => (props.hideHeader ? "hidden" : "visible")};
 `;
 const BoxTitle = styled.h3`
   font-size: 1rem;
@@ -26,6 +28,9 @@ const BoxContainer = styled.div`
   margin: -25px 0 0 0;
   padding: 2.5rem 1rem 1rem 1rem;
   color: #fff;
+  display: flex;
+  max-width: 100%;
+  overflow: hidden;
 `;
 
 /**
@@ -34,14 +39,23 @@ const BoxContainer = styled.div`
  * @param size: default 150, how big should the avatar be?
  * @returns a div with the avatar imported from the adorable api
  */
-const Box = ({ children, title, titleWidth, titleAlign, texttrans }) => {
+const Box = ({
+  children,
+  title,
+  titleWidth,
+  titleAlign,
+  texttrans,
+  maxWidth,
+                 hideHeader
+}) => {
   const boxTitle = title ? title : "No Title";
   const headerTitleWidth = titleWidth ? titleWidth : "auto";
   const align = titleAlign ? titleAlign : "center";
   const textTransformation = texttrans ? "" : "uppercase";
   return (
-    <BoxOuter>
+    <BoxOuter maxWidth={maxWidth}>
       <BoxHeader
+          hideHeader={hideHeader}
         style={{
           width: headerTitleWidth,
           textAlign: align,
