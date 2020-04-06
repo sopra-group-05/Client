@@ -5,7 +5,6 @@ import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Box from "../../../views/Box";
 import JoinLobby from "../../../views/JoinLobby";
-import Lobby from "../../shared/models/Lobby";
 
 const Users = styled.ul`
   list-style: none;
