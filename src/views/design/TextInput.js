@@ -21,18 +21,27 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const TextInput = ({ field, label, state, handleChange, placeholder, hiddenText, labelAlign }) => {
-    const placeHolderText = placeholder ? placeholder : "Enter here...";
-    const fieldType = hiddenText ? "password": "text";
-    const labelAlignment = labelAlign ? labelAlign : "left";
-    return (
+const TextInput = ({
+  field,
+  label,
+  state,
+  handleChange,
+  placeholder,
+  hiddenText,
+  labelAlign,
+  disabled
+}) => {
+  const placeHolderText = placeholder ? placeholder : "Enter here...";
+  const fieldType = hiddenText ? "password" : "text";
+  const labelAlignment = labelAlign ? labelAlign : "left";
+  return (
     <Wrapper>
-      <Label style={{textAlign:labelAlignment}}>{label}</Label>
+      <Label style={{ textAlign: labelAlignment }}>{label}</Label>
       <InputField
-        placeholder= {placeHolderText}
+        placeholder={placeHolderText}
         value={state}
-        type = {fieldType}
-
+        type={fieldType}
+        disabled={disabled}
         onChange={e => {
           handleChange(field, e.target.value);
         }}
