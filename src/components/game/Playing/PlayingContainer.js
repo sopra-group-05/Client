@@ -7,6 +7,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import PlayerOverview from "./PlayerOverview/PlayerOverview";
 import { Spinner } from "../../../views/design/Spinner";
 import ChoosingMysteryWord from "./ChoosingMysteryWord/ChoosingMysteryWord";
+import WritingClues from "./WritingClues/WritingClues";
+import { Button } from "./PlayingStyle";
 
 const Container = styled(BaseContainer)`
   color: black;
@@ -21,7 +23,8 @@ class PlayingContainer extends React.Component {
     super();
     this.state = {
       lobby: null,
-      error: null
+      error: null,
+      dummyState: 0
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
   }
@@ -62,6 +65,11 @@ class PlayingContainer extends React.Component {
     clearInterval(this.interval);
   }
 
+  nextState() {
+    const newState = this.state.dummyState < 1 ? this.state.dummyState + 1 : 0;
+    this.setState({ dummyState: newState });
+  }
+
   isGuesser(playerList) {
     // checks if logged in user is active player
     const player = playerList.find(x => x.id == localStorage.getItem("userId"));
@@ -75,18 +83,32 @@ class PlayingContainer extends React.Component {
         <Container>
           {this.state.lobby ? (
             <React.Fragment>
-              {
-                // todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
-              }
-              <ChoosingMysteryWord
-                lobby={this.state.lobby}
-                isGuesser={this.isGuesser(this.state.lobby.players)}
-              />
+              {// todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
+              this.state.dummyState ? (
+                <ChoosingMysteryWord
+                  lobby={this.state.lobby}
+                  isGuesser={this.isGuesser(this.state.lobby.players)}
+                />
+              ) : (
+                <WritingClues
+                  lobby={this.state.lobby}
+                  isGuesser={this.isGuesser(this.state.lobby.players)}
+                />
+              )}
               <PlayerOverview l={this.state.lobby} />
             </React.Fragment>
           ) : (
             <Spinner />
           )}
+        </Container>
+        <Container>
+          <Button
+            onClick={() => {
+              this.nextState();
+            }}
+          >
+            Next State
+          </Button>
         </Container>
       </React.Fragment>
     );
