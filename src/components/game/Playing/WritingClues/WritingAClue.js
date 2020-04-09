@@ -46,6 +46,7 @@ const WritingAClue = ({ l }) => {
         <MysteryCard lobbyId={lobby.id} />
         <Form>
           <TextInput
+            disabled={submitted}
             field="clue"
             label="Your Clue"
             state={clue}
