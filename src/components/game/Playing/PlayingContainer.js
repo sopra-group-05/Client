@@ -84,7 +84,7 @@ class PlayingContainer extends React.Component {
           {this.state.lobby ? (
             <React.Fragment>
               {// todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
-              this.state.dummyState ? (
+              this.state.dummyState === 0 ? (
                 <ChoosingMysteryWord
                   lobby={this.state.lobby}
                   isGuesser={this.isGuesser(this.state.lobby.players)}
@@ -107,7 +107,7 @@ class PlayingContainer extends React.Component {
               this.nextState();
             }}
           >
-            Next State
+            Preview next State
           </Button>
         </Container>
       </React.Fragment>
