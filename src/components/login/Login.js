@@ -8,14 +8,14 @@ import { BaseContainer } from "../../helpers/layout";
 import Box from "../../views/Box";
 import TextInput from "../../views/design/TextInput";
 import JO_LOGO from "../../images/JO_LOGO.png";
-import {Spinner} from "../../views/design/Spinner";
+import { Spinner } from "../../views/design/Spinner";
 
 const Image = styled.img`
- position: relative;
- display: flex;
- width: 50%;
- margin-bottom: -120px;
- margin-left: 240px;
+  position: relative;
+  display: flex;
+  width: 50%;
+  margin-bottom: -120px;
+  margin-left: 240px;
 `;
 
 const ButtonContainer = styled.div`
@@ -95,15 +95,13 @@ class Login extends React.Component {
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       this.props.history.push(`/game`);
-    }
-
-    catch (error) {
+    } catch (error) {
       this.setState({
         error: error.response ? error.response.data : "Error"
       });
-//      setTimeout(() => {
-//        this.setState({ error: null });
-//      }, 3500);
+      //      setTimeout(() => {
+      //        this.setState({ error: null });
+      //      }, 3500);
       console.log(
         `Something went wrong during the login: \n${handleError(error)}`
       );
@@ -133,35 +131,46 @@ class Login extends React.Component {
   render() {
     return (
       <OuterContainer>
+        <Image src={JO_LOGO} />
 
-      <Image src={JO_LOGO}/>
-
-      <Box title="Hello and welcome to" titleWidth={'85%'} texttrans={'none'} titleAlign={'left'}>
-        <Container>
-          {this.state.error ? (<ErrorMessage>{this.state.error}</ErrorMessage>) : ""}
+        <Box
+          title="Hello and welcome to"
+          titleWidth={"85%"}
+          texttrans={"none"}
+          titleAlign={"left"}
+        >
+          <Container>
+            {this.state.error ? (
+              <ErrorMessage>{this.state.error}</ErrorMessage>
+            ) : (
+              ""
+            )}
 
             <TextInput
-                field="username"
-                label="Name"
-                placeholder="Enter Name..."
-                state={this.state.username}
-                handleChange={this.handleInputChange}
+              field="username"
+              label="Name"
+              placeholder="Enter Name..."
+              state={this.state.username}
+              handleChange={this.handleInputChange}
             />
 
             <TextInput
-                field="password"
-                label="Password"
-                placeholder="Enter Password..."
-                hiddenText={true}
-                state={this.state.password}
-                handleChange={this.handleInputChange}
+              field="password"
+              label="Password"
+              placeholder="Enter Password..."
+              hiddenText={true}
+              state={this.state.password}
+              handleChange={this.handleInputChange}
             />
 
             <ButtonContainer>
               <Button
                 disabled={!this.state.username || !this.state.password}
                 width="50%"
-                onClick={() => {this.login();}}>
+                onClick={() => {
+                  this.login();
+                }}
+              >
                 Login
               </Button>
 
@@ -169,12 +178,15 @@ class Login extends React.Component {
 
               <Button
                 width="50%"
-                onClick={() => {this.props.history.push(`/register`);}}>
+                onClick={() => {
+                  this.props.history.push(`/register`);
+                }}
+              >
                 Register
               </Button>
             </ButtonContainer>
-        </Container>
-      </Box>
+          </Container>
+        </Box>
       </OuterContainer>
     );
   }

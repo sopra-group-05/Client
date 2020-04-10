@@ -10,11 +10,11 @@ import TextInput from "../../views/design/TextInput";
 import JO_LOGO from "../../images/JO_LOGO.png";
 
 const Image = styled.img`
- position: relative;
- display: flex;
- width: 50%;
- margin-bottom: -120px;
- margin-left: 240px;
+  position: relative;
+  display: flex;
+  width: 50%;
+  margin-bottom: -120px;
+  margin-left: 240px;
 `;
 
 const ButtonContainer = styled.div`
@@ -94,8 +94,7 @@ class Register extends React.Component {
 
       // Register successfully worked --> navigate to the login
       this.props.history.push(`/login`);
-    }
-    catch (error) {
+    } catch (error) {
       // show error message and make is disappear after 3.5 seconds
       this.setState({
         error: error.response ? error.response.data : "Error"
@@ -129,57 +128,75 @@ class Register extends React.Component {
   render() {
     return (
       <OuterContainer>
+        <Image src={JO_LOGO} />
 
-        <Image src={JO_LOGO}/>
-
-      <Box title="Create your account" titleWidth={'85%'} titleAlign={'left'} texttrans={'none'}>
-        <Container>
-          {this.state.error ? (<ErrorMessage>{this.state.error}</ErrorMessage>) : ""}
+        <Box
+          title="Create your account"
+          titleWidth={"85%"}
+          titleAlign={"left"}
+          texttrans={"none"}
+        >
+          <Container>
+            {this.state.error ? (
+              <ErrorMessage>{this.state.error}</ErrorMessage>
+            ) : (
+              ""
+            )}
 
             <TextInput
-                field="username"
-                label="Name"
-                placeholder="Enter Name..."
-                state={this.state.username}
-                handleChange={this.handleInputChange}
+              field="username"
+              label="Name"
+              placeholder="Enter Name..."
+              state={this.state.username}
+              handleChange={this.handleInputChange}
             />
 
             <TextInput
-                field="password"
-                label="Password"
-                placeholder="Enter Password..."
-                hiddenText={true}
-                state={this.state.password}
-                handleChange={this.handleInputChange}
+              field="password"
+              label="Password"
+              placeholder="Enter Password..."
+              hiddenText={true}
+              state={this.state.password}
+              handleChange={this.handleInputChange}
             />
 
             <TextInput
-                field="password2"
-                label="Reenter your password"
-                placeholder="Enter Password..."
-                hiddenText={true}
-                state={this.state.password2}
-                handleChange={this.handleInputChange}
+              field="password2"
+              label="Reenter your password"
+              placeholder="Enter Password..."
+              hiddenText={true}
+              state={this.state.password2}
+              handleChange={this.handleInputChange}
             />
 
-          <ButtonContainer>
-            <Button
-                disabled={!this.state.username || !this.state.password || (this.state.password != this.state.password2)}
+            <ButtonContainer>
+              <Button
+                disabled={
+                  !this.state.username ||
+                  !this.state.password ||
+                  this.state.password != this.state.password2
+                }
                 width="50%"
-                onClick={() => {this.register();}}>
-              Register
-            </Button>
+                onClick={() => {
+                  this.register();
+                }}
+              >
+                Register
+              </Button>
 
-            <ul> </ul>
+              <ul> </ul>
 
-            <Button
+              <Button
                 width="50%"
-                onClick={() => {this.props.history.push(`/login`);}}>
-              Back
-            </Button>
-          </ButtonContainer>
-        </Container>
-      </Box>
+                onClick={() => {
+                  this.props.history.push(`/login`);
+                }}
+              >
+                Back
+              </Button>
+            </ButtonContainer>
+          </Container>
+        </Box>
       </OuterContainer>
     );
   }

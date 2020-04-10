@@ -13,15 +13,15 @@ import { Spinner } from "../../../views/design/Spinner";
 import Sidebar from "../Sidebar/Sidebar";
 import abortIcon from "../../../images/abort.png";
 import editUserIcon from "../../../images/edit_user_icon.png";
-import Box from "../../../views/Box"
-import {Button} from "../../../views/design/Button"
+import Box from "../../../views/Box";
+import { Button } from "../../../views/design/Button";
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
   flex-direction: column;
-  width:70%;
+  width: 70%;
   margin-top: 5em;
 `;
 
@@ -92,8 +92,7 @@ class Profile extends React.Component {
       await new Promise(resolve => setTimeout(resolve, 250));
       this.setState({ user: user });
       console.log(response);
-    }
-    catch (error) {
+    } catch (error) {
       alert(
         `Something went wrong while fetching the user: \n${handleError(error)}`
       );
@@ -106,57 +105,59 @@ class Profile extends React.Component {
 
   render() {
     return (
-        <React.Fragment>
-          <Sidebar />
-          {!this.state.user ? <Spinner/> : (
+      <React.Fragment>
+        <Sidebar />
+        {!this.state.user ? (
+          <Spinner />
+        ) : (
+          <OuterContainer>
+            <Box title={this.state.user.username}>
+              <Container>
+                {this.state.error ? (
+                  <ErrorMessage>{this.state.error}</ErrorMessage>
+                ) : (
+                  ""
+                )}
 
-            <OuterContainer>
+                <Avatar user={this.state.user} />
 
-              <Box title={this.state.user.username} >
-                <Container>
-                  {this.state.error ? (<ErrorMessage>{this.state.error}</ErrorMessage>) : ""}
+                <ButtonContainer>
+                  <Button marginbottom="30px" colorDef={"#454c62"}>
+                    Level
+                  </Button>
 
-                  <Avatar user={this.state.user}/>
-
-                  <ButtonContainer>
-
+                  {this.state.user.id ===
+                    parseInt(localStorage.getItem("userId")) && (
                     <Button
-                      marginbottom="30px"
-                      colorDef={"#454c62"}>
-                      Level
+                      marginbottom="10px"
+                      colorDef={"#3b85ff"}
+                      onClick={() => {
+                        this.props.history.push(`/game/editProfile`);
+                      }}
+                    >
+                      Edit Profile
                     </Button>
+                  )}
 
-                    {this.state.user.id === parseInt(localStorage.getItem("userId")) && (
-                      <Button
-                          marginbottom="10px"
-                          colorDef={"#3b85ff"}
-                          onClick={() => {this.props.history.push(`/game/editProfile`);}}>
-                        Edit Profile
-                      </Button>
-                    )}
-
-                    <Button
-                      colorDef={"red"}
-                      onClick={() => {this.props.history.goBack();}}>
-                      Back
-                    </Button>
-
-                  </ButtonContainer>
-                </Container>
-              </Box>
-            </OuterContainer>)}
-        </React.Fragment>
-      );
-    }
+                  <Button
+                    colorDef={"red"}
+                    onClick={() => {
+                      this.props.history.goBack();
+                    }}
+                  >
+                    Back
+                  </Button>
+                </ButtonContainer>
+              </Container>
+            </Box>
+          </OuterContainer>
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
-
-
-
-
-
-
-          /*
+/*
 
            {         <Container>
                       {this.state.user ? (
