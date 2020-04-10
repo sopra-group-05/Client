@@ -8,7 +8,6 @@ import PlayerInLobby from "../../../views/PlayerInLobby";
 import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 
-
 const PlayerStatus = styled.div`
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.2);
@@ -98,7 +97,11 @@ class LobbyContainer extends React.Component {
       }
 
       // Get the returned lobby and update the state.
-      this.setState({ lobby: l, nonCreators: this.getNonCreator(l), error: null });
+      this.setState({
+        lobby: l,
+        nonCreators: this.getNonCreator(l),
+        error: null
+      });
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -108,11 +111,11 @@ class LobbyContainer extends React.Component {
     }
   }
 
-  getNonCreator(l){
+  getNonCreator(l) {
     let nonCreators = Array.from(l.players);
     const creator = l.creator;
     const index = nonCreators.findIndex(player => player.id == creator.id);
-    nonCreators.splice(index,1);
+    nonCreators.splice(index, 1);
     return nonCreators;
   }
 
@@ -132,39 +135,43 @@ class LobbyContainer extends React.Component {
   }
 
   render() {
-    if (!this.state.lobby)
-      return null;
-    return <Box title={this.state.lobby.lobbyName}>
-      <MessageHandler
-        success={false}
-        show={this.state.error}
-        message={this.state.error}
-      />
-      {!this.state.lobby ? (
-        !this.state.error && <Spinner />
-      ) : (
-        <div>
-          <Players>
-            <PlayerContainer key={this.state.lobby.creator.id}>
-              <PlayerInLobby player={this.state.lobby.creator} lobby={this.state.lobby}/>
-            </PlayerContainer>
-            {this.state.nonCreators.map(player => {
-              return (
-                <PlayerContainer key={player.id}>
-                  <PlayerInLobby player={player} lobby={this.state.lobby}/>
-                </PlayerContainer>
-              );
-            })}
-          </Players>
-          <PlayerStatus onClick={() => this.toggleCheckbox()}>
-            <CheckBox>
-              <CheckboxTick checked={this.state.playerStatus === 1} />
-            </CheckBox>
-            Set ready
-          </PlayerStatus>
-        </div>
-      )}
-    </Box>;
+    if (!this.state.lobby) return null;
+    return (
+      <Box title={this.state.lobby.lobbyName}>
+        <MessageHandler
+          success={false}
+          show={this.state.error}
+          message={this.state.error}
+        />
+        {!this.state.lobby ? (
+          !this.state.error && <Spinner />
+        ) : (
+          <div>
+            <Players>
+              <PlayerContainer key={this.state.lobby.creator.id}>
+                <PlayerInLobby
+                  player={this.state.lobby.creator}
+                  lobby={this.state.lobby}
+                />
+              </PlayerContainer>
+              {this.state.nonCreators.map(player => {
+                return (
+                  <PlayerContainer key={player.id}>
+                    <PlayerInLobby player={player} lobby={this.state.lobby} />
+                  </PlayerContainer>
+                );
+              })}
+            </Players>
+            <PlayerStatus onClick={() => this.toggleCheckbox()}>
+              <CheckBox>
+                <CheckboxTick checked={this.state.playerStatus === 1} />
+              </CheckBox>
+              Set ready
+            </PlayerStatus>
+          </div>
+        )}
+      </Box>
+    );
   }
 }
 export default withRouter(LobbyContainer);
