@@ -8,6 +8,7 @@ import PlayerInLobby from "../../../views/PlayerInLobby";
 import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 import { Button } from "../Playing/PlayingStyle";
+import Countdown from "../../../views/Countdown";
 
 const PlayerStatus = styled.div`
   border-radius: 20px;
@@ -80,8 +81,8 @@ class LobbyContainer extends React.Component {
     this.state = {
       lobby: null,
       nonCreators: null,
-      lobbyStatus: null,
       playerStatus: null,
+      lobbyReady: false,
       error: null
     };
     this.getLobby = this.getLobby.bind(this);
@@ -100,8 +101,6 @@ class LobbyContainer extends React.Component {
       const response = await api.get("/lobbies/" + this.props.match.params.id);
       const l = new Lobby(response.data);
 
-      // TODO check whether lobbystatus is set in BE only or also here for automatic countdown
-
       // make API call every 1s to get Updated Lobby.
       if (this.state.lobby === null && response.data) {
         // Will have to be destroyed in componentWIllUnmount()!
@@ -113,8 +112,10 @@ class LobbyContainer extends React.Component {
       this.setState({
         lobby: l,
         nonCreators: this.getNonCreator(l),
+        lobbyReady: l.lobbyStatus == "FULL",
         error: null
       });
+      if (this.state.lobbyReady) this.startCountdown();
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -125,7 +126,10 @@ class LobbyContainer extends React.Component {
   }
 
   startCountdown() {
-    // TODO: start countdown when lobbystatus full (call startGame on timeout)
+    return this.state.lobbyReady ? (
+      <Countdown time={6} activeText={"Game starts in "} timeoutText={"Go!"} />
+    ) : null;
+    // TODO: actually call startGame at timeout
   }
 
   async startGame() {
@@ -167,6 +171,7 @@ class LobbyContainer extends React.Component {
   async toggleCheckbox() {
     const previousStatus = this.state.playerStatus;
     try {
+      // this.setState({ lobbyReady: true }); // for testing purposes
       // set player status via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
@@ -250,6 +255,7 @@ class LobbyContainer extends React.Component {
                 Preview the game
               </Button>
             </ButtonGroup>
+            {this.startCountdown()}
           </div>
         )}
       </Box>
