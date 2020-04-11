@@ -80,6 +80,8 @@ class LobbyContainer extends React.Component {
     this.getLobby = this.getLobby.bind(this);
     this.getNonCreator = this.getNonCreator.bind(this);
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
+    this.startCountdown = this.startCountdown.bind(this);
+    this.startGame = this.startGame.bind(this);
   }
 
   async getLobby() {
@@ -88,6 +90,8 @@ class LobbyContainer extends React.Component {
 
       const response = await api.get("/lobbies/" + this.props.match.params.id);
       const l = new Lobby(response.data);
+
+      // TODO check whether lobbystatus is set in BE only or also here for automatic countdown
 
       // make API call every 1s to get Updated Lobby.
       if (this.state.lobby === null && response.data) {
@@ -109,6 +113,14 @@ class LobbyContainer extends React.Component {
       );
       clearInterval(this.interval);
     }
+  }
+
+  startCountdown() {
+    // TODO: start countdown when lobbystatus full (call startGame on timeout)
+  }
+
+  async startGame() {
+    // TODO triggered by countdown timeout or button
   }
 
   getNonCreator(l) {
