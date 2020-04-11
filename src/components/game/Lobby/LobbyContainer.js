@@ -119,9 +119,27 @@ class LobbyContainer extends React.Component {
     return nonCreators;
   }
 
-  toggleCheckbox() {
-    this.setState({ playerStatus: this.state.playerStatus === 0 ? 1 : 0 });
-    console.log("need to update player?");
+  async toggleCheckbox() {
+    const previousStatus = this.state.playerStatus;
+    try {
+      // set player status via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+        "/lobbies/" + this.state.lobby.id + "/ready"
+      );
+      console.log(response);
+      this.setState({ playerStatus: previousStatus === 0 ? 1 : 0 });
+    } catch (error) {
+      this.setState({
+        error: error ? error.message : "Unknown error",
+        playerStatus: previousStatus
+      });
+      console.log(
+        `Something went wrong while setting player status: \n${handleError(
+          error
+        )}`
+      );
+    }
   }
 
   componentDidMount() {
