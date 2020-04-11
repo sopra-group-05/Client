@@ -133,7 +133,22 @@ class LobbyContainer extends React.Component {
   }
 
   async leaveLobby() {
-    // TODO api call
+    try {
+      // lets player leave via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+        "/lobbies/" + this.state.lobby.id + "/leave"
+      );
+      console.log(response);
+      this.props.history.push("/game");
+    } catch (error) {
+      this.setState({
+        error: error ? error.message : "Unknown error"
+      });
+      console.log(
+        `Something went wrong while leaving: \n${handleError(error)}`
+      );
+    }
   }
 
   previewPlaying() {
