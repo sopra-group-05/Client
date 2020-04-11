@@ -63,7 +63,7 @@ const Players = styled.ul`
 const PlayerContainer = styled.li`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
 `;
 

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
-import DeleteIcon from "../images/delete.png"
+import DeleteIcon from "../images/delete.png";
 import { withRouter } from "react-router-dom";
 import { api, handleError } from "../helpers/api";
 
@@ -26,8 +26,7 @@ const Container = styled.div`
 
 const PlayerName = styled.p`
   font-weight: bold;
-  margin: 10px;
-  padding: 0;
+  margin: 0 10px;
   color: #fff;
   min-width: 50px;
 `;
@@ -36,20 +35,30 @@ const Icon = styled.img`
   width: 25px;
   height: 25px;
   margin-top: 1rem;
+  align-self: flex-end;
 `;
 
 const IconPlaceholder = styled.div`
   width: 25px;
   height: 25px;
   margin-top: 1rem;
+  align-self: flex-end;
 `;
 
 const PlayerInfo = styled.p`
   font-weight: lighter;
   font-size: 0.8rem;
-  margin: 0;
-  padding: 0;
+  margin: 0 10px;
   color: #8f8f8f;
+`;
+
+const PlayerMeta = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 1rem;
+  margin-right: 0.5rem;
 `;
 
 class PlayerInLobby extends React.Component {
@@ -64,14 +73,19 @@ class PlayerInLobby extends React.Component {
     this.removePlayerFromLobby = this.removePlayerFromLobby.bind(this);
   }
 
-  async removePlayerFromLobby(){
-    console.log("removePlayerFromLobby was run with lobby id " + this.state.lobby.id);
+  async removePlayerFromLobby() {
+    console.log(
+      "removePlayerFromLobby was run with lobby id " + this.state.lobby.id
+    );
+    console.log(this.state.lobby.creator);
+    console.log(localStorage.getItem("token"));
     try {
       // kick player via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.put("/lobbies/" + this.state.lobby.id + "/kick/" + this.state.player.id);
+      const response = await api.put(
+        "/lobbies/" + this.state.lobby.id + "/kick/" + this.state.player.id
+      );
       console.log(response);
-
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -81,13 +95,22 @@ class PlayerInLobby extends React.Component {
   }
 
   render() {
-    const kickPlayer = (this.state.creator.id == localStorage.getItem("userId"))?
-      <Icon src={DeleteIcon} onClick={()=>this.removePlayerFromLobby()}/>:
-      <IconPlaceholder/>;
+    const kickPlayer =
+      this.state.creator.id == localStorage.getItem("userId") ? (
+        <Icon src={DeleteIcon} onClick={() => this.removePlayerFromLobby()} />
+      ) : (
+        <IconPlaceholder />
+      );
     return (
       <Container>
-        <Avatar size={40} user={this.state.player}/>
-        <PlayerName>{this.state.player.username}</PlayerName>
+        <Avatar size={40} user={this.state.player} />
+        <PlayerMeta>
+          <PlayerName>{this.state.player.username}</PlayerName>
+          <PlayerInfo>
+            {this.state.player.role} |
+            {this.state.player.status == "Ready" ? "is ready" : "not ready"}
+          </PlayerInfo>
+        </PlayerMeta>
         {kickPlayer}
       </Container>
     );
