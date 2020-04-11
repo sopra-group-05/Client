@@ -96,7 +96,8 @@ class PlayerInLobby extends React.Component {
 
   render() {
     const kickPlayer =
-      this.state.creator.id == localStorage.getItem("userId") ? (
+      this.state.creator.id == localStorage.getItem("userId") &&
+      this.state.creator.id != this.state.player.id ? (
         <Icon src={DeleteIcon} onClick={() => this.removePlayerFromLobby()} />
       ) : (
         <IconPlaceholder />
