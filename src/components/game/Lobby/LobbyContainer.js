@@ -7,6 +7,7 @@ import { Spinner } from "../../../views/design/Spinner";
 import PlayerInLobby from "../../../views/PlayerInLobby";
 import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
+import { Button } from "../Playing/PlayingStyle";
 
 const PlayerStatus = styled.div`
   border-radius: 20px;
@@ -67,6 +68,12 @@ const PlayerContainer = styled.li`
   justify-content: center;
 `;
 
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 class LobbyContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -82,6 +89,8 @@ class LobbyContainer extends React.Component {
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
     this.startGame = this.startGame.bind(this);
+    this.leaveLobby = this.leaveLobby.bind(this);
+    this.previewPlaying = this.previewPlaying.bind(this);
   }
 
   async getLobby() {
@@ -121,6 +130,15 @@ class LobbyContainer extends React.Component {
 
   async startGame() {
     // TODO triggered by countdown timeout or button
+  }
+
+  async leaveLobby() {
+    // TODO api call
+  }
+
+  previewPlaying() {
+    // todo: delete when lobby view is able to start game on its own
+    this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
   }
 
   getNonCreator(l) {
@@ -198,6 +216,25 @@ class LobbyContainer extends React.Component {
               </CheckBox>
               Set ready
             </PlayerStatus>
+            <ButtonGroup>
+              <Button
+                onClick={() => {
+                  this.leaveLobby();
+                }}
+              >
+                Leave Lobby
+              </Button>
+              {
+                // todo: delete when lobby view is able to start game on its own
+              }
+              <Button
+                onClick={() => {
+                  this.previewPlaying();
+                }}
+              >
+                Preview the game
+              </Button>
+            </ButtonGroup>
           </div>
         )}
       </Box>
