@@ -36,7 +36,6 @@ const Container = styled(BaseContainer)`
   flex-direction: column;
   padding-top: 2em;
   padding-bottom: 2em;
-  width: 50%;
   align-items: center;
 `;
 

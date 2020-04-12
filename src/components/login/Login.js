@@ -33,7 +33,6 @@ const OuterContainer = styled(BaseContainer)`
 const Container = styled(BaseContainer)`
   padding-top: 2em;
   padding-bottom: 2em;
-  width: 50%;
   text-align: center;
 `;
 
