@@ -131,6 +131,7 @@ class LobbyContainer extends React.Component {
       const response = await api.put(
         "/lobbies/" + this.state.lobby.id + "/start"
       ); // fixme: not sure if this needs language as body, if server already has lobby entity
+      console.log(response);
     } catch (error) {
       this.setState({
         error: error ? error.message : "Unknown error"
