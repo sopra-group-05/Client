@@ -6,15 +6,10 @@ import { BaseContainer } from "../../../helpers/layout";
 import User from "../../shared/models/User";
 import ShowProfile from "./ShowProfile";
 import EditProfile from "./EditProfile";
-import Avatar from "../../../views/Avatar";
-import IconBar from "./IconBar";
 import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Sidebar from "../Sidebar/Sidebar";
-import abortIcon from "../../../images/abort.png";
-import editUserIcon from "../../../images/edit_user_icon.png";
-import Box from "../../../views/Box";
-import { Button } from "../../../views/design/Button";
+import DeleteProfile from "./DeleteProfile";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -23,6 +18,11 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   width: 70%;
   margin-top: 5em;
+`;
+
+const ExtraButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const OuterContainer = styled(BaseContainer)`
@@ -52,20 +52,36 @@ class Profile extends React.Component {
     this.state = {
       user: null,
       edit: false,
+      delete: false,
       changedMsg: null
     };
 
     // bind methods so they can be used in children components when passed down as props
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.getProfile = this.getProfile.bind(this);
     this.profileUpdated = this.profileUpdated.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   handleEdit() {
     // change between Profile and edit Profile View
     this.setState(state => ({
-      edit: !state.edit
+      edit: !state.edit,
+      delete: false
     }));
+  }
+
+  handleDelete() {
+    // change between Profile and edit Profile View
+    this.setState(state => ({
+      edit: false,
+      delete: !state.delete
+    }));
+  }
+
+  goBack() {
+    this.props.history.goBack();
   }
 
   profileUpdated() {
@@ -77,6 +93,8 @@ class Profile extends React.Component {
       this.setState({ changedMsg: null });
     }, 3500);
   }
+
+
 
   async getProfile() {
     // fetch Profile
@@ -107,92 +125,24 @@ class Profile extends React.Component {
       <React.Fragment>
         <Sidebar />
         {!this.state.user ? (
-          <Spinner />
+            <OuterContainer><Spinner /></OuterContainer>
         ) : (
-          <OuterContainer>
-            <Box title={this.state.user.username}>
-              <Container>
-                {this.state.error ? (
-                  <ErrorMessage>{this.state.error}</ErrorMessage>
-                ) : (
-                  ""
-                )}
-
-                <Avatar user={this.state.user} />
-
-                <ButtonContainer>
-                  <Button marginbottom="30px" colorDef={"#454c62"}>
-                    Level
-                  </Button>
-
-                  {this.state.user.id ===
-                    parseInt(localStorage.getItem("userId")) && (
-                    <Button
-                      marginbottom="10px"
-                      colorDef={"#3b85ff"}
-                      onClick={() => {
-                        this.props.history.push(`/game/editProfile`);
-                      }}
-                    >
-                      Edit Profile
-                    </Button>
-                  )}
-
-                  <Button
-                    colorDef={"red"}
-                    onClick={() => {
-                      this.props.history.goBack();
-                    }}
-                  >
-                    Back
-                  </Button>
-                </ButtonContainer>
-              </Container>
-            </Box>
-          </OuterContainer>
-        )}
+            <div>
+        {this.state.delete ? (
+            <DeleteProfile
+              user={this.state.user}
+              handleDelete={this.handleDelete}/>
+          ) : (
+        <ShowProfile
+          user={this.state.user}
+          handleEdit={this.handleEdit}
+          goBack={this.goBack}
+          handleDelete={this.handleDelete}
+        />
+        )} </div>)}
       </React.Fragment>
     );
   }
 }
 
-/*
-
-           {         <Container>
-                      {this.state.user ? (
-                        <React.Fragment>
-                          <IconBar
-                            user={this.state.user}
-                            edit={this.state.edit}
-                            handleEdit={this.handleEdit}
-                          />
-                          <MessageHandler
-                            message="Profile Updated"
-                            success={true}
-                            show={this.state.changedMsg && !this.state.edit}
-                          />
-                          <ProfileContainer>
-                            <Avatar user={this.state.user} />
-                            <ProfileContent>
-                              {this.state.edit ? (
-                                <EditProfile
-                                  user={this.state.user}
-                                  profileUpdated={this.profileUpdated}
-                                />
-                              ) : (
-                                <ShowProfile user={this.state.user} />
-                              )}
-                            </ProfileContent>
-                          </ProfileContainer>
-                        </React.Fragment>
-                      ) : (
-                        <Spinner />
-                      )}
-                    </Container>
-                  </BaseContainer>
-                </React.Fragment>
-              );}
-  }
-}
-*/
 export default withRouter(Profile);

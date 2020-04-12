@@ -1,57 +1,120 @@
 import React from "react";
 import styled from "styled-components";
-import { Spinner } from "../../../views/design/Spinner";
-import Offline from "../../../images/user-offline.png";
-import Online from "../../../images/user-online.png";
+import { BaseContainer } from "../../../helpers/layout";
+import Avatar from "../../../views/Avatar";
+import Box from "../../../views/Box";
+import { Button } from "../../../views/design/Button";
+import {Spinner} from "../../../views/design/Spinner";
 
-const ProfileContainer = styled.div`
-  width: 100%;
-`;
-
-const ProfileTitle = styled.h2`
+const ButtonContainer = styled.div`
   display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 70%;
+  margin-top: 5em;
+`;
+
+const ExtraButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const OuterContainer = styled(BaseContainer)`
+  padding-top: 3em;
+  width: 27%;
+  text-align: center;
+`;
+
+const Container = styled(BaseContainer)`
+  display: flex;
+  flex-direction: column;
+  padding-top: 2em;
+  padding-bottom: 2em;
   align-items: center;
-  margin: 0;
-  padding: 0;
 `;
 
-const ProfileInfo = styled.p`
-  margin: 0;
-  padding: 0;
+const ErrorMessage = styled.div`
+  display: flex;
+  justify-content: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
-const UserStatus = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-left: 0.75rem;
-`;
-
-/**
- *
- * @param user: User Object
- * @returns The Profile Info of the user. If no user is given, a spinner will be displayed.
- * @constructor
- */
-const ShowProfile = ({ user }) => {
-  if (!user) {
-    return <Spinner />;
+class ShowProfile extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      user: null
+    };
   }
-  return (
-    <ProfileContainer>
-      <ProfileTitle>
-        {user.username}
-        <UserStatus
-          title={user.status}
-          src={user.status === "ONLINE" ? Online : Offline}
-        />
-      </ProfileTitle>
-      <ProfileInfo>
-        Register Date: {user.created}. <br />
-        Birthday: {user.birthday ? user.birthday : "Not given"} <br />
-        Status: {user.status}
-      </ProfileInfo>
-    </ProfileContainer>
-  );
-};
+
+  componentDidMount() {
+    this.setState({
+      user: this.props.user
+    });
+  }
+
+  render() {
+    return (
+        <React.Fragment>
+          {!this.state.user ? <Spinner/> :(
+          <OuterContainer>
+            <Box title={this.state.user.username}>
+              <Container>
+                {this.state.error ? (
+                    <ErrorMessage>{this.state.error}</ErrorMessage>
+                ) : (
+                    ""
+                )}
+
+               <Avatar user={this.state.user}/>
+
+                <ButtonContainer>
+                  <Button marginbottom="30px" colorDef={"#454c62"}>
+                    Level
+                  </Button>
+
+                  {(this.state.user.id === parseInt(localStorage.getItem("userId"))) ? (
+
+                      <ExtraButtonContainer>
+
+                        <Button
+                            marginbottom="15px"
+                            colorDef={"#3b85ff"}
+                            onClick={() => {
+                              this.props.handleEdit();
+                            }}
+                        >
+                          Edit Profile
+                        </Button>
+
+                        <Button
+                            marginbottom="15px"
+                            colorDef={"red"}
+                            onClick={() => {
+                              this.props.handleDelete();
+                            }}
+                        >
+                          Delete Profile
+                        </Button>
+                      </ExtraButtonContainer>
+                  ) : ""}
+
+                  <Button
+                      onClick={() => {
+                        this.props.goBack();
+                      }}
+                  >
+                    Back
+                  </Button>
+                </ButtonContainer>
+              </Container>
+            </Box>
+          </OuterContainer>
+              )}
+        </React.Fragment>
+    )
+  }
+}
 
 export default ShowProfile;
