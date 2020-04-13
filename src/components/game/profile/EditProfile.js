@@ -2,11 +2,9 @@ import { Button } from "../../../views/design/Button";
 import React from "react";
 import styled from "styled-components";
 import { api, handleError } from "../../../helpers/api";
-import MessageHandler from "../../../views/MessageHandler";
-import {Spinner} from "../../../views/design/Spinner";
-import Box from "../../../views/Box";
+import { Spinner } from "../../../views/design/Spinner";
 import Avatar from "../../../views/Avatar";
-import {BaseContainer} from "../../../helpers/layout";
+import { BaseContainer } from "../../../helpers/layout";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -17,8 +15,6 @@ const ButtonContainer = styled.div`
   margin-bottom: 1.5em;
   padding: 0.5em;
 `;
-
-
 
 const InputField = styled.input`
   &::placeholder {
@@ -31,7 +27,6 @@ const InputField = styled.input`
   padding: 1rem 2rem 1rem 2rem;
   color: rgba(255, 255, 255, 0.8);
 `;
-
 
 const Container = styled.div`
   display: flex;
@@ -64,7 +59,7 @@ class EditProfile extends React.Component {
     this.state = {
       user: null,
       userNameBackup: null,
-      username:null,
+      username: null,
       error: null
     };
   }
@@ -114,53 +109,54 @@ class EditProfile extends React.Component {
 
   render() {
     return (
-        <React.Fragment>
-          {!this.state.user ? <Spinner/> :(
-            <OuterContainer>
-              <InputField
-                placeholder={"Enter new Name here..."}
-                onChange={e => {
-                  this.handleInputChange("username", e.target.value);
-                }}/>
-              <Container>
-                {this.state.error ? (
-                    <ErrorMessage>{this.state.error}</ErrorMessage>
-                ) : (
-                    ""
-                )}
-                <Avatar user={this.state.user}/>
+      <React.Fragment>
+        {!this.state.user ? (
+          <Spinner />
+        ) : (
+          <OuterContainer>
+            <InputField
+              placeholder={"Enter new Name here..."}
+              onChange={e => {
+                this.handleInputChange("username", e.target.value);
+              }}
+            />
+            <Container>
+              {this.state.error ? (
+                <ErrorMessage>{this.state.error}</ErrorMessage>
+              ) : (
+                ""
+              )}
+              <Avatar user={this.state.user} />
 
-                <ButtonContainer>
-                  <Button marginbottom="30px" colorDef={"#454c62"}>
-                    Level
-                  </Button>
+              <ButtonContainer>
+                <Button marginbottom="30px" colorDef={"#454c62"}>
+                  Level
+                </Button>
 
-                  <Button
-                      marginbottom="15px"
-                      colorDef={"#3b85ff"}
-                      onClick={() => {
-                        this.edit();
-                      }}
-                  >
-                    Save Change
-                  </Button>
+                <Button
+                  marginbottom="15px"
+                  colorDef={"#3b85ff"}
+                  onClick={() => {
+                    this.edit();
+                  }}
+                >
+                  Save Change
+                </Button>
 
-                  <Button
-                      onClick={() => {
-                        this.props.handleEdit();
-                      }}
-                  >
-                    Back
-                  </Button>
-                </ButtonContainer>
-              </Container>
-            </OuterContainer>
-            )}
-        </React.Fragment>
-    )
+                <Button
+                  onClick={() => {
+                    this.props.handleEdit();
+                  }}
+                >
+                  Back
+                </Button>
+              </ButtonContainer>
+            </Container>
+          </OuterContainer>
+        )}
+      </React.Fragment>
+    );
   }
-
-
 }
 
 export default EditProfile;

@@ -6,7 +6,6 @@ import { BaseContainer } from "../../../helpers/layout";
 import User from "../../shared/models/User";
 import ShowProfile from "./ShowProfile";
 import EditProfile from "./EditProfile";
-import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Sidebar from "../Sidebar/Sidebar";
 import DeleteProfile from "./DeleteProfile";
@@ -94,8 +93,6 @@ class Profile extends React.Component {
     }, 3500);
   }
 
-
-
   async getProfile() {
     // fetch Profile
     try {
@@ -125,30 +122,36 @@ class Profile extends React.Component {
       <React.Fragment>
         <Sidebar />
         {!this.state.user ? (
-            <OuterContainer><Spinner /></OuterContainer>
+          <OuterContainer>
+            <Spinner />
+          </OuterContainer>
         ) : (
-            <div>
-        {this.state.delete ? (
-            <DeleteProfile
-              user={this.state.user}
-              handleDelete={this.handleDelete}
-            />
-          ) : (
           <div>
-            {this.state.edit ? (
-              <EditProfile
+            {this.state.delete ? (
+              <DeleteProfile
                 user={this.state.user}
-                handleEdit={this.handleEdit}
-                profileUpdated={this.profileUpdated}
+                handleDelete={this.handleDelete}
               />
             ) : (
-        <ShowProfile
-          user={this.state.user}
-          handleEdit={this.handleEdit}
-          goBack={this.goBack}
-          handleDelete={this.handleDelete}
-        />
-            )} </div>)} </div> )}
+              <div>
+                {this.state.edit ? (
+                  <EditProfile
+                    user={this.state.user}
+                    handleEdit={this.handleEdit}
+                    profileUpdated={this.profileUpdated}
+                  />
+                ) : (
+                  <ShowProfile
+                    user={this.state.user}
+                    handleEdit={this.handleEdit}
+                    goBack={this.goBack}
+                    handleDelete={this.handleDelete}
+                  />
+                )}{" "}
+              </div>
+            )}{" "}
+          </div>
+        )}
       </React.Fragment>
     );
   }

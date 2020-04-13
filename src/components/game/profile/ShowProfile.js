@@ -4,7 +4,7 @@ import { BaseContainer } from "../../../helpers/layout";
 import Avatar from "../../../views/Avatar";
 import Box from "../../../views/Box";
 import { Button } from "../../../views/design/Button";
-import {Spinner} from "../../../views/design/Spinner";
+import { Spinner } from "../../../views/design/Spinner";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -56,54 +56,57 @@ class ShowProfile extends React.Component {
 
   render() {
     return (
-        <React.Fragment>
-          {!this.state.user ? <Spinner/> :(
+      <React.Fragment>
+        {!this.state.user ? (
+          <Spinner />
+        ) : (
           <OuterContainer>
             <Box title={this.state.user.username}>
               <Container>
                 {this.state.error ? (
-                    <ErrorMessage>{this.state.error}</ErrorMessage>
+                  <ErrorMessage>{this.state.error}</ErrorMessage>
                 ) : (
-                    ""
+                  ""
                 )}
 
-               <Avatar user={this.state.user}/>
+                <Avatar user={this.state.user} />
 
                 <ButtonContainer>
                   <Button marginbottom="30px" colorDef={"#454c62"}>
                     Level
                   </Button>
 
-                  {(this.state.user.id === parseInt(localStorage.getItem("userId"))) ? (
+                  {this.state.user.id ===
+                  parseInt(localStorage.getItem("userId")) ? (
+                    <ExtraButtonContainer>
+                      <Button
+                        marginbottom="15px"
+                        colorDef={"#3b85ff"}
+                        onClick={() => {
+                          this.props.handleEdit();
+                        }}
+                      >
+                        Edit Profile
+                      </Button>
 
-                      <ExtraButtonContainer>
-
-                        <Button
-                            marginbottom="15px"
-                            colorDef={"#3b85ff"}
-                            onClick={() => {
-                              this.props.handleEdit();
-                            }}
-                        >
-                          Edit Profile
-                        </Button>
-
-                        <Button
-                            marginbottom="15px"
-                            colorDef={"red"}
-                            onClick={() => {
-                              this.props.handleDelete();
-                            }}
-                        >
-                          Delete Profile
-                        </Button>
-                      </ExtraButtonContainer>
-                  ) : ""}
+                      <Button
+                        marginbottom="15px"
+                        colorDef={"red"}
+                        onClick={() => {
+                          this.props.handleDelete();
+                        }}
+                      >
+                        Delete Profile
+                      </Button>
+                    </ExtraButtonContainer>
+                  ) : (
+                    ""
+                  )}
 
                   <Button
-                      onClick={() => {
-                        this.props.goBack();
-                      }}
+                    onClick={() => {
+                      this.props.goBack();
+                    }}
                   >
                     Back
                   </Button>
@@ -111,9 +114,9 @@ class ShowProfile extends React.Component {
               </Container>
             </Box>
           </OuterContainer>
-              )}
-        </React.Fragment>
-    )
+        )}
+      </React.Fragment>
+    );
   }
 }
 
