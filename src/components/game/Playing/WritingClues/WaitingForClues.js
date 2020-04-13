@@ -7,12 +7,16 @@ import {
   PlayingWrapper
 } from "../PlayingStyle";
 import styled from "styled-components";
+import Countdown from "../../../../views/Countdown";
 
-const WritingAClue = () => {
+const WritingAClue = ({ nextState }) => {
   return (
     <PlayingWrapper headerText="Waiting for Clues!">
       <PlayingTitle>Guesser</PlayingTitle>
-      <PlayingDescription>Text Text</PlayingDescription>
+      <PlayingDescription>
+        Other Players are writing down clues and disabling invalid ones...
+      </PlayingDescription>
+      <Countdown functionWhenDone={nextState} time={30} />
     </PlayingWrapper>
   );
 };

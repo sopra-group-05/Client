@@ -9,6 +9,7 @@ import { Spinner } from "../../../views/design/Spinner";
 import ChoosingMysteryWord from "./ChoosingMysteryWord/ChoosingMysteryWord";
 import WritingClues from "./WritingClues/WritingClues";
 import { Button } from "./PlayingStyle";
+import Guess from "./Guess/Guess";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -28,6 +29,7 @@ class PlayingContainer extends React.Component {
       dummyState: 0
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
+    this.nextState = this.nextState.bind(this);
   }
 
   async getLobbyStatus() {
@@ -67,7 +69,7 @@ class PlayingContainer extends React.Component {
   }
 
   nextState() {
-    const newState = this.state.dummyState < 1 ? this.state.dummyState + 1 : 0;
+    const newState = this.state.dummyState < 2 ? this.state.dummyState + 1 : 0;
     this.setState({ dummyState: newState });
   }
 
@@ -89,11 +91,19 @@ class PlayingContainer extends React.Component {
                 <ChoosingMysteryWord
                   lobby={this.state.lobby}
                   isGuesser={this.isGuesser(this.state.lobby.players)}
+                  nextState={this.nextState}
                 />
-              ) : (
+              ) : this.state.dummyState === 1 ? (
                 <WritingClues
                   lobby={this.state.lobby}
                   isGuesser={this.isGuesser(this.state.lobby.players)}
+                  nextState={this.nextState}
+                />
+              ) : (
+                <Guess
+                  lobby={this.state.lobby}
+                  isGuesser={this.isGuesser(this.state.lobby.players)}
+                  nextState={this.nextState}
                 />
               )}
               <PlayerOverview l={this.state.lobby} />

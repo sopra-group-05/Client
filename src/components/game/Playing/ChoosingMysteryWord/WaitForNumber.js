@@ -8,8 +8,9 @@ import {
 } from "../PlayingStyle";
 import MysteryCard from "./MysteryCard";
 import styled from "styled-components";
+import Countdown from "../../../../views/Countdown";
 
-const WaitForNumber = ({ l }) => {
+const WaitForNumber = ({ l, nextState }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   return (
     <PlayingWrapper headerText="Active Player is choosing a number!">
@@ -22,6 +23,7 @@ const WaitForNumber = ({ l }) => {
         </PlayingDescription>
       </PlayingDescription>
       <MysteryCard lobbyId={lobby.id} />
+      <Countdown time={30} functionWhenDone={nextState} />
     </PlayingWrapper>
   );
 };

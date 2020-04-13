@@ -3,11 +3,11 @@ import { withRouter } from "react-router-dom";
 import WritingAClue from "./WritingAClue";
 import WaitingForClues from "./WaitingForClues";
 
-const WritingClues = ({ lobby, isGuesser }) => {
+const WritingClues = ({ lobby, isGuesser, nextState }) => {
   if (isGuesser) {
-    return <WaitingForClues />;
+    return <WaitingForClues nextState={nextState} />;
   } else {
-    return <WritingAClue l={lobby} />;
+    return <WritingAClue l={lobby} nextState={nextState} />;
   }
 };
 
