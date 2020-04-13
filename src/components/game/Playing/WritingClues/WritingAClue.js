@@ -34,6 +34,8 @@ const WritingAClue = ({ l }) => {
     setSubmitted(true);
     //alert("You would've submitted the clue " + clue);
   };
+  const countDownOver = () =>
+    alert("Countdown would be over now! Would go to next screen now.");
   return (
     <PlayingWrapper headerText={submitted && "Waiting for other players"}>
       <PlayingTitle>Writing Clues</PlayingTitle>
@@ -61,7 +63,9 @@ const WritingAClue = ({ l }) => {
           >
             Send
           </Button>
-          {!submitted && <Countdown time={10} />}
+          {!submitted && (
+            <Countdown functionWhenDone={countDownOver} time={10} />
+          )}
         </Form>
       </Container>
     </PlayingWrapper>

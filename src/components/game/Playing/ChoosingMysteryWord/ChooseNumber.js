@@ -19,6 +19,8 @@ const Numbers = styled.div`
 const ChooseNumber = ({ l }) => {
   const numberAlert = num => alert("You would've chosen number " + num);
   const lobby = new Lobby(l); //transform input into Lobby Model
+  const countDownOver = () =>
+    alert("Countdown would be over now! Would go to next screen now.");
   return (
     <PlayingWrapper>
       <PlayingTitle>You're the active Player!</PlayingTitle>
@@ -38,7 +40,7 @@ const ChooseNumber = ({ l }) => {
         <BigNumber number={4} handleClick={numberAlert} />
         <BigNumber number={5} handleClick={numberAlert} />
       </Numbers>
-      <Countdown time={10} />
+      <Countdown functionWhenDone={countDownOver} time={10} />
     </PlayingWrapper>
   );
 };

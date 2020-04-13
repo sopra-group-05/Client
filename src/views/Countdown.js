@@ -12,16 +12,20 @@ const Text = styled.p`
   color: ${props => (props.number <= 5 ? "#ee232b" : "#fff")};
 `;
 
-const Countdown = ({ time, activeText, timeoutText }) => {
+const Countdown = ({ time, activeText, timeoutText, functionWhenDone }) => {
   // set initial timing in state
   time = time ? time : 30;
   activeText = activeText ? activeText : "Remaining Time: ";
   timeoutText = timeoutText ? timeoutText : "Time's over! Please wait...";
+
+  // set counter state to time
   const [counter, setCounter] = React.useState(time);
 
   // if counter is > 0, update every second
   React.useEffect(() => {
-    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+    counter > 0
+      ? setTimeout(() => setCounter(counter - 1), 1000)
+      : functionWhenDone && functionWhenDone();
   }, [counter]);
 
   return (
