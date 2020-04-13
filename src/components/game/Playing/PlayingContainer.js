@@ -10,6 +10,7 @@ import ChoosingMysteryWord from "./ChoosingMysteryWord/ChoosingMysteryWord";
 import WritingClues from "./WritingClues/WritingClues";
 import { Button } from "./PlayingStyle";
 import Guess from "./Guess/Guess";
+import PlayingLogic from "./PlayingLogic";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -69,8 +70,7 @@ class PlayingContainer extends React.Component {
   }
 
   nextState() {
-    const newState = this.state.dummyState < 2 ? this.state.dummyState + 1 : 0;
-    this.setState({ dummyState: newState });
+    this.setState({ dummyState: this.state.dummyState + 1 });
   }
 
   isGuesser(playerList) {
@@ -86,26 +86,12 @@ class PlayingContainer extends React.Component {
         <Container>
           {this.state.lobby ? (
             <React.Fragment>
-              {// todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
-              this.state.dummyState === 0 ? (
-                <ChoosingMysteryWord
-                  lobby={this.state.lobby}
-                  isGuesser={this.isGuesser(this.state.lobby.players)}
-                  nextState={this.nextState}
-                />
-              ) : this.state.dummyState === 1 ? (
-                <WritingClues
-                  lobby={this.state.lobby}
-                  isGuesser={this.isGuesser(this.state.lobby.players)}
-                  nextState={this.nextState}
-                />
-              ) : (
-                <Guess
-                  lobby={this.state.lobby}
-                  isGuesser={this.isGuesser(this.state.lobby.players)}
-                  nextState={this.nextState}
-                />
-              )}
+              <PlayingLogic
+                nextState={this.nextState}
+                state={this.state.dummyState}
+                lobby={this.state.lobby}
+                isGuesser={this.isGuesser(this.state.lobby.players)}
+              />
               <PlayerOverview l={this.state.lobby} />
             </React.Fragment>
           ) : (
