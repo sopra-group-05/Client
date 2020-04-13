@@ -11,6 +11,7 @@ import WritingClues from "./WritingClues/WritingClues";
 import { Button } from "./PlayingStyle";
 
 const Container = styled(BaseContainer)`
+  padding-left: 3rem;
   color: black;
   text-align: center;
   display: flex;
@@ -19,8 +20,8 @@ const Container = styled(BaseContainer)`
 `;
 
 class PlayingContainer extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       lobby: null,
       error: null,
@@ -41,7 +42,7 @@ class PlayingContainer extends React.Component {
         this.interval = setInterval(this.getLobbyStatus, 1000);
       }
 
-      // Get the returned lobbies and update the state.
+      // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
       //console.log(response);
     } catch (error) {

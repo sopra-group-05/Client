@@ -15,10 +15,11 @@ const WaitForNumber = ({ l }) => {
     <PlayingWrapper headerText="Active Player is choosing a number!">
       <PlayingTitle>Teammate</PlayingTitle>
       <PlayingDescription>
-        You will try to come up with a hint for the mystery word
-      </PlayingDescription>
-      <PlayingDescription>
-        so that the active Player can guess it.
+        You are not the active player.
+        <PlayingDescription>
+          You will try to come up with a hint for the mystery word so that the
+          active Player can guess it
+        </PlayingDescription>
       </PlayingDescription>
       <MysteryCard lobbyId={lobby.id} />
     </PlayingWrapper>

@@ -88,7 +88,6 @@ class LobbyContainer extends React.Component {
     this.getLobby = this.getLobby.bind(this);
     this.getNonCreator = this.getNonCreator.bind(this);
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
-    this.startCountdown = this.startCountdown.bind(this);
     this.startGame = this.startGame.bind(this);
     this.leaveLobby = this.leaveLobby.bind(this);
     this.previewPlaying = this.previewPlaying.bind(this);
@@ -112,10 +111,9 @@ class LobbyContainer extends React.Component {
       this.setState({
         lobby: l,
         nonCreators: this.getNonCreator(l),
-        lobbyReady: l.lobbyStatus == "FULL",
+        lobbyReady: true, // fixme: remove after it works l.lobbyStatus == "FULL"
         error: null
       });
-      if (this.state.lobbyReady) this.startCountdown();
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -125,15 +123,23 @@ class LobbyContainer extends React.Component {
     }
   }
 
-  startCountdown() {
-    return this.state.lobbyReady ? (
-      <Countdown time={6} activeText={"Game starts in "} timeoutText={"Go!"} />
-    ) : null;
-    // TODO: actually call startGame at timeout
-  }
-
   async startGame() {
     // TODO triggered by countdown timeout or button
+    console.log("Start Game");
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+        "/lobbies/" + this.state.lobby.id + "/start"
+      ); // fixme: not sure if this needs language as body, if server already has lobby entity
+      console.log(response);
+    } catch (error) {
+      this.setState({
+        error: error ? error.message : "Unknown error"
+      });
+      console.log(
+        `Something went wrong while starting the game: \n${handleError(error)}`
+      );
+    }
   }
 
   async leaveLobby() {
@@ -255,7 +261,13 @@ class LobbyContainer extends React.Component {
                 Preview the game
               </Button>
             </ButtonGroup>
-            {this.startCountdown()}
+            {this.state.lobbyReady ? (
+              <Countdown
+                time={6}
+                activeText={"Game starts in "}
+                timeoutText={"Go!"}
+              />
+            ) : null}
           </div>
         )}
       </Box>
