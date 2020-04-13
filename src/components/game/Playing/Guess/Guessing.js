@@ -38,7 +38,7 @@ const Guessing = ({ l, nextState }) => {
     alert("You would've skipped this guess!");
   };
   return (
-    <PlayingWrapper headerText={submitted && "Tralala for other players"}>
+    <PlayingWrapper>
       <PlayingTitle>Guess the Mystery Word</PlayingTitle>
       <PlayingDescription>
         {submitted
@@ -46,7 +46,7 @@ const Guessing = ({ l, nextState }) => {
           : "Try to guess the mystery word!"}
       </PlayingDescription>
       <Container>
-        <p>Here come the Clues</p>
+        <p>This is where the clues would be displayed.</p>
         <Form>
           <TextInput
             disabled={submitted}
@@ -65,6 +65,7 @@ const Guessing = ({ l, nextState }) => {
             Guess
           </Button>
           <Button
+            disabled={submitted}
             onClick={() => {
               skipGuess();
             }}
