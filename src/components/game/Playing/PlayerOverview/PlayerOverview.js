@@ -8,7 +8,7 @@ const PlayerOverview = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   // todo: implement PlayerOverview.
   return (
-    <Box maxWidth="350px" title="PlayerOverview">
+    <Box maxWidth="350px" title={lobby.lobbyName}>
       {JSON.stringify(lobby, null, 2)}
     </Box>
   );

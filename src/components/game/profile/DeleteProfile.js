@@ -107,11 +107,11 @@ class DeleteProfile extends React.Component {
               <OuterContainer>
                 <Box title={this.state.user.username}>
                   <Container>
-                    {this.state.error ? (
-                        <ErrorMessage>{this.state.error}</ErrorMessage>
-                    ) : (
-                        ""
-                    )}
+                      {this.state.error ? (
+                          <ErrorMessage>{this.state.error.message}</ErrorMessage>
+                      ) : (
+                          ""
+                      )}
 
                     <Avatar user={this.state.user}/>
 

@@ -131,15 +131,24 @@ class Profile extends React.Component {
         {this.state.delete ? (
             <DeleteProfile
               user={this.state.user}
-              handleDelete={this.handleDelete}/>
+              handleDelete={this.handleDelete}
+            />
           ) : (
+          <div>
+            {this.state.edit ? (
+              <EditProfile
+                user={this.state.user}
+                handleEdit={this.handleEdit}
+                profileUpdated={this.profileUpdated}
+              />
+            ) : (
         <ShowProfile
           user={this.state.user}
           handleEdit={this.handleEdit}
           goBack={this.goBack}
           handleDelete={this.handleDelete}
         />
-        )} </div>)}
+            )} </div>)} </div> )}
       </React.Fragment>
     );
   }
