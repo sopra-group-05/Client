@@ -17,5 +17,5 @@ export const Button = styled.button`
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   background: ${props => props => props.colorDef || "rgba(125, 66, 139, 1)"};
   transition: all 0.3s ease;
-  margin-bottom:${props => props.marginbottom || null};
+  margin-bottom: ${props => props.marginbottom || null};
 `;

@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 import Lobby from "../../../shared/models/Lobby";
 import Box from "../../../../views/Box";
 import PlayerInOverview from "../../../../views/PlayerInOverview";
-import {BaseContainer} from "../../../../helpers/layout";
-import {Button} from "../../../../views/design/Button";
+import { BaseContainer } from "../../../../helpers/layout";
+import { Button } from "../../../../views/design/Button";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const ButtonContainer = styled.div`
   margin-top: 1em;
 `;
 const ButtonSpacer = styled.div`
-  width: 14em
+  width: 10em;
 `;
 
 const PlayerOverview = ({ l }) => {
@@ -21,31 +21,20 @@ const PlayerOverview = ({ l }) => {
   // todo: implement PlayerOverview.
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
-
-        <React.Fragment>
-            {l.players.map(player => {
-                return (
-                        <PlayerInOverview player={player} lobby={lobby} />
-                );
-            })}
-            <ButtonContainer>
-                <Button
-                    colorDef={"red"}
-                    onClick={() => {;
-                    }}
-                >
-                    Leave
-                </Button>
-                <ButtonSpacer/>
-                <Button
-                    colorDef={"#3b85ff"}
-                    onClick={() => {;
-                    }}
-                >
-                    Rules
-                </Button>
-            </ButtonContainer>
-        </React.Fragment>
+      <React.Fragment>
+        {l.players.map(player => {
+          return <PlayerInOverview player={player} lobby={lobby} />;
+        })}
+        <ButtonContainer>
+          <Button colorDef={"red"} width={"10em"} onClick={() => {}}>
+            Leave
+          </Button>
+          <ButtonSpacer />
+          <Button colorDef={"#3b85ff"} width={"12em"} onClick={() => {}}>
+            Show Rules
+          </Button>
+        </ButtonContainer>
+      </React.Fragment>
     </Box>
   );
 };

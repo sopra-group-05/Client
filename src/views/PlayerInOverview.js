@@ -28,20 +28,6 @@ const PlayerName = styled.p`
   min-width: 50px;
 `;
 
-const Icon = styled.img`
-  width: 25px;
-  height: 25px;
-  margin-top: 1rem;
-  align-self: flex-end;
-`;
-
-const IconPlaceholder = styled.div`
-  width: 25px;
-  height: 25px;
-  margin-top: 1rem;
-  align-self: flex-end;
-`;
-
 const PlayerInfo = styled.p`
   font-weight: lighter;
   font-size: 0.8rem;
@@ -68,7 +54,6 @@ class PlayerInOverview extends React.Component {
       error: null
     };
   }
-
 
   render() {
     return (
