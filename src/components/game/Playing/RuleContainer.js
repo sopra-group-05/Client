@@ -5,8 +5,8 @@ import Box from "../../../views/Box";
 import { withRouter } from "react-router-dom";
 
 const RuleList = styled.ol`
-  list-style: none;
-  padding: 0;
+  list-style: decimal;
+  padding-left: 2em;
 `;
 
 const RuleContainer = ({ l, isShown }) => {
@@ -22,7 +22,7 @@ const RuleContainer = ({ l, isShown }) => {
     <Box maxWidth="350px" title={"Rules"}>
       <RuleList>
         {rules.map(rule => {
-          return <p>{rule}</p>;
+          return <li>{rule}</li>;
         })}
       </RuleList>
     </Box>
