@@ -22,6 +22,15 @@ const Container = styled(BaseContainer)`
   width: 100%;
 `;
 
+const MetaInfo = styled.div`
+  //padding-left: 3rem;
+  color: black;
+  text-align: center;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+`;
+
 class PlayingContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -99,14 +108,16 @@ class PlayingContainer extends React.Component {
                 lobby={this.state.lobby}
                 isGuesser={this.isGuesser(this.state.lobby.players)}
               />
-              <PlayerOverview
-                l={this.state.lobby}
-                toggleShowRules={this.toggleShowRules}
-              />
-              <RuleContainer
-                l={this.state.lobby}
-                isShown={this.state.rulesShown}
-              />
+              <MetaInfo>
+                <PlayerOverview
+                  l={this.state.lobby}
+                  toggleShowRules={this.toggleShowRules}
+                />
+                <RuleContainer
+                  l={this.state.lobby}
+                  isShown={this.state.rulesShown}
+                />
+              </MetaInfo>
             </React.Fragment>
           ) : (
             <Spinner />
