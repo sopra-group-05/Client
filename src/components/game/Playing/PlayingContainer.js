@@ -11,6 +11,7 @@ import WritingClues from "./WritingClues/WritingClues";
 import { Button } from "./PlayingStyle";
 import Guess from "./Guess/Guess";
 import PlayingLogic from "./PlayingLogic";
+import RuleContainer from "./RuleContainer";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -27,10 +28,12 @@ class PlayingContainer extends React.Component {
     this.state = {
       lobby: null,
       error: null,
-      dummyState: 0
+      dummyState: 0,
+      rulesShown: false
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
     this.nextState = this.nextState.bind(this);
+    this.toggleShowRules = this.toggleShowRules.bind(this);
   }
 
   async getLobbyStatus() {
@@ -79,6 +82,10 @@ class PlayingContainer extends React.Component {
     return player.role === "GUESSER";
   }
 
+  toggleShowRules = () => {
+    this.setState({ rulesShown: !this.state.rulesShown });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -92,7 +99,14 @@ class PlayingContainer extends React.Component {
                 lobby={this.state.lobby}
                 isGuesser={this.isGuesser(this.state.lobby.players)}
               />
-              <PlayerOverview l={this.state.lobby} />
+              <PlayerOverview
+                l={this.state.lobby}
+                toggleShowRules={this.toggleShowRules}
+              />
+              <RuleContainer
+                l={this.state.lobby}
+                isShown={this.state.rulesShown}
+              />
             </React.Fragment>
           ) : (
             <Spinner />

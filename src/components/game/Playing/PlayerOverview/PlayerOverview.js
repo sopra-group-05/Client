@@ -16,13 +16,14 @@ const ButtonSpacer = styled.div`
   width: 10em;
 `;
 
-const PlayerOverview = ({ l }) => {
-  const lobby = new Lobby(l); //transform input into Lobby Model
+const PlayerOverview = props => {
+  const lobby = new Lobby(props.l); //transform input into Lobby Model
+  const toggleShowRules = props.toggleShowRules;
   // todo: implement PlayerOverview.
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
-        {l.players.map(player => {
+        {lobby.players.map(player => {
           return <PlayerInOverview player={player} lobby={lobby} />;
         })}
         <ButtonContainer>
@@ -30,7 +31,13 @@ const PlayerOverview = ({ l }) => {
             Leave
           </Button>
           <ButtonSpacer />
-          <Button colorDef={"#3b85ff"} width={"12em"} onClick={() => {}}>
+          <Button
+            colorDef={"#3b85ff"}
+            width={"12em"}
+            onClick={() => {
+              toggleShowRules();
+            }}
+          >
             Show Rules
           </Button>
         </ButtonContainer>
