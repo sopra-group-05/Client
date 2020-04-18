@@ -111,7 +111,7 @@ class LobbyContainer extends React.Component {
       this.setState({
         lobby: l,
         nonCreators: this.getNonCreator(l),
-        lobbyReady: true, // fixme: remove after it works l.lobbyStatus == "FULL"
+        lobbyReady: l.lobbyStatus === "FULL",
         error: null
       });
     } catch (error) {
@@ -124,13 +124,12 @@ class LobbyContainer extends React.Component {
   }
 
   async startGame() {
-    // TODO triggered by countdown timeout or button
     console.log("Start Game");
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
         "/lobbies/" + this.state.lobby.id + "/start"
-      ); // fixme: not sure if this needs language as body, if server already has lobby entity
+      );
       console.log(response);
     } catch (error) {
       this.setState({
@@ -169,7 +168,7 @@ class LobbyContainer extends React.Component {
   getNonCreator(l) {
     let nonCreators = Array.from(l.players);
     const creator = l.creator;
-    const index = nonCreators.findIndex(player => player.id == creator.id);
+    const index = nonCreators.findIndex(player => player.id === creator.id);
     nonCreators.splice(index, 1);
     return nonCreators;
   }
@@ -266,6 +265,7 @@ class LobbyContainer extends React.Component {
                 time={6}
                 activeText={"Game starts in "}
                 timeoutText={"Go!"}
+                functionWhenDone={this.startGame}
               />
             ) : null}
           </div>
