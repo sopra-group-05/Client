@@ -14,7 +14,7 @@ const WritingAClue = ({ nextState }) => {
     <PlayingWrapper headerText="Waiting for Clues!">
       <PlayingTitle>Guesser</PlayingTitle>
       <PlayingDescription>
-        Other Players are writing down clues and disabling invalid ones...
+        Other Players are writing down clues ..
       </PlayingDescription>
       <Countdown functionWhenDone={nextState} time={30} />
     </PlayingWrapper>

@@ -24,7 +24,9 @@ const PlayerOverview = props => {
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
         {lobby.players.map(player => {
-          return <PlayerInOverview player={player} lobby={lobby} />;
+          return (
+            <PlayerInOverview player={player} lobby={lobby} key={player.id} />
+          );
         })}
         <ButtonContainer>
           <Button colorDef={"red"} width={"10em"} onClick={() => {}}>

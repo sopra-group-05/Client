@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
+import { withRouter } from "react-router-dom";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -70,4 +71,4 @@ class PlayerInOverview extends React.Component {
   }
 }
 
-export default PlayerInOverview;
+export default withRouter(PlayerInOverview);
