@@ -39,7 +39,9 @@ class PlayingContainer extends React.Component {
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
     this.nextState = this.nextState.bind(this);
+    this.leaveGame = this.leaveGame.bind(this);
     this.toggleShowRules = this.toggleShowRules.bind(this);
+
   }
 
   async getLobbyStatus() {
@@ -67,6 +69,32 @@ class PlayingContainer extends React.Component {
       clearInterval(this.interval);
     }
   }
+
+  leaveGame()
+  {
+    this.leaveGame2();
+  }
+
+  async leaveGame2() {
+    try {
+      // lets player leave via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+          "/lobbies/" + this.state.lobby.id + "/leave"
+      );
+      console.log(response);
+      this.props.history.push("/game");
+    } catch (error) {
+      this.setState({
+        error: error ? error.message : "Unknown error"
+      });
+      console.log(
+          `Something went wrong while leaving: \n${handleError(error)}`
+      );
+    }
+  }
+
+
 
   componentDidMount() {
     this.getLobbyStatus();
@@ -110,6 +138,7 @@ class PlayingContainer extends React.Component {
               <MetaInfo>
                 <PlayerOverview
                   l={this.state.lobby}
+                  leaveGame={this.leaveGame}
                   toggleShowRules={this.toggleShowRules}
                 />
                 <RuleContainer

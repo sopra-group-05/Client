@@ -34,6 +34,9 @@ const PlayerInfo = styled.p`
   font-size: 0.8rem;
   margin: 0 10px;
   color: #8f8f8f;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const PlayerMeta = styled.div`
@@ -44,6 +47,36 @@ const PlayerMeta = styled.div`
   margin-left: 1rem;
   margin-right: 0.5rem;
 `;
+
+const StatusCycle = styled.div`
+  display: flex;
+  margin: 0 5px 0 0;
+  background-color: green;
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+`;
+
+const PlayerStatus = ({
+               status,
+               role
+             }) => {
+  const color = ( status == "JOINED" ? "yellow" :
+                    status == "READY" ? "green" :
+                      status == "PLAYING" ? "blue" :
+                          status == "FINISHED" ? "orange" :
+                              status == "LEFT" ? "red" : "pink"
+  );
+  return (
+      <PlayerInfo>
+        <StatusCycle
+            style={{
+              backgroundColor: color
+            }}/> {role} | {status}
+      </PlayerInfo>
+  );
+};
+
 
 class PlayerInOverview extends React.Component {
   constructor(props) {
@@ -62,9 +95,7 @@ class PlayerInOverview extends React.Component {
         <Avatar size={40} user={this.state.player} />
         <PlayerMeta>
           <PlayerName>{this.state.player.username}</PlayerName>
-          <PlayerInfo>
-            {this.state.player.role} | {this.state.player.status}
-          </PlayerInfo>
+          <PlayerStatus role={this.state.player.role} status={this.state.player.status}/>
         </PlayerMeta>
       </Container>
     );

@@ -19,6 +19,7 @@ const ButtonSpacer = styled.div`
 const PlayerOverview = props => {
   const lobby = new Lobby(props.l); //transform input into Lobby Model
   const toggleShowRules = props.toggleShowRules;
+  const leaveGame = props.leaveGame;
   // todo: implement PlayerOverview.
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
@@ -29,7 +30,7 @@ const PlayerOverview = props => {
           );
         })}
         <ButtonContainer>
-          <Button colorDef={"red"} width={"10em"} onClick={() => {}}>
+          <Button colorDef={"red"} width={"10em"} onClick={() => {leaveGame();}}>
             Leave
           </Button>
           <ButtonSpacer />
