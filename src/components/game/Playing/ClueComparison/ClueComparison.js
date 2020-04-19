@@ -1,29 +1,13 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import Countdown from "../../../../views/Countdown";
-import { PlayingWrapper } from "../PlayingStyle";
+import WaitForClues from "./WaitForClues";
+import CompareClues from "./CompareClues";
 
 const ClueComparison = ({ lobby, isGuesser, nextState }) => {
   if (isGuesser) {
-    return (
-      <PlayingWrapper>
-        Component for the guesser waiting for the Clue Comparison
-        <Countdown functionWhenDone={nextState} />
-        {
-          // todo move countdown etc. to specific component
-        }
-      </PlayingWrapper>
-    );
+    return <WaitForClues l={lobby} nextState={nextState} />;
   } else {
-    return (
-      <PlayingWrapper>
-        Component for the players to compare the clues
-        <Countdown functionWhenDone={nextState} />
-        {
-          // todo move countdown etc. to specific component
-        }
-      </PlayingWrapper>
-    );
+    return <CompareClues l={lobby} nextState={nextState} />;
   }
 };
 
