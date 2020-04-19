@@ -12,10 +12,62 @@ import { api, handleError } from "../../../../helpers/api";
 import ClueView from "../ClueView";
 import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 
+const CheckBox = styled.div`
+  height: 25px;
+  width: 25px;
+  background: #353a49;
+  border-radius: 25%;
+  display: block;
+  margin-right: 0.75rem;
+`;
+
+const CheckboxTick = styled.div`
+  visibility: ${props => (props.checked ? "visible" : "hidden")};
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 25%;
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+  :before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 12px;
+    background-color: #3bff65;
+    left: 12px;
+    top: 6px;
+  }
+  :after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #3bff65;
+    left: 8px;
+    top: 13px;
+  }
+`;
+
+const ClueStatus = styled.div`
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  display: inline-flex;
+  margin-bottom: 1rem;
+  cursor: pointer;
+`;
+
 const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+`;
+
+const Clues = styled.ul`
+  list-style: none;
+  padding-left: 0;
 `;
 
 const ClueContainer = styled.li`
@@ -25,16 +77,22 @@ const ClueContainer = styled.li`
   justify-content: center;
 `;
 
+let exampleClues = [
+  { id: 1, status: 0, word: "test1" },
+  { id: 2, status: 1, word: "test2" }
+];
+
 class CompareClues extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       l: this.props.l,
       nextState: this.props.nextState,
-      clues: ["Clue1", "Clue2"], //TODO: empty when rest works
+      clues: exampleClues, //TODO: empty when rest works
       error: null
     };
     this.getClues = this.getClues.bind(this);
+    this.toggleCheckbox = this.toggleCheckbox.bind(this);
   }
 
   async getClues() {
@@ -72,6 +130,29 @@ class CompareClues extends React.Component {
     clearInterval(this.interval);
   }
 
+  async toggleCheckbox(clue) {
+    const previousStatus = clue.status; // TODO: cf data structure
+    try {
+      // set clue status via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+        "/lobbies/" + this.state.l.id + "/clues/" + clue.id
+      );
+      console.log(response);
+      clue.status = previousStatus === 0 ? 1 : 0;
+    } catch (error) {
+      this.setState({
+        error: error ? error.message : "Unknown error",
+        playerStatus: previousStatus
+      });
+      console.log(
+        `Something went wrong while setting clue status: \n${handleError(
+          error
+        )}`
+      );
+    }
+  }
+
   render() {
     const lobby = new Lobby(this.state.l); //transform input into Lobby Model
     const clues = this.state.clues;
@@ -85,11 +166,23 @@ class CompareClues extends React.Component {
           <React.Fragment>
             <MysteryCard />
           </React.Fragment>
-          <ClueContainer>
+          <Clues>
+            {
+              // TODO: clue data structure how cf key=clue.id
+            }
             {clues.map(clue => {
-              return <ClueView lobby={lobby} clue={clue} />;
+              return (
+                <ClueContainer clue={clue}>
+                  <ClueStatus onClick={() => this.toggleCheckbox(clue)}>
+                    <CheckBox>
+                      <CheckboxTick checked={clue.status === 1} />
+                    </CheckBox>
+                    {clue.word}
+                  </ClueStatus>
+                </ClueContainer>
+              );
             })}
-          </ClueContainer>
+          </Clues>
         </Container>
         <Countdown time={30} functionWhenDone={this.state.nextState} />
       </PlayingWrapper>

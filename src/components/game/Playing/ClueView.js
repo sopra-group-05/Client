@@ -21,29 +21,6 @@ const Container = styled.div`
   }
 `;
 
-const PlayerName = styled.p`
-  font-weight: bold;
-  margin: 0 10px;
-  color: #fff;
-  min-width: 50px;
-`;
-
-const PlayerInfo = styled.p`
-  font-weight: lighter;
-  font-size: 0.8rem;
-  margin: 0 10px;
-  color: #8f8f8f;
-`;
-
-const PlayerMeta = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: column;
-  text-align: left;
-  margin-left: 1rem;
-  margin-right: 0.5rem;
-`;
-
 class ClueView extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +32,7 @@ class ClueView extends React.Component {
   }
 
   render() {
-    return <Container>{this.state.clue}</Container>;
+    return <Container>{this.state.clue.word}</Container>;
   }
 }
 
