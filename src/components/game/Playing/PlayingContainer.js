@@ -6,10 +6,7 @@ import { withRouter } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import PlayerOverview from "./PlayerOverview/PlayerOverview";
 import { Spinner } from "../../../views/design/Spinner";
-import ChoosingMysteryWord from "./ChoosingMysteryWord/ChoosingMysteryWord";
-import WritingClues from "./WritingClues/WritingClues";
 import { Button } from "./PlayingStyle";
-import Guess from "./Guess/Guess";
 import PlayingLogic from "./PlayingLogic";
 import RuleContainer from "./RuleContainer";
 
