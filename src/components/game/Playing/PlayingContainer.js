@@ -92,6 +92,8 @@ class PlayingContainer extends React.Component {
     this.setState({ rulesShown: !this.state.rulesShown });
   };
 
+  // TODO: potential redirect to /gameover or other solution
+
   render() {
     return (
       <React.Fragment>

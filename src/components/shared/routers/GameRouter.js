@@ -5,6 +5,7 @@ import Dashboard from "../../game/Dashboard";
 import Profile from "../../game/profile/Profile";
 import LobbyPage from "../../game/Lobby/LobbyPage";
 import PlayingContainer from "../../game/Playing/PlayingContainer";
+import EndOfGameContainer from "../../game/EndOfGame/EndOfGameContainer";
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +48,11 @@ class GameRouter extends React.Component {
             exact
             path={`${this.props.base}/lobby/:id/game`}
             component={PlayingContainer}
+          />
+          <Route
+            exact
+            path={`${this.props.base}/lobby/:id/gameover`}
+            component={EndOfGameContainer}
           />
         </Switch>
       </Container>
