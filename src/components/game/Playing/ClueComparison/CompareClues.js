@@ -9,6 +9,21 @@ import {
 import styled from "styled-components";
 import Countdown from "../../../../views/Countdown";
 import { api, handleError } from "../../../../helpers/api";
+import ClueView from "../ClueView";
+import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
+
+const ClueContainer = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 class CompareClues extends React.Component {
   constructor(props) {
@@ -16,7 +31,7 @@ class CompareClues extends React.Component {
     this.state = {
       l: this.props.l,
       nextState: this.props.nextState,
-      clues: null,
+      clues: ["Clue1", "Clue2"], //TODO: empty when rest works
       error: null
     };
     this.getClues = this.getClues.bind(this);
@@ -59,15 +74,23 @@ class CompareClues extends React.Component {
 
   render() {
     const lobby = new Lobby(this.state.l); //transform input into Lobby Model
+    const clues = this.state.clues;
     return (
       <PlayingWrapper headerText="Choose clues to remove! ">
         <PlayingTitle>Teammate</PlayingTitle>
         <PlayingDescription>
-          You are not the active player.
-          <PlayingDescription>
-            You will choose which clues to remove from the following list!
-          </PlayingDescription>
+          You will choose which clues to remove from the following list!
         </PlayingDescription>
+        <Container>
+          <React.Fragment>
+            <MysteryCard />
+          </React.Fragment>
+          <ClueContainer>
+            {clues.map(clue => {
+              return <ClueView lobby={lobby} clue={clue} />;
+            })}
+          </ClueContainer>
+        </Container>
         <Countdown time={30} functionWhenDone={this.state.nextState} />
       </PlayingWrapper>
     );

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Avatar from "./Avatar";
 import { withRouter } from "react-router-dom";
 
 const Container = styled.div`
@@ -45,30 +44,19 @@ const PlayerMeta = styled.div`
   margin-right: 0.5rem;
 `;
 
-class PlayerInOverview extends React.Component {
+class ClueView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      player: this.props.player,
       lobby: this.props.lobby,
-      creator: this.props.lobby.creator,
+      clue: this.props.clue,
       error: null
     };
   }
 
   render() {
-    return (
-      <Container>
-        <Avatar size={40} user={this.state.player} />
-        <PlayerMeta>
-          <PlayerName>{this.state.player.username}</PlayerName>
-          <PlayerInfo>
-            {this.state.player.role} | {this.state.player.status}
-          </PlayerInfo>
-        </PlayerMeta>
-      </Container>
-    );
+    return <Container>{this.state.clue}</Container>;
   }
 }
 
-export default withRouter(PlayerInOverview);
+export default withRouter(ClueView);
