@@ -70,12 +70,7 @@ class PlayingContainer extends React.Component {
     }
   }
 
-  leaveGame()
-  {
-    this.leaveGame2();
-  }
-
-  async leaveGame2() {
+  async leaveGame() {
     try {
       // lets player leave via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
