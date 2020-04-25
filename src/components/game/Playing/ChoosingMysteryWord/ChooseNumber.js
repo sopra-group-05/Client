@@ -9,6 +9,7 @@ import {
   PlayingWrapper
 } from "../PlayingStyle";
 import Countdown from "../../../../views/Countdown";
+import { api } from "../../../../helpers/api";
 
 const Numbers = styled.div`
   display: flex;
@@ -16,8 +17,22 @@ const Numbers = styled.div`
   margin-top: 2rem;
 `;
 
-const ChooseNumber = ({ l, nextState }) => {
-  const numberAlert = num => alert("You would've chosen number " + num);
+const ChooseNumber = ({ l, nextState, match }) => {
+  const numberAlert = async num => {
+    try {
+      // make POST request to Server to choose Number
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      await api.post("/lobbies/" + match.params.id + "/number", num);
+    } catch (error) {
+      console.log(error);
+      // todo remove once API Endpoint works
+      alert(
+        "You woul've chosen number " +
+          num +
+          ", but there was an error trying to POST the Number to the server. See Console Logs for now.."
+      );
+    }
+  };
   const lobby = new Lobby(l); //transform input into Lobby Model
   return (
     <PlayingWrapper>
