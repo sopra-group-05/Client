@@ -31,7 +31,8 @@ export const handleError = error => {
     return info;
   } else {
     if (error.message.match(/Network Error/)) {
-      alert("The server cannot be reached. \nDid you start it?");
+      //alert("The server cannot be reached. \nDid you start it?");
+      // removed since there is an error page when the server is down.
     }
 
     console.log("Something else happened.", error);
