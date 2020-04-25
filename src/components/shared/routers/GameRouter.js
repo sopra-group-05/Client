@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../../game/Dashboard";
-import Profile from "../../game/profile/Profile";
+import Profile from "../../game/Profile/Profile";
 import LobbyPage from "../../game/Lobby/LobbyPage";
 import PlayingContainer from "../../game/Playing/PlayingContainer";
 import EndOfGameContainer from "../../game/EndOfGame/EndOfGameContainer";
