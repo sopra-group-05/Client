@@ -13,11 +13,8 @@ const WaitForClues = ({ l, nextState }) => {
   const numberAlert = num => alert("You would've chosen number " + num);
   const lobby = new Lobby(l); //transform input into Lobby Model
   return (
-    <PlayingWrapper>
-      <PlayingTitle>You're the active Player!</PlayingTitle>
-      <PlayingDescription>
-        You'll try to guess the mystery word. You have one guess.
-      </PlayingDescription>
+    <PlayingWrapper headerText={"Waiting for Clues!"}>
+      <PlayingTitle>Guesser</PlayingTitle>
       <PlayingDescription>
         Wait for your teammates to eliminate invalid clues!
       </PlayingDescription>
