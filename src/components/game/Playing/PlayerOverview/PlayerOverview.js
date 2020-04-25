@@ -30,7 +30,13 @@ const PlayerOverview = props => {
           );
         })}
         <ButtonContainer>
-          <Button colorDef={"red"} width={"10em"} onClick={() => {leaveGame();}}>
+          <Button
+            colorDef={"red"}
+            width={"10em"}
+            onClick={() => {
+              leaveGame();
+            }}
+          >
             Leave
           </Button>
           <ButtonSpacer />

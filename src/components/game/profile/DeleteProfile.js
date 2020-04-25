@@ -63,16 +63,17 @@ class DeleteProfile extends React.Component {
       const requestBody = JSON.stringify({
         password: this.state.password
       });
-
-      const response = await api.delete("/users/" + this.props.user.id);
+      const response = await api.delete("/users/" + this.props.user.id, {
+        data: requestBody
+      });
 
       // Delete successfully worked --> navigate to the login page
-      this.logout();
+      this.props.handleLogout();
     } catch (error) {
       this.setState({
         error: error.response ? error.response.data : "Error"
       });
-      //      setTimeout(() => {
+      //      setTimeout(() => {`
       //        this.setState({ error: null });
       //      }, 3500);
       console.log(
@@ -89,9 +90,9 @@ class DeleteProfile extends React.Component {
         token: localStorage.getItem("token")
       });
       await api.put("/logout", requestBody);
-      this.removeLocalStorage();
+      this.props.handleLogout();
     } catch (error) {
-      this.removeLocalStorage();
+      this.props.handleLogout();
       console.log(
         `Something went wrong while trying to log out: \n${handleError(error)}`
       );

@@ -58,6 +58,7 @@ class Profile extends React.Component {
     // bind methods so they can be used in children components when passed down as props
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.getProfile = this.getProfile.bind(this);
     this.profileUpdated = this.profileUpdated.bind(this);
     this.goBack = this.goBack.bind(this);
@@ -77,6 +78,13 @@ class Profile extends React.Component {
       edit: false,
       delete: !state.delete
     }));
+  }
+
+  handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    this.props.history.push("/login");
   }
 
   goBack() {
@@ -131,6 +139,7 @@ class Profile extends React.Component {
               <DeleteProfile
                 user={this.state.user}
                 handleDelete={this.handleDelete}
+                handleLogout={this.handleLogout}
               />
             ) : (
               <div>

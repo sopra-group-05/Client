@@ -41,7 +41,6 @@ class PlayingContainer extends React.Component {
     this.nextState = this.nextState.bind(this);
     this.leaveGame = this.leaveGame.bind(this);
     this.toggleShowRules = this.toggleShowRules.bind(this);
-
   }
 
   async getLobbyStatus() {
@@ -75,7 +74,7 @@ class PlayingContainer extends React.Component {
       // lets player leave via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
-          "/lobbies/" + this.state.lobby.id + "/leave"
+        "/lobbies/" + this.state.lobby.id + "/leave"
       );
       console.log(response);
       this.props.history.push("/game");
@@ -84,12 +83,10 @@ class PlayingContainer extends React.Component {
         error: error ? error.message : "Unknown error"
       });
       console.log(
-          `Something went wrong while leaving: \n${handleError(error)}`
+        `Something went wrong while leaving: \n${handleError(error)}`
       );
     }
   }
-
-
 
   componentDidMount() {
     this.getLobbyStatus();

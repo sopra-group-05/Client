@@ -8,7 +8,13 @@ import EndRound from "./EndRound/EndRound";
 
 const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
   // this component renders the correct state of the game
-  const states = [ChoosingMysteryWord, WritingClues, ClueComparison, Guess, EndRound]; // add your views at correct position
+  const states = [
+    ChoosingMysteryWord,
+    WritingClues,
+    ClueComparison,
+    Guess,
+    EndRound
+  ]; // add your views at correct position
   state = state % states.length;
   const Component = states[state];
   // todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!

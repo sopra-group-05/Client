@@ -3,12 +3,11 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import Lobby from "../../../shared/models/Lobby";
 import {
-    PlayingDescription,
-    PlayingTitle,
-    PlayingWrapper
+  PlayingDescription,
+  PlayingTitle,
+  PlayingWrapper
 } from "../PlayingStyle";
 import Countdown from "../../../../views/Countdown";
-
 
 const DeckOverview = styled.div`
   display: flex;
@@ -44,34 +43,33 @@ const DeckCount = styled.span`
 //TODO: Replace hard coded deck counts with real numbers
 //TODO: Add button to start with next round
 
-
 const EndRound = ({ lobby, isGuesser, nextState }) => {
-    const l = new Lobby(lobby); //transform input into Lobby Model
-    const player = l.players.find(x => x.role == "GUESSER");
-    return (
-        <PlayingWrapper>
-            <PlayingTitle> Round is over </PlayingTitle>
-            <PlayingDescription>
-                Player {player.username} did guess the correct Mysteryword!!
-            </PlayingDescription>
-            <DeckOverview>
-                <DeckContainer>
-                    <DeckTitle> Remaining Cards in Deck </DeckTitle>
-                    <DeckCount> {9} </DeckCount>
-                </DeckContainer>
-                <DeckContainer>
-                    <DeckTitle> Won Cards </DeckTitle>
-                    <DeckCount> {5} </DeckCount>
-                </DeckContainer>
-                <DeckContainer>
-                    <DeckTitle> Lost Cards </DeckTitle>
-                    <DeckCount> {6} </DeckCount>
-                </DeckContainer>
-            </DeckOverview>
+  const l = new Lobby(lobby); //transform input into Lobby Model
+  const player = l.players.find(x => x.role == "GUESSER");
+  return (
+    <PlayingWrapper>
+      <PlayingTitle> Round is over </PlayingTitle>
+      <PlayingDescription>
+        Player {player.username} did guess the correct Mysteryword!!
+      </PlayingDescription>
+      <DeckOverview>
+        <DeckContainer>
+          <DeckTitle> Remaining Cards in Deck </DeckTitle>
+          <DeckCount> {9} </DeckCount>
+        </DeckContainer>
+        <DeckContainer>
+          <DeckTitle> Won Cards </DeckTitle>
+          <DeckCount> {5} </DeckCount>
+        </DeckContainer>
+        <DeckContainer>
+          <DeckTitle> Lost Cards </DeckTitle>
+          <DeckCount> {6} </DeckCount>
+        </DeckContainer>
+      </DeckOverview>
 
-            <Countdown functionWhenDone={nextState} time={30} />
-        </PlayingWrapper>
-    );
+      <Countdown functionWhenDone={nextState} time={30} />
+    </PlayingWrapper>
+  );
 };
 
 export default withRouter(EndRound);
