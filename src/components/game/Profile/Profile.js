@@ -81,12 +81,11 @@ class Profile extends React.Component {
   }
 
   handleLogout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("username");
-      this.props.history.push("/login");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    this.props.history.push("/login");
   }
-
 
   goBack() {
     this.props.history.goBack();

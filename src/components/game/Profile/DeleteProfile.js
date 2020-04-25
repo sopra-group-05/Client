@@ -53,7 +53,6 @@ class DeleteProfile extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-
   /**
    * HTTP DELETE request is sent to the backend.
    * If the request is successful, the user will be deleted
@@ -64,7 +63,9 @@ class DeleteProfile extends React.Component {
       const requestBody = JSON.stringify({
         password: this.state.password
       });
-      const response = await api.delete("/users/" + this.props.user.id,{data : requestBody});
+      const response = await api.delete("/users/" + this.props.user.id, {
+        data: requestBody
+      });
 
       // Delete successfully worked --> navigate to the login page
       this.props.handleLogout();
