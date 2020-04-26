@@ -10,12 +10,13 @@ const Container = styled.div`
   padding: 1rem;
   border-radius: 15px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background-color: #454c62;
+  width: available;
   a {
     color: #ce552e;
     display: flex;
-    justify-content: left;
+    justify-content: stretch;
     align-items: center;
     min-width: 300px;
     text-decoration: none;
@@ -24,54 +25,160 @@ const Container = styled.div`
   }
 `;
 
+const FactorTitle = styled.h4`
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 0;
+  text-transform: uppercase;
+`;
+const RankingRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: available;
+  justify-self: stretch;
+  justify-content: space-between;
+`;
+
+const FactorLocalPlayer = styled.h4`
+  font-size: 1rem;
+  font-weight: bolder;
+  color: #fff;
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 0;
+  text-transform: uppercase;
+`;
+const FactorOtherPlayer = styled.h4`
+  font-size: 1rem;
+  font-weight: normal;
+  color: #fff;
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 0;
+  text-transform: uppercase;
+`;
+
+// TODO: remove/change data structure when BE is there
+const TestRankingData = [
+  {
+    playerId: "",
+    name: "Name",
+    score: "Score",
+    guesses: "Guesses",
+    correct: "Correct",
+    time_to_guess: "Time to guess",
+    clues: "Clues",
+    good: "Good",
+    time_to_write_clues: "Time to write clues"
+  },
+  {
+    playerId: 1,
+    name: "Florian",
+    score: 200,
+    guesses: 20,
+    correct: 8,
+    time_to_guess: 38,
+    clues: 50,
+    good: 36,
+    time_to_write_clues: 24
+  },
+  {
+    playerId: 2,
+    name: "Yanik",
+    score: 170,
+    guesses: 20,
+    correct: 8,
+    time_to_guess: 38,
+    clues: 50,
+    good: 36,
+    time_to_write_clues: 24
+  },
+  {
+    playerId: 3,
+    name: "Player XYZ",
+    score: 137,
+    guesses: 20,
+    correct: 8,
+    time_to_guess: 38,
+    clues: 50,
+    good: 36,
+    time_to_write_clues: 24
+  },
+  {
+    playerId: 4,
+    name: "Anja",
+    score: 87,
+    guesses: 20,
+    correct: 8,
+    time_to_guess: 38,
+    clues: 50,
+    good: 36,
+    time_to_write_clues: 24
+  },
+  {
+    playerId: 5,
+    name: "ABC",
+    score: 33,
+    guesses: 20,
+    correct: 8,
+    time_to_guess: 38,
+    clues: 50,
+    good: 36,
+    time_to_write_clues: 24
+  }
+];
+
 class RankingBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       lobby: this.props,
-      error: null
+      error: null,
+      rankingData: TestRankingData // TODO: null when BE ready
     };
-    //this.getLobby = this.getLobby.bind(this);
+    this.getRanking = this.getRanking.bind(this);
   }
 
-  /*  async getLobby() {
-    try {
-      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.get("/lobbies/" + this.props.match.params.id);
-
-      if (this.state.lobby === null && response.data) {
-        // make API call every 1s to get Updated lobbies List.
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobby, 1000);
-      }
-
-      // Get the returned lobby and update the state.
-      this.setState({ lobby: response.data, error: null });
-      console.log(response);
-    } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
-      console.log(
-        `Something went wrong while fetching the lobby: \n${handleError(error)}`
-      );
-      clearInterval(this.interval);
-    }
-  }*/
+  async getRanking() {
+    // TODO: fetch data from server? or in lobby data already?
+    console.log("Rankings will be fetched");
+  }
 
   componentDidMount() {
-    //this.getLobby();
-  }
-
-  componentWillUnmount() {
-    // stop Interval when Component gets hidden.
-    // If you don't do this, it will call the API every 1s even the component is not active anymore!
-    //clearInterval(this.interval);
+    this.getRanking();
   }
 
   render() {
-    return this.state.lobby ? (
+    const factors = this.state.rankingData[0];
+    const actualData = this.state.rankingData.slice(1);
+    return this.state.rankingData ? (
       <Box title={"Ranking"}>
-        <Container>blabla</Container>
+        <RankingRow>
+          {Object.keys(factors).map(key => {
+            return (
+              key !== "playerId" && <FactorTitle>{factors[key]}</FactorTitle>
+            );
+          })}
+        </RankingRow>
+        <Container>
+          {Object.keys(actualData).map(data => {
+            const ComponentClass =
+              data[0] == localStorage.getItem("userId")
+                ? FactorLocalPlayer
+                : FactorOtherPlayer;
+            return (
+              <RankingRow>
+                {Object.keys(actualData[data]).map(key => {
+                  return (
+                    key !== "playerId" && (
+                      <ComponentClass>{actualData[data][key]}</ComponentClass>
+                    )
+                  );
+                })}
+              </RankingRow>
+            );
+          })}
+        </Container>
       </Box>
     ) : (
       <Spinner />
