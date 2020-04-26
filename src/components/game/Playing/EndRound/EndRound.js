@@ -38,7 +38,7 @@ const DeckCount = styled.span`
   padding: 0rem 1.5rem;
   margin: 1rem;
   cursor: pointer;
-  color: blue;
+  color: ${props => (props.color ? props.color : "yellow")};
 `;
 //TODO: Replace hard coded deck counts with real numbers
 //TODO: Add button to start with next round
@@ -55,15 +55,15 @@ const EndRound = ({ lobby, isGuesser, nextState }) => {
       <DeckOverview>
         <DeckContainer>
           <DeckTitle> Remaining Cards in Deck </DeckTitle>
-          <DeckCount> {9} </DeckCount>
+          <DeckCount color={"lightgreen"}> {8} </DeckCount>
         </DeckContainer>
         <DeckContainer>
           <DeckTitle> Won Cards </DeckTitle>
-          <DeckCount> {5} </DeckCount>
+          <DeckCount color={"green"}> {3} </DeckCount>
         </DeckContainer>
         <DeckContainer>
           <DeckTitle> Lost Cards </DeckTitle>
-          <DeckCount> {6} </DeckCount>
+          <DeckCount color={"red"}> {2} </DeckCount>
         </DeckContainer>
       </DeckOverview>
 
