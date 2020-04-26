@@ -86,8 +86,7 @@ class EditProfile extends React.Component {
       try {
         this.state.user.username = this.state.username;
         const requestBody = JSON.stringify({
-          username: this.state.user.username,
-          birthday: this.state.user.birthday
+          user: this.state.user
         });
         api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
         await api.put("/users/" + this.props.user.id, requestBody);
@@ -97,7 +96,7 @@ class EditProfile extends React.Component {
       } catch (error) {
         this.state.user.username = this.state.userNameBackup;
         this.setState({
-          error: error.data ? error.data : "Error"
+          error: error.response.data ? error.response.data : "Error"
         });
         console.log(
           `Something went wrong during when trying to update the profile: \n${handleError(
