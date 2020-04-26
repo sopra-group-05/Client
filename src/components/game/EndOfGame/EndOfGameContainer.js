@@ -13,8 +13,19 @@ const Container = styled(BaseContainer)`
   color: black;
   text-align: center;
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
   width: 100%;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 1em;
+`;
+
+const ButtonSpacer = styled.div`
+  width: 10em;
 `;
 
 class EndOfGameContainer extends React.Component {
@@ -25,6 +36,7 @@ class EndOfGameContainer extends React.Component {
       error: null
     };
     this.getLobby = this.getLobby.bind(this);
+    this.restartGame = this.restartGame.bind(this);
   }
 
   async getLobby() {
@@ -61,28 +73,53 @@ class EndOfGameContainer extends React.Component {
     clearInterval(this.interval);
   }
 
-  async goToLobby() {
-    this.props.history.push();
+  async restartGame() {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+        "/lobbies/" + this.state.lobby.id + "/start"
+      );
+      // TODO: add redirect + clear interval??
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while restarting the game: \n${handleError(
+          error
+        )}`
+      );
+    }
   }
 
   render() {
     const lobby = new Lobby(this.state.lobby);
+    console.log(lobby);
     return (
-      <React.Fragment>
-        <Sidebar disabled={false} />
-        <Container>
-          <RankingBox lobby={lobby} />
-        </Container>
-        <Container>
-          <Button
-            onClick={() => {
-              this.props.history.push("/game/lobby/" + lobby.id);
-            }}
-          >
-            Back to Lobby
-          </Button>
-        </Container>
-      </React.Fragment>
+      this.state.lobby && (
+        <React.Fragment>
+          <Sidebar disabled={false} />
+          <Container>
+            <RankingBox lobby={lobby} />
+            <ButtonContainer>
+              <Button
+                onClick={() => {
+                  this.props.history.push("/game/lobby/" + lobby.id);
+                }}
+              >
+                Back to Lobby
+              </Button>
+              <ButtonSpacer />
+              {lobby.creator.id == localStorage.getItem("userId") && (
+                <Button
+                  onClick={() => this.restartGame()}
+                  background={"#44d63f"}
+                >
+                  Restart Game
+                </Button>
+              )}
+            </ButtonContainer>
+          </Container>
+        </React.Fragment>
+      )
     );
   }
 }
