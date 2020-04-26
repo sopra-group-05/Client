@@ -165,10 +165,9 @@ class LobbyContainer extends React.Component {
     }
   }
 
-  previewPlaying() {
-    // todo: delete when lobby view is able to start game on its own
+  /*  previewPlaying() {
     this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
-  }
+  }*/
 
   getNonCreator(l) {
     let nonCreators = Array.from(l.players);
