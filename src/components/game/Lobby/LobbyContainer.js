@@ -82,7 +82,7 @@ class LobbyContainer extends React.Component {
     this.state = {
       lobby: null,
       nonCreators: null,
-      playerStatus: null,
+      playerStatus: false,
       lobbyReady: false,
       error: null
     };
@@ -91,7 +91,7 @@ class LobbyContainer extends React.Component {
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.startGame = this.startGame.bind(this);
     this.leaveLobby = this.leaveLobby.bind(this);
-    this.previewPlaying = this.previewPlaying.bind(this);
+    //this.previewPlaying = this.previewPlaying.bind(this);
   }
 
   async getLobby() {
@@ -132,6 +132,8 @@ class LobbyContainer extends React.Component {
         "/lobbies/" + this.state.lobby.id + "/start"
       );
       console.log(response);
+      clearInterval(this.interval);
+      this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
     } catch (error) {
       this.setState({
         error: error ? error.message : "Unknown error"
@@ -164,10 +166,9 @@ class LobbyContainer extends React.Component {
     }
   }
 
-  previewPlaying() {
-    // todo: delete when lobby view is able to start game on its own
+  /*  previewPlaying() {
     this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
-  }
+  }*/
 
   getNonCreator(l) {
     let nonCreators = Array.from(l.players);
@@ -180,14 +181,14 @@ class LobbyContainer extends React.Component {
   async toggleCheckbox() {
     const previousStatus = this.state.playerStatus;
     try {
-      // this.setState({ lobbyReady: true }); // for testing purposes
       // set player status via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
         "/lobbies/" + this.state.lobby.id + "/ready"
       );
       console.log(response);
-      this.setState({ playerStatus: previousStatus === 0 ? 1 : 0 });
+      this.setState({ playerStatus: true });
+      this.forceUpdate();
     } catch (error) {
       this.setState({
         error: error ? error.message : "Unknown error",
@@ -246,7 +247,7 @@ class LobbyContainer extends React.Component {
             </Players>
             <PlayerStatus onClick={() => this.toggleCheckbox()}>
               <CheckBox>
-                <CheckboxTick checked={this.state.playerStatus === 1} />
+                <CheckboxTick checked={this.state.playerStatus === true} />
               </CheckBox>
               Set ready
             </PlayerStatus>
@@ -258,15 +259,13 @@ class LobbyContainer extends React.Component {
               >
                 Leave Lobby
               </Button>
-              {
-                // todo: delete when lobby view is able to start game on its own
-              }
               <Button
                 onClick={() => {
-                  this.previewPlaying();
+                  this.startGame();
                 }}
+                background={"#44d63f"}
               >
-                Preview the game
+                Start game
               </Button>
             </ButtonGroup>
             {this.state.lobbyReady ? (

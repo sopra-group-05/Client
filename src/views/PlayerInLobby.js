@@ -109,7 +109,7 @@ class PlayerInLobby extends React.Component {
           <PlayerName>{this.state.player.username}</PlayerName>
           <PlayerInfo>
             {this.state.player.role} |
-            {this.state.player.status == "Ready" ? "is ready" : "not ready"}
+            {this.state.player.status === "READY" ? "is ready" : "not ready"}
           </PlayerInfo>
         </PlayerMeta>
         {kickPlayer}

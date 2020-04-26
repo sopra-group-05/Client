@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import Clue from "../../shared/models/Clue";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -26,13 +27,13 @@ class ClueView extends React.Component {
     super(props);
     this.state = {
       lobby: this.props.lobby,
-      clue: this.props.clue,
+      clue: new Clue(this.props.clue),
       error: null
     };
   }
 
   render() {
-    return <Container>{this.state.clue.word}</Container>;
+    return <Container>{this.state.clue.hint}</Container>;
   }
 }
 

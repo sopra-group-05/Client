@@ -9,8 +9,8 @@ import {
 import styled from "styled-components";
 import Countdown from "../../../../views/Countdown";
 import { api, handleError } from "../../../../helpers/api";
-import ClueView from "../ClueView";
 import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
+import Clue from "../../../shared/models/Clue";
 
 const CheckBox = styled.div`
   height: 25px;
@@ -78,8 +78,8 @@ const ClueContainer = styled.li`
 `;
 
 let exampleClues = [
-  { id: 1, status: 0, word: "test1" },
-  { id: 2, status: 1, word: "test2" }
+  { id: 1, clueStatus: 0, hint: "test1" },
+  { id: 2, clueStatus: 1, hint: "test2" }
 ];
 
 class CompareClues extends React.Component {
@@ -102,6 +102,10 @@ class CompareClues extends React.Component {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
       console.log(response);
+      const clues = response.data.map(data => {
+        return new Clue(data);
+      });
+      console.log(clues);
 
       if (this.state.lobby === null && response.data) {
         // make API call every 1s to get Updated lobbies List.
@@ -110,7 +114,7 @@ class CompareClues extends React.Component {
         this.interval = setInterval(this.getLobbyStatus, 1000);
       }
 
-      this.setState({ clues: response.data, error: null });
+      this.setState({ clues: clues, error: null });
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -131,7 +135,7 @@ class CompareClues extends React.Component {
   }
 
   async toggleCheckbox(clue) {
-    const previousStatus = clue.status; // TODO: cf data structure
+    const previousStatus = clue.clueStatus; // TODO: when game works check if this is okay
     try {
       // set clue status via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
@@ -139,7 +143,7 @@ class CompareClues extends React.Component {
         "/lobbies/" + this.state.l.id + "/clues/" + clue.id
       );
       console.log(response);
-      clue.status = previousStatus === 0 ? 1 : 0;
+      clue.clueStatus = previousStatus === 0 ? 1 : 0;
     } catch (error) {
       this.setState({
         error: error ? error.message : "Unknown error",
@@ -175,9 +179,9 @@ class CompareClues extends React.Component {
                 <ClueContainer clue={clue}>
                   <ClueStatus onClick={() => this.toggleCheckbox(clue)}>
                     <CheckBox>
-                      <CheckboxTick checked={clue.status === 1} />
+                      <CheckboxTick checked={clue.clueStatus === 1} />
                     </CheckBox>
-                    {clue.word}
+                    {clue.hint}
                   </ClueStatus>
                 </ClueContainer>
               );
