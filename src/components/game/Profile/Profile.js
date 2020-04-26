@@ -58,6 +58,7 @@ class Profile extends React.Component {
     // bind methods so they can be used in children components when passed down as props
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.getProfile = this.getProfile.bind(this);
     this.profileUpdated = this.profileUpdated.bind(this);
     this.goBack = this.goBack.bind(this);
@@ -78,6 +79,14 @@ class Profile extends React.Component {
       delete: !state.delete
     }));
   }
+
+  handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    this.props.history.push("/login");
+  }
+
 
   goBack() {
     this.props.history.goBack();
@@ -108,7 +117,7 @@ class Profile extends React.Component {
       console.log(response);
     } catch (error) {
       alert(
-        `Something went wrong while fetching the user: \n${handleError(error)}`
+          `Something went wrong while fetching the user: \n${handleError(error)}`
       );
     }
   }
@@ -119,40 +128,41 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Sidebar />
-        {!this.state.user ? (
-          <OuterContainer>
-            <Spinner />
-          </OuterContainer>
-        ) : (
-          <div>
-            {this.state.delete ? (
-              <DeleteProfile
-                user={this.state.user}
-                handleDelete={this.handleDelete}
-              />
-            ) : (
+        <React.Fragment>
+          <Sidebar />
+          {!this.state.user ? (
+              <OuterContainer>
+                <Spinner />
+              </OuterContainer>
+          ) : (
               <div>
-                {this.state.edit ? (
-                  <EditProfile
-                    user={this.state.user}
-                    handleEdit={this.handleEdit}
-                    profileUpdated={this.profileUpdated}
-                  />
+                {this.state.delete ? (
+                    <DeleteProfile
+                        user={this.state.user}
+                        handleDelete={this.handleDelete}
+                        handleLogout={this.handleLogout}
+                    />
                 ) : (
-                  <ShowProfile
-                    user={this.state.user}
-                    handleEdit={this.handleEdit}
-                    goBack={this.goBack}
-                    handleDelete={this.handleDelete}
-                  />
+                    <div>
+                      {this.state.edit ? (
+                          <EditProfile
+                              user={this.state.user}
+                              handleEdit={this.handleEdit}
+                              profileUpdated={this.profileUpdated}
+                          />
+                      ) : (
+                          <ShowProfile
+                              user={this.state.user}
+                              handleEdit={this.handleEdit}
+                              goBack={this.goBack}
+                              handleDelete={this.handleDelete}
+                          />
+                      )}{" "}
+                    </div>
                 )}{" "}
               </div>
-            )}{" "}
-          </div>
-        )}
-      </React.Fragment>
+          )}
+        </React.Fragment>
     );
   }
 }

@@ -76,8 +76,8 @@ class EditProfile extends React.Component {
 
   async edit() {
     if (
-      this.state.username === this.props.user.username &&
-      this.state.birthday === this.props.user.birthday
+        this.state.username === this.props.user.username &&
+        this.state.birthday === this.props.user.birthday
     ) {
       // just change to the Profile again if there were no changes
       this.props.profileUpdated();
@@ -86,7 +86,8 @@ class EditProfile extends React.Component {
       try {
         this.state.user.username = this.state.username;
         const requestBody = JSON.stringify({
-          user: this.state.user
+          username: this.state.user.username,
+          birthday: this.state.user.birthday
         });
         api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
         await api.put("/users/" + this.props.user.id, requestBody);
@@ -96,12 +97,12 @@ class EditProfile extends React.Component {
       } catch (error) {
         this.state.user.username = this.state.userNameBackup;
         this.setState({
-          error: error.response.data ? error.response.data : "Error"
+          error: error.data ? error.data : "Error"
         });
         console.log(
-          `Something went wrong during when trying to update the profile: \n${handleError(
-            error
-          )}`
+            `Something went wrong during when trying to update the profile: \n${handleError(
+                error
+            )}`
         );
       }
     }
@@ -109,52 +110,52 @@ class EditProfile extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        {!this.state.user ? (
-          <Spinner />
-        ) : (
-          <OuterContainer>
-            <InputField
-              placeholder={"Enter new Name here..."}
-              onChange={e => {
-                this.handleInputChange("username", e.target.value);
-              }}
-            />
-            <Container>
-              {this.state.error ? (
-                <ErrorMessage>{this.state.error}</ErrorMessage>
-              ) : (
-                ""
-              )}
-              <Avatar user={this.state.user} />
+        <React.Fragment>
+          {!this.state.user ? (
+              <Spinner />
+          ) : (
+              <OuterContainer>
+                <InputField
+                    placeholder={"Enter new Name here..."}
+                    onChange={e => {
+                      this.handleInputChange("username", e.target.value);
+                    }}
+                />
+                <Container>
+                  {this.state.error ? (
+                      <ErrorMessage>{this.state.error}</ErrorMessage>
+                  ) : (
+                      ""
+                  )}
+                  <Avatar user={this.state.user} />
 
-              <ButtonContainer>
-                <Button marginbottom="30px" colorDef={"#454c62"}>
-                  Level
-                </Button>
+                  <ButtonContainer>
+                    <Button marginbottom="30px" colorDef={"#454c62"}>
+                      Level
+                    </Button>
 
-                <Button
-                  marginbottom="15px"
-                  colorDef={"#3b85ff"}
-                  onClick={() => {
-                    this.edit();
-                  }}
-                >
-                  Save Change
-                </Button>
+                    <Button
+                        marginbottom="15px"
+                        colorDef={"#3b85ff"}
+                        onClick={() => {
+                          this.edit();
+                        }}
+                    >
+                      Save Change
+                    </Button>
 
-                <Button
-                  onClick={() => {
-                    this.props.handleEdit();
-                  }}
-                >
-                  Back
-                </Button>
-              </ButtonContainer>
-            </Container>
-          </OuterContainer>
-        )}
-      </React.Fragment>
+                    <Button
+                        onClick={() => {
+                          this.props.handleEdit();
+                        }}
+                    >
+                      Back
+                    </Button>
+                  </ButtonContainer>
+                </Container>
+              </OuterContainer>
+          )}
+        </React.Fragment>
     );
   }
 }
