@@ -90,7 +90,7 @@ class LobbyContainer extends React.Component {
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.startGame = this.startGame.bind(this);
     this.leaveLobby = this.leaveLobby.bind(this);
-    this.previewPlaying = this.previewPlaying.bind(this);
+    //this.previewPlaying = this.previewPlaying.bind(this);
   }
 
   async getLobby() {
