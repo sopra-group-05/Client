@@ -145,9 +145,12 @@ class LobbyContainer extends React.Component {
     try {
       // lets player leave via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.put(
-        "/lobbies/" + this.state.lobby.id + "/leave"
-      );
+      // set appropriate URL
+      const url_start = "lobbies/" + this.state.lobby.id;
+      const playerId = localStorage.getItem("userId");
+      const isCreator = this.state.lobby.creator.id == playerId;
+      const url = isCreator ? url_start + "/terminate" : url_start + "/leave";
+      const response = await api.put(url);
       console.log(response);
       this.props.history.push("/game");
     } catch (error) {

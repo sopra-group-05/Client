@@ -1,33 +1,40 @@
 import React from "react";
 import styled from "styled-components";
-import { BaseContainer } from "../../../helpers/layout";
 import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
-import Sidebar from "../Sidebar/Sidebar";
-import { Button } from "../Playing/PlayingStyle";
-import RankingBox from "./RankingBox";
-import Lobby from "../../shared/models/Lobby";
+import Box from "../../../views/Box";
+import { Spinner } from "../../../views/design/Spinner";
 
-const Container = styled(BaseContainer)`
-  padding-left: 3rem;
-  color: black;
-  text-align: center;
+const Container = styled.div`
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 15px;
   display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
+  flex-direction: row;
+  background-color: #454c62;
+  a {
+    color: #ce552e;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    min-width: 300px;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+  }
 `;
 
-class EndOfGameContainer extends React.Component {
+class RankingBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lobby: null,
+      lobby: this.props,
       error: null
     };
-    this.getLobby = this.getLobby.bind(this);
+    //this.getLobby = this.getLobby.bind(this);
   }
 
-  async getLobby() {
+  /*  async getLobby() {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + this.props.match.params.id);
@@ -49,42 +56,27 @@ class EndOfGameContainer extends React.Component {
       );
       clearInterval(this.interval);
     }
-  }
+  }*/
 
   componentDidMount() {
-    this.getLobby();
+    //this.getLobby();
   }
 
   componentWillUnmount() {
     // stop Interval when Component gets hidden.
     // If you don't do this, it will call the API every 1s even the component is not active anymore!
-    clearInterval(this.interval);
-  }
-
-  async goToLobby() {
-    this.props.history.push();
+    //clearInterval(this.interval);
   }
 
   render() {
-    const lobby = new Lobby(this.state.lobby);
-    return (
-      <React.Fragment>
-        <Sidebar disabled={false} />
-        <Container>
-          <RankingBox lobby={lobby} />
-        </Container>
-        <Container>
-          <Button
-            onClick={() => {
-              this.props.history.push("/game/lobby/" + lobby.id);
-            }}
-          >
-            Back to Lobby
-          </Button>
-        </Container>
-      </React.Fragment>
+    return this.state.lobby ? (
+      <Box title={"Ranking"}>
+        <Container>blabla</Container>
+      </Box>
+    ) : (
+      <Spinner />
     );
   }
 }
 
-export default withRouter(EndOfGameContainer);
+export default withRouter(RankingBox);
