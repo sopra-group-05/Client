@@ -9,6 +9,7 @@ import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 import { Button } from "../Playing/PlayingStyle";
 import Countdown from "../../../views/Countdown";
+import BotInLobby from "../../../views/BotInLobby";
 
 const PlayerStatus = styled.div`
   border-radius: 20px;
@@ -237,6 +238,11 @@ class LobbyContainer extends React.Component {
                   </PlayerContainer>
                 );
               })}
+              {this.state.lobby.gameMode === "HUMANS" ? "" :(
+                  <PlayerContainer key={99}>
+                    <BotInLobby botName="Bot1"/>
+                  </PlayerContainer>
+              )}
             </Players>
             <PlayerStatus onClick={() => this.toggleCheckbox()}>
               <CheckBox>

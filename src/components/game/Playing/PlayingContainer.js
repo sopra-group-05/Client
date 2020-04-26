@@ -40,6 +40,7 @@ class PlayingContainer extends React.Component {
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
     this.nextState = this.nextState.bind(this);
     this.leaveGame = this.leaveGame.bind(this);
+    this.showRules = this.showRules.bind(this);
     this.toggleShowRules = this.toggleShowRules.bind(this);
   }
 
@@ -112,6 +113,10 @@ class PlayingContainer extends React.Component {
     this.setState({ rulesShown: !this.state.rulesShown });
   };
 
+  showRules(){
+    this.props.history.push("/game/rules");
+  }
+
   // TODO: potential redirect to /gameover or other solution
 
   render() {
@@ -136,6 +141,7 @@ class PlayingContainer extends React.Component {
                 <RuleContainer
                   l={this.state.lobby}
                   isShown={this.state.rulesShown}
+                  showRules = {this.showRules}
                 />
               </MetaInfo>
             </React.Fragment>

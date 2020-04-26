@@ -6,6 +6,7 @@ import Profile from "../../game/Profile/Profile";
 import LobbyPage from "../../game/Lobby/LobbyPage";
 import PlayingContainer from "../../game/Playing/PlayingContainer";
 import EndOfGameContainer from "../../game/EndOfGame/EndOfGameContainer";
+import FullRules from "../../game/Rules/FullRules";
 
 const Container = styled.div`
   display: flex;
@@ -42,6 +43,12 @@ class GameRouter extends React.Component {
             exact
             path={`${this.props.base}/lobby/:id`}
             component={LobbyPage}
+          />
+
+          <Route
+              exact
+              path={`${this.props.base}/rules`}
+              component={FullRules}
           />
 
           <Route
