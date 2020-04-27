@@ -4,40 +4,30 @@ import { withRouter } from "react-router-dom";
 import { BaseContainer } from "../../../helpers/layout";
 import Sidebar from "../Sidebar/Sidebar";
 import {Button} from "../../../views/design/Button";
+import GameRules from "../../../images/GameRules.jpg";
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   flex-direction: column;
-  width: 70%;
-  margin-top: 5em;
-`;
-
-const ExtraButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  width: 25%;
+  margin-top: 2em;
+  margin-bottom: 5em;
 `;
 
 const OuterContainer = styled(BaseContainer)`
   padding-top: 3em;
-  width: 27%;
-  text-align: center;
-`;
-
-const Container = styled(BaseContainer)`
   display: flex;
+  justify-content: center;
   flex-direction: column;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  width: 100%;
+  text-align: center;
   align-items: center;
 `;
 
-const ErrorMessage = styled.div`
-  display: flex;
-  justify-content: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
+const Image = styled.img`
+  width: 90%;
+  border-radius: 30px;
 `;
 
 class FullRules extends React.Component {
@@ -69,9 +59,9 @@ class FullRules extends React.Component {
         <React.Fragment>
           <Sidebar />
           <OuterContainer>
+            <Image src={GameRules} />
             <ButtonContainer>
               <Button
-                  marginbottom="15px"
                   colorDef={"#3b85ff"}
                   onClick={() => {
                     this.props.history.goBack();
