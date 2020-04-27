@@ -55,15 +55,15 @@ const EndRound = ({ lobby, isGuesser, nextState }) => {
       <DeckOverview>
         <DeckContainer>
           <DeckTitle> Remaining Cards in Deck </DeckTitle>
-          <DeckCount color={"lightgreen"}> {8} </DeckCount>
+          <DeckCount color={"#00a5ee"}> {8} </DeckCount>
         </DeckContainer>
         <DeckContainer>
           <DeckTitle> Won Cards </DeckTitle>
-          <DeckCount color={"green"}> {3} </DeckCount>
+          <DeckCount color={"#39b346"}> {3} </DeckCount>
         </DeckContainer>
         <DeckContainer>
           <DeckTitle> Lost Cards </DeckTitle>
-          <DeckCount color={"red"}> {2} </DeckCount>
+          <DeckCount color={"#ee232b"}> {2} </DeckCount>
         </DeckContainer>
       </DeckOverview>
 
