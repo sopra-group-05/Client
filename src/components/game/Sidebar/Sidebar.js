@@ -42,20 +42,24 @@ const Sidebar = ({ disabled }) => {
     id: localStorage.getItem("userId"),
     username: localStorage.getItem("username")
   });
-  return (
-    <Wrapper>
-      <SideBarLink
-        to={"/game/dashboard/profile/" + user.id}
-        title="To your Profile"
-        disabled={disabled}
-      >
-        <Avatar size={50} user={user} />
-      </SideBarLink>
-      <SideBarLink to="/game/dashboard" disabled={disabled} title="Dashboard">
-        <Icon src={DashBoardIcon} />
-      </SideBarLink>
-    </Wrapper>
-  );
+  if (disabled) {
+    return <React.Fragment />;
+  } else {
+    return (
+      <Wrapper>
+        <SideBarLink
+          to={"/game/dashboard/profile/" + user.id}
+          title="To your Profile"
+          disabled={disabled}
+        >
+          <Avatar size={50} user={user} />
+        </SideBarLink>
+        <SideBarLink to="/game/dashboard" disabled={disabled} title="Dashboard">
+          <Icon src={DashBoardIcon} />
+        </SideBarLink>
+      </Wrapper>
+    );
+  }
 };
 
 export default Sidebar;

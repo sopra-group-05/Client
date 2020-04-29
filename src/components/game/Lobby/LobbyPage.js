@@ -27,7 +27,7 @@ class LobbyPage extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Sidebar />
+        <Sidebar disabled={true} />
         <Container>
           <BoxContainer>
             <LobbyContainer />
