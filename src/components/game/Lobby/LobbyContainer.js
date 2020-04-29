@@ -239,10 +239,12 @@ class LobbyContainer extends React.Component {
                   </PlayerContainer>
                 );
               })}
-              {this.state.lobby.gameMode === "HUMANS" ? "" :(
-                  <PlayerContainer key={99}>
-                    <BotInLobby botName="Bot1"/>
-                  </PlayerContainer>
+              {this.state.lobby.gameMode === "HUMANS" ? (
+                ""
+              ) : (
+                <PlayerContainer key={99}>
+                  <BotInLobby botName="Bot1" />
+                </PlayerContainer>
               )}
             </Players>
             <PlayerStatus onClick={() => this.toggleCheckbox()}>

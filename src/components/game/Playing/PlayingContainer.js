@@ -113,7 +113,7 @@ class PlayingContainer extends React.Component {
     this.setState({ rulesShown: !this.state.rulesShown });
   };
 
-  showRules(){
+  showRules() {
     this.props.history.push("/game/rules");
   }
 
@@ -141,7 +141,7 @@ class PlayingContainer extends React.Component {
                 <RuleContainer
                   l={this.state.lobby}
                   isShown={this.state.rulesShown}
-                  showRules = {this.showRules}
+                  showRules={this.showRules}
                 />
               </MetaInfo>
             </React.Fragment>

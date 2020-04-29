@@ -13,7 +13,6 @@ import Dropdown from "./Dropdown";
 import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
 
-
 const Container = styled.div`
   text-align: center;
 `;
@@ -123,14 +122,11 @@ const Button = styled.div`
 `;
 
 const BotContainer = styled.div`
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 1rem;
 `;
-
-
-
 
 class CreateLobby extends React.Component {
   constructor() {
@@ -142,8 +138,7 @@ class CreateLobby extends React.Component {
       gameMode: 0,
       error: null
     };
-    
-    
+
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
@@ -214,16 +209,14 @@ class CreateLobby extends React.Component {
               handleChange={this.handleInputChange}
             />
             <BotContainer>
-	            <GameMode onClick={() => this.toggleCheckbox()}>
-	              <CheckBox>
-	                <CheckboxTick checked={this.state.gameMode === 1} />
-	              </CheckBox>
-	              Add Bots
-	            </GameMode>
-	              {!(this.state.gameMode === 0)? (
-	                      <Dropdown/>
-	                  ) : ""}
-	              </BotContainer>
+              <GameMode onClick={() => this.toggleCheckbox()}>
+                <CheckBox>
+                  <CheckboxTick checked={this.state.gameMode === 1} />
+                </CheckBox>
+                Add Bots
+              </GameMode>
+              {!(this.state.gameMode === 0) ? <Dropdown /> : ""}
+            </BotContainer>
             <Label>Select Lobby Language</Label>
             <Languages>
               <Flag
