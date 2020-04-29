@@ -13,7 +13,6 @@ const RuleList = styled.ol`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   flex-direction: column;
   width: 70%;
   margin-top: 5em;
