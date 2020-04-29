@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { BaseContainer } from "../../../helpers/layout";
 import Sidebar from "../Sidebar/Sidebar";
-import {Button} from "../../../views/design/Button";
+import { Button } from "../../../views/design/Button";
 import GameRules from "../../../images/GameRules.jpg";
 
 const ButtonContainer = styled.div`
@@ -33,45 +33,42 @@ const Image = styled.img`
 class FullRules extends React.Component {
   constructor() {
     super();
-    this.state = {
-    }
+    this.state = {};
 
     // bind methods so they can be used in children components when passed down as props
     this.goBack = this.goBack.bind(this);
   }
 
-
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
-  }
+  };
 
   goBack() {
     this.props.history.goBack();
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   render() {
     const { pageNumber, numPages } = this.state;
 
     return (
-        <React.Fragment>
-          <Sidebar />
-          <OuterContainer>
-            <Image src={GameRules} />
-            <ButtonContainer>
-              <Button
-                  colorDef={"#3b85ff"}
-                  onClick={() => {
-                    this.props.history.goBack();
-                  }}
-              >
-                Back
-              </Button>
-            </ButtonContainer>
-          </OuterContainer>
-        </React.Fragment>
+      <React.Fragment>
+        <Sidebar />
+        <OuterContainer>
+          <Image src={GameRules} />
+          <ButtonContainer>
+            <Button
+              colorDef={"#3b85ff"}
+              onClick={() => {
+                this.props.history.goBack();
+              }}
+            >
+              Back
+            </Button>
+          </ButtonContainer>
+        </OuterContainer>
+      </React.Fragment>
     );
   }
 }

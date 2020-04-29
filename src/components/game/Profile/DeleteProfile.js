@@ -53,7 +53,6 @@ class DeleteProfile extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-
   /**
    * HTTP DELETE request is sent to the backend.
    * If the request is successful, the user will be deleted
@@ -64,7 +63,9 @@ class DeleteProfile extends React.Component {
       const requestBody = JSON.stringify({
         password: this.state.password
       });
-      const response = await api.delete("/users/" + this.props.user.id,{data : requestBody});
+      const response = await api.delete("/users/" + this.props.user.id, {
+        data: requestBody
+      });
 
       // Delete successfully worked --> navigate to the login page
       this.props.handleLogout();
@@ -76,7 +77,7 @@ class DeleteProfile extends React.Component {
       //        this.setState({ error: null });
       //      }, 3500);
       console.log(
-          `Something went wrong during the deletion: \n${handleError(error)}`
+        `Something went wrong during the deletion: \n${handleError(error)}`
       );
     }
   }
@@ -93,7 +94,7 @@ class DeleteProfile extends React.Component {
     } catch (error) {
       this.props.handleLogout();
       console.log(
-          `Something went wrong while trying to log out: \n${handleError(error)}`
+        `Something went wrong while trying to log out: \n${handleError(error)}`
       );
     }
   }
@@ -117,54 +118,54 @@ class DeleteProfile extends React.Component {
 
   render() {
     return (
-        <React.Fragment>
-          {!this.state.user ? (
-              <Spinner />
-          ) : (
-              <OuterContainer>
-                <Box title={this.state.user.username}>
-                  <Container>
-                    {this.state.error ? (
-                        <ErrorMessage>{this.state.error.message}</ErrorMessage>
-                    ) : (
-                        ""
-                    )}
+      <React.Fragment>
+        {!this.state.user ? (
+          <Spinner />
+        ) : (
+          <OuterContainer>
+            <Box title={this.state.user.username}>
+              <Container>
+                {this.state.error ? (
+                  <ErrorMessage>{this.state.error.message}</ErrorMessage>
+                ) : (
+                  ""
+                )}
 
-                    <Avatar user={this.state.user} />
+                <Avatar user={this.state.user} />
 
-                    <ButtonContainer>
-                      <TextInput
-                          field="password"
-                          label="In order to delete your profile please enter your password. This deletion is final if you don't want to delete your profile go back."
-                          placeholder="Enter Password..."
-                          hiddenText={true}
-                          state={this.state.password}
-                          handleChange={this.handleInputChange}
-                      />
+                <ButtonContainer>
+                  <TextInput
+                    field="password"
+                    label="In order to delete your profile please enter your password. This deletion is final if you don't want to delete your profile go back."
+                    placeholder="Enter Password..."
+                    hiddenText={true}
+                    state={this.state.password}
+                    handleChange={this.handleInputChange}
+                  />
 
-                      <Button
-                          marginbottom="15px"
-                          colorDef={"#3b85ff"}
-                          onClick={() => {
-                            this.deleteUser();
-                          }}
-                      >
-                        Delete Profile
-                      </Button>
+                  <Button
+                    marginbottom="15px"
+                    colorDef={"#3b85ff"}
+                    onClick={() => {
+                      this.deleteUser();
+                    }}
+                  >
+                    Delete Profile
+                  </Button>
 
-                      <Button
-                          onClick={() => {
-                            this.props.handleDelete();
-                          }}
-                      >
-                        Back
-                      </Button>
-                    </ButtonContainer>
-                  </Container>
-                </Box>
-              </OuterContainer>
-          )}
-        </React.Fragment>
+                  <Button
+                    onClick={() => {
+                      this.props.handleDelete();
+                    }}
+                  >
+                    Back
+                  </Button>
+                </ButtonContainer>
+              </Container>
+            </Box>
+          </OuterContainer>
+        )}
+      </React.Fragment>
     );
   }
 }

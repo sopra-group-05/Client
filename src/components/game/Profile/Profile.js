@@ -87,7 +87,6 @@ class Profile extends React.Component {
     this.props.history.push("/login");
   }
 
-
   goBack() {
     this.props.history.goBack();
   }
@@ -117,7 +116,7 @@ class Profile extends React.Component {
       console.log(response);
     } catch (error) {
       alert(
-          `Something went wrong while fetching the user: \n${handleError(error)}`
+        `Something went wrong while fetching the user: \n${handleError(error)}`
       );
     }
   }
@@ -128,41 +127,41 @@ class Profile extends React.Component {
 
   render() {
     return (
-        <React.Fragment>
-          <Sidebar />
-          {!this.state.user ? (
-              <OuterContainer>
-                <Spinner />
-              </OuterContainer>
-          ) : (
+      <React.Fragment>
+        <Sidebar />
+        {!this.state.user ? (
+          <OuterContainer>
+            <Spinner />
+          </OuterContainer>
+        ) : (
+          <div>
+            {this.state.delete ? (
+              <DeleteProfile
+                user={this.state.user}
+                handleDelete={this.handleDelete}
+                handleLogout={this.handleLogout}
+              />
+            ) : (
               <div>
-                {this.state.delete ? (
-                    <DeleteProfile
-                        user={this.state.user}
-                        handleDelete={this.handleDelete}
-                        handleLogout={this.handleLogout}
-                    />
+                {this.state.edit ? (
+                  <EditProfile
+                    user={this.state.user}
+                    handleEdit={this.handleEdit}
+                    profileUpdated={this.profileUpdated}
+                  />
                 ) : (
-                    <div>
-                      {this.state.edit ? (
-                          <EditProfile
-                              user={this.state.user}
-                              handleEdit={this.handleEdit}
-                              profileUpdated={this.profileUpdated}
-                          />
-                      ) : (
-                          <ShowProfile
-                              user={this.state.user}
-                              handleEdit={this.handleEdit}
-                              goBack={this.goBack}
-                              handleDelete={this.handleDelete}
-                          />
-                      )}{" "}
-                    </div>
+                  <ShowProfile
+                    user={this.state.user}
+                    handleEdit={this.handleEdit}
+                    goBack={this.goBack}
+                    handleDelete={this.handleDelete}
+                  />
                 )}{" "}
               </div>
-          )}
-        </React.Fragment>
+            )}{" "}
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 }

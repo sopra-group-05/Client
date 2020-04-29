@@ -69,16 +69,13 @@ class BotInLobby extends React.Component {
     };
   }
 
-
   render() {
     return (
       <Container>
         <Avatar size={40} user={this.state.botName} />
         <BotMeta>
           <BotName>{this.state.botName}</BotName>
-          <BotInfo>
-            BOT | is ready
-          </BotInfo>
+          <BotInfo>BOT | is ready</BotInfo>
         </BotMeta>
       </Container>
     );
