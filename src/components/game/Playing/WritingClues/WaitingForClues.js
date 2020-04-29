@@ -1,22 +1,19 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import Lobby from "../../../shared/models/Lobby";
 import {
   PlayingDescription,
   PlayingTitle,
   PlayingWrapper
 } from "../PlayingStyle";
-import styled from "styled-components";
-import Countdown from "../../../../views/Countdown";
 
-const WritingAClue = ({ nextState }) => {
+const WritingAClue = () => {
   return (
     <PlayingWrapper headerText="Waiting for Clues!">
       <PlayingTitle>Guesser</PlayingTitle>
       <PlayingDescription>
-        Other Players are writing down clues ..
+        You will be able to guess the word as soon as the other Players have
+        submitted their clues!
       </PlayingDescription>
-      <Countdown functionWhenDone={nextState} time={30} />
     </PlayingWrapper>
   );
 };
