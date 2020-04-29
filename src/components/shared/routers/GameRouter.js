@@ -46,9 +46,9 @@ class GameRouter extends React.Component {
           />
 
           <Route
-              exact
-              path={`${this.props.base}/rules`}
-              component={FullRules}
+            exact
+            path={`${this.props.base}/rules`}
+            component={FullRules}
           />
 
           <Route
