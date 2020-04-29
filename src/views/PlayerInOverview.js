@@ -86,22 +86,18 @@ class PlayerInOverview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      player: this.props.player,
-      lobby: this.props.lobby,
-      creator: this.props.lobby.creator,
       error: null
     };
   }
-
   render() {
     return (
       <Container>
-        <Avatar size={40} user={this.state.player} />
+        <Avatar size={40} user={this.props.player} />
         <PlayerMeta>
-          <PlayerName>{this.state.player.username}</PlayerName>
+          <PlayerName>{this.props.player.username}</PlayerName>
           <PlayerStatus
-            role={this.state.player.role}
-            status={this.state.player.status}
+            role={this.props.player.role}
+            status={this.props.player.status}
           />
         </PlayerMeta>
       </Container>
