@@ -5,6 +5,7 @@ import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Player from "../../../views/Player";
 import Box from "../../../views/Box";
+import User from "../../shared/models/User";
 
 const Users = styled.ul`
   list-style: none;
@@ -40,8 +41,14 @@ class OnlineUsers extends React.Component {
         this.interval = setInterval(this.getUsers, 1000);
       }
 
+      // only show Users that are online
+      const filtered_users = response.data.filter(function(user) {
+        user = new User(user);
+        return user.status === "ONLINE";
+      });
+
       // Get the returned users and update the state.
-      this.setState({ users: response.data, error: null });
+      this.setState({ users: filtered_users, error: null });
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
