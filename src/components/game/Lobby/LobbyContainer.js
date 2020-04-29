@@ -101,8 +101,12 @@ class LobbyContainer extends React.Component {
       const response = await api.get("/lobbies/" + this.props.match.params.id);
       const l = new Lobby(response.data);
 
-      // make API call every 1s to get Updated Lobby.
+      if (l.lobbyStatus != "WAITING") {
+        // automatically redirect to game when lobby status changes!
+        this.redirectToGame(l.id);
+      }
       if (this.state.lobby === null && response.data) {
+        // make API call every 1s to get Updated Lobby.
         // Will have to be destroyed in componentWIllUnmount()!
         // only set interval the very first time you call the API
         this.interval = setInterval(this.getLobby, 1000);
@@ -112,7 +116,7 @@ class LobbyContainer extends React.Component {
       this.setState({
         lobby: l,
         nonCreators: this.getNonCreator(l),
-        lobbyReady: l.lobbyStatus === "FULL",
+        lobbyReady: this.isLobbyReady(l),
         error: null
       });
     } catch (error) {
@@ -124,6 +128,23 @@ class LobbyContainer extends React.Component {
     }
   }
 
+  isLobbyReady(lobby) {
+    // return true when lobby is ready e.g. all players have status ready and there are at least 4 players
+    lobby = new Lobby(lobby);
+    console.log(lobby);
+    let allReady = true;
+    lobby.players.forEach(player => {
+      if (player.status != "READY") {
+        allReady = false;
+      }
+    });
+    return lobby.players.length >= 2 ? allReady : false;
+  }
+
+  redirectToGame(lobbyID) {
+    this.props.history.push("/game/lobby/" + lobbyID + "/game");
+  }
+
   async startGame() {
     console.log("Start Game");
     try {
@@ -132,8 +153,6 @@ class LobbyContainer extends React.Component {
         "/lobbies/" + this.state.lobby.id + "/start"
       );
       console.log(response);
-      clearInterval(this.interval);
-      this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
     } catch (error) {
       this.setState({
         error: error ? error.message : "Unknown error"
@@ -265,19 +284,20 @@ class LobbyContainer extends React.Component {
                 onClick={() => {
                   this.startGame();
                 }}
+                disabled={!this.state.lobbyReady}
                 background={"#44d63f"}
               >
                 Start game
               </Button>
             </ButtonGroup>
-            {this.state.lobbyReady ? (
+            {/*this.state.lobbyReady ? (
               <Countdown
                 time={6}
                 activeText={"Game starts in "}
                 timeoutText={"Go!"}
                 functionWhenDone={this.startGame}
               />
-            ) : null}
+            ) : null*/}
           </div>
         )}
       </Box>
