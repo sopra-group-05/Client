@@ -23,7 +23,6 @@ const WaitForNumber = ({ l, nextState }) => {
         </PlayingDescription>
       </PlayingDescription>
       <MysteryCard lobbyId={lobby.id} />
-      <Countdown time={30} functionWhenDone={nextState} />
     </PlayingWrapper>
   );
 };
