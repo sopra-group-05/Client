@@ -75,15 +75,15 @@ class PlayerInLobby extends React.Component {
 
   async removePlayerFromLobby() {
     console.log(
-      "removePlayerFromLobby was run with lobby id " + this.state.lobby.id
+      "removePlayerFromLobby was run with lobby id " + this.props.lobby.id
     );
-    console.log(this.state.lobby.creator);
+    console.log(this.props.lobby.creator);
     console.log(localStorage.getItem("token"));
     try {
       // kick player via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
-        "/lobbies/" + this.state.lobby.id + "/kick/" + this.state.player.id
+        "/lobbies/" + this.props.lobby.id + "/kick/" + this.props.player.id
       );
       console.log(response);
     } catch (error) {
@@ -96,20 +96,20 @@ class PlayerInLobby extends React.Component {
 
   render() {
     const kickPlayer =
-      this.state.creator.id == localStorage.getItem("userId") &&
-      this.state.creator.id != this.state.player.id ? (
+      this.props.lobby.creator.id == localStorage.getItem("userId") &&
+      this.props.lobby.creator.id != this.props.player.id ? (
         <Icon src={DeleteIcon} onClick={() => this.removePlayerFromLobby()} />
       ) : (
         <IconPlaceholder />
       );
     return (
       <Container>
-        <Avatar size={40} user={this.state.player} />
+        <Avatar size={40} user={this.props.player} />
         <PlayerMeta>
-          <PlayerName>{this.state.player.username}</PlayerName>
+          <PlayerName>{this.props.player.username}</PlayerName>
           <PlayerInfo>
-            {this.state.player.role} |
-            {this.state.player.status === "READY" ? "is ready" : "not ready"}
+            {this.props.player.role} |
+            {this.props.player.status === "READY" ? "is ready" : "not ready"}
           </PlayerInfo>
         </PlayerMeta>
         {kickPlayer}
