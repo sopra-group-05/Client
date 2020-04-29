@@ -20,15 +20,26 @@ const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
   const states = new Map();
   // set States and which Component should be rendered given the Status of a player.
   states.set("PICKING_NUMBER", ChoosingMysteryWord);
+  states.set("WAITING_FOR_NUMBER", ChoosingMysteryWord);
+
+  states.set("WAITING_FOR_CLUES", WritingClues);
   states.set("WRITING_CLUES", WritingClues);
+
+  states.set("WAITING_FOR_REVIEW", ClueComparison);
   states.set("REVIEWING_CLUES", ClueComparison);
 
+  // Select Component to render depending on the players OWN Status!
   lobby = new Lobby(lobby);
-  lobby.players.forEach(player => {
+  let player = lobby.players.find(
+    player => player.id == localStorage.getItem("userId")
+  );
+  Component = states.get(player.status);
+
+  /*lobby.players.forEach(player => {
     if (states.get(player.status)) {
       Component = states.get(player.status);
     }
-  });
+  });*/
 
   // todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
   // todo: this is just to show how it would look like when the API works.
