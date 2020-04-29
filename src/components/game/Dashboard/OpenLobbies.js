@@ -5,6 +5,9 @@ import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Box from "../../../views/Box";
 import JoinLobby from "../../../views/JoinLobby";
+import User from "../../shared/models/User";
+import Lobby from "../../shared/models/Lobby";
+import { withRouter } from "react-router-dom";
 
 const Users = styled.ul`
   list-style: none;
@@ -16,7 +19,8 @@ class OpenLobbies extends React.Component {
     super();
     this.state = {
       lobbies: null,
-      error: null
+      error: null,
+      shouldRedirectToLobby: true
     };
     this.getLobbies = this.getLobbies.bind(this);
   }
@@ -33,11 +37,24 @@ class OpenLobbies extends React.Component {
         this.interval = setInterval(this.getLobbies, 1000);
       }
 
-      // todo filter lobbies so only open ones are inside
+      // redirect to lobby if user is in a lobby
+      if (response.data && this.state.shouldRedirectToLobby) {
+        response.data.filter(lobby => {
+          lobby = new Lobby(lobby);
+          if (lobby.players.find(x => x.id == localStorage.getItem("userId"))) {
+            this.props.history.push("/game/lobby/" + lobby.id);
+          }
+        });
+        this.setState({ shouldRedirectToLobby: false });
+      }
+
+      const filtered_lobbies = response.data.filter(function(lobby) {
+        lobby = new Lobby(lobby);
+        return lobby.lobbyStatus === "WAITING";
+      });
 
       // Get the returned lobbies and update the state.
-      this.setState({ lobbies: response.data, error: null });
-      //console.log(response);
+      this.setState({ lobbies: filtered_lobbies, error: null });
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -87,4 +104,4 @@ class OpenLobbies extends React.Component {
   }
 }
 
-export default OpenLobbies;
+export default withRouter(OpenLobbies);
