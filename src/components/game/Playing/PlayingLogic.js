@@ -5,20 +5,34 @@ import ClueComparison from "./ClueComparison/ClueComparison";
 import Guess from "./Guess/Guess";
 import React from "react";
 import EndRound from "./EndRound/EndRound";
+import Lobby from "../../shared/models/Lobby";
 
 const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
   // this component renders the correct state of the game
-  const states = [
+  const old_states = [
     ChoosingMysteryWord,
     WritingClues,
     ClueComparison,
     Guess,
     EndRound
   ]; // add your views at correct position
-  state = state % states.length;
-  const Component = states[state];
+  let Component = ChoosingMysteryWord;
+  const states = new Map();
+  // set States and which Component should be rendered given the Status of a player.
+  states.set("PICKING_NUMBER", ChoosingMysteryWord);
+  states.set("WRITING_CLUES", WritingClues);
+  states.set("REVIEWING_CLUES", ClueComparison);
+
+  lobby = new Lobby(lobby);
+  lobby.players.forEach(player => {
+    if (states.get(player.status)) {
+      Component = states.get(player.status);
+    }
+  });
+
   // todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
   // todo: this is just to show how it would look like when the API works.
+
   return (
     <Component lobby={lobby} isGuesser={isGuesser} nextState={nextState} />
   );

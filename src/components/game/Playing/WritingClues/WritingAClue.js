@@ -11,6 +11,7 @@ import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 import styled from "styled-components";
 import TextInput from "../../../../views/design/TextInput";
 import Countdown from "../../../../views/Countdown";
+import { api } from "../../../../helpers/api";
 
 const Container = styled.div`
   display: flex;
@@ -30,9 +31,21 @@ const WritingAClue = ({ l, nextState }) => {
   const handleInputChange = (key, input) => {
     setClue(input);
   };
-  const submitClue = () => {
+  const submitClue = async () => {
     setSubmitted(true);
-    //alert("You would've submitted the clue " + clue);
+    try {
+      const requestBody = JSON.stringify({
+        hint: clue
+      });
+
+      // make POST request to Server to choose Number
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      await api.post("/lobbies/" + lobby.id + "/clues", requestBody);
+    } catch (error) {
+      console.log(error);
+      // todo remove once API Endpoint works
+      alert("There was an error, see console and network log in your browser.");
+    }
   };
 
   return (
