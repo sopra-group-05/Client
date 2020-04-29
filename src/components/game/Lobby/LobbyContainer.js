@@ -125,6 +125,7 @@ class LobbyContainer extends React.Component {
         `Something went wrong while fetching the lobby: \n${handleError(error)}`
       );
       clearInterval(this.interval);
+      this.props.history.push("/game/");
     }
   }
 
