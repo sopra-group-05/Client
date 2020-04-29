@@ -23,7 +23,7 @@ const PopupInner = styled.div`
   margin: auto;
 `;
 
-const PupupContent = styled.div`
+const PopupContent = styled.div`
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 20px;
@@ -47,10 +47,10 @@ const Popup = ({ children, setShowPopup }) => {
   return (
     <PopupContainer>
       <PopupInner>
-        <PupupContent>
+        <PopupContent>
           {children}
           <ClosePopup onClick={() => setShowPopup()}>Close</ClosePopup>
-        </PupupContent>
+        </PopupContent>
       </PopupInner>
     </PopupContainer>
   );

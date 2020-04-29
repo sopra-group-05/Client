@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Lobby from "../../shared/models/Lobby";
 import Box from "../../../views/Box";
 import { withRouter } from "react-router-dom";
-import {Button} from "../../../views/design/Button";
+import { Button } from "../../../views/design/Button";
 
 const RuleList = styled.ol`
   list-style: decimal;
@@ -13,12 +13,10 @@ const RuleList = styled.ol`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
   flex-direction: column;
   width: 70%;
   margin-top: 5em;
 `;
-
 
 const RuleContainer = ({ l, isShown, showRules }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
@@ -39,11 +37,11 @@ const RuleContainer = ({ l, isShown, showRules }) => {
       </RuleList>
       <ButtonContainer>
         <Button
-            marginbottom="15px"
-            colorDef={"#3b85ff"}
-            onClick={() => {
-              showRules();
-            }}
+          marginbottom="15px"
+          colorDef={"#3b85ff"}
+          onClick={() => {
+            showRules();
+          }}
         >
           Rules
         </Button>
