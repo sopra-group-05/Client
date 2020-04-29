@@ -5,7 +5,6 @@ import MessageHandler from "../../../views/MessageHandler";
 import { Spinner } from "../../../views/design/Spinner";
 import Box from "../../../views/Box";
 import JoinLobby from "../../../views/JoinLobby";
-import User from "../../shared/models/User";
 import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
 
@@ -39,6 +38,7 @@ class OpenLobbies extends React.Component {
 
       // redirect to lobby if user is in a lobby
       if (response.data && this.state.shouldRedirectToLobby) {
+        console.log("inside");
         response.data.filter(lobby => {
           lobby = new Lobby(lobby);
           if (lobby.players.find(x => x.id == localStorage.getItem("userId"))) {
