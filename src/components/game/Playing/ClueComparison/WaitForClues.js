@@ -7,10 +7,8 @@ import {
   PlayingTitle,
   PlayingWrapper
 } from "../PlayingStyle";
-import Countdown from "../../../../views/Countdown";
 
 const WaitForClues = ({ l, nextState }) => {
-  const numberAlert = num => alert("You would've chosen number " + num);
   const lobby = new Lobby(l); //transform input into Lobby Model
   return (
     <PlayingWrapper headerText={"Waiting for Clues!"}>
@@ -18,7 +16,6 @@ const WaitForClues = ({ l, nextState }) => {
       <PlayingDescription>
         Wait for your teammates to eliminate invalid clues!
       </PlayingDescription>
-      <Countdown functionWhenDone={nextState} time={30} />
     </PlayingWrapper>
   );
 };
