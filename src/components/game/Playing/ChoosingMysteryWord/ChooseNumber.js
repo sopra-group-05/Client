@@ -20,17 +20,14 @@ const Numbers = styled.div`
 const ChooseNumber = ({ l, nextState, match }) => {
   const numberAlert = async num => {
     try {
+      num = num ? num : 1;
       // make POST request to Server to choose Number
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       await api.post("/lobbies/" + match.params.id + "/number", num);
     } catch (error) {
       console.log(error);
       // todo remove once API Endpoint works
-      alert(
-        "You woul've chosen number " +
-          num +
-          ", but there was an error trying to POST the Number to the server. See Console Logs for now.."
-      );
+      alert("There was an error");
     }
   };
   const lobby = new Lobby(l); //transform input into Lobby Model
@@ -53,7 +50,7 @@ const ChooseNumber = ({ l, nextState, match }) => {
         <BigNumber number={4} handleClick={numberAlert} />
         <BigNumber number={5} handleClick={numberAlert} />
       </Numbers>
-      <Countdown functionWhenDone={nextState} time={30} />
+      <Countdown functionWhenDone={numberAlert} time={30} />
     </PlayingWrapper>
   );
 };

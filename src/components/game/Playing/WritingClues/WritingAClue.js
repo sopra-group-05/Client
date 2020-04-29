@@ -75,7 +75,7 @@ const WritingAClue = ({ l, nextState }) => {
           >
             Send
           </Button>
-          {!submitted && <Countdown functionWhenDone={nextState} time={30} />}
+          {!submitted && <Countdown functionWhenDone={submitClue} time={30} />}
         </Form>
       </Container>
     </PlayingWrapper>
