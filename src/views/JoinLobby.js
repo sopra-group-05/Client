@@ -67,49 +67,33 @@ const Flag = styled.img`
 class JoinLobby extends React.Component {
   constructor() {
     super();
-    this.state = {
-      myLobby: false
-    };
     this.joinThisLobby = this.joinThisLobby.bind(this);
   }
 
-  async joinThisLobby(l, myLobby) {
+  async joinThisLobby(l) {
     const lobby = new Lobby(l);
-    if (myLobby) {
-      // just redirect to your own lobby
-      this.props.history.push("/game/lobby/" + lobby.id);
-    } else {
-      // join lobby normally
-      try {
-        // join lobby via put request
-        api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-        const response = await api.put("/lobbies/" + lobby.id + "/join");
-        console.log(response);
+    // join lobby normally
+    try {
+      // join lobby via put request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put("/lobbies/" + lobby.id + "/join");
+      console.log(response);
 
-        // Redirect to Lobby Page
-        this.props.history.push("/game/lobby/" + lobby.id);
-      } catch (error) {
-        //todo better error handling
-        alert(error);
-        console.log(
-          `Something went wrong while join a lobby: \n${handleError(error)}`
-        );
-      }
+      // Redirect to Lobby Page
+      this.props.history.push("/game/lobby/" + lobby.id);
+    } catch (error) {
+      //todo better error handling
+      alert(error);
+      console.log(
+        `Something went wrong while join a lobby: \n${handleError(error)}`
+      );
     }
   }
 
   render() {
     const lobby = new Lobby(this.props.lobby);
-    if (
-      !this.state.myLobby &&
-      lobby.players.find(x => x.id == localStorage.getItem("userId"))
-    ) {
-      // set boolean to true if User is in that Lobby
-      this.setState({ myLobby: true });
-      console.log("You're in that lobby!");
-    }
     return (
-      <Container onClick={() => this.joinThisLobby(lobby, this.state.myLobby)}>
+      <Container onClick={() => this.joinThisLobby(lobby)}>
         <LobbyMeta>
           <LobbyName>{lobby.lobbyName}</LobbyName>
           <LobbyInfo>
@@ -118,9 +102,7 @@ class JoinLobby extends React.Component {
             <Flag src={lobby.language === "DE" ? GermanFlag : EnglishFlag} />
           </LobbyInfo>
         </LobbyMeta>
-        <Button myLobby={this.state.myLobby}>
-          {this.state.myLobby ? "Enter" : "Join"}
-        </Button>
+        <Button>Join</Button>
       </Container>
     );
   }
