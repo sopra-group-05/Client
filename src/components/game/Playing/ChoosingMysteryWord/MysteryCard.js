@@ -79,7 +79,6 @@ class MysteryCard extends React.Component {
           <CardTitle>Mystery Words</CardTitle>
           {this.state.mysteryCard ? (
             this.state.mysteryCard.map(w => {
-              console.log(w);
               return <MysteryWord word={w} />;
             })
           ) : (
@@ -129,11 +128,11 @@ const MysteryWord = ({ word }) => {
     }
   };
 
-  console.log(word);
   return (
     <MysteryWordContainer>
-      <BigNumber number={word.number} small={true} />
+      <BigNumber number={word.id} small={true} />
       {word.word}
+      {" " + word.status}
       <Information src={InformationIcon} onClick={() => getDefinition()} />
       {showPopup && (
         <Popup
