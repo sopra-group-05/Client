@@ -9,25 +9,27 @@ import Lobby from "../../shared/models/Lobby";
 
 const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
   // this component renders the correct state of the game
-  const states = [
+  const old_states = [
     ChoosingMysteryWord,
     WritingClues,
     ClueComparison,
     Guess,
     EndRound
   ]; // add your views at correct position
+  let Component = ChoosingMysteryWord;
+  const states = new Map();
+  // set States and which Component should be rendered given the Status of a player.
+  states.set("PICKING_NUMBER", ChoosingMysteryWord);
+  states.set("WRITING_CLUES", WritingClues);
+  states.set("REVIEWING_CLUES", ClueComparison);
 
   lobby = new Lobby(lobby);
-  if (lobby.players.some(player => player.status === "PICKING_NUMBER")) {
-    state = 0;
-  } else if (lobby.players.some(player => player.status === "WRITING_CLUES")) {
-    state = 1;
-  } else {
-    console.log("fallback-state!");
-    state = state % states.length;
-  }
+  lobby.players.forEach(player => {
+    if (states.get(player.status)) {
+      Component = states.get(player.status);
+    }
+  });
 
-  const Component = states[state];
   // todo: make some kind of if statement to switch between number, clues etc by the status of the LOBBY!
   // todo: this is just to show how it would look like when the API works.
 
