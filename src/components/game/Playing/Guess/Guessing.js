@@ -7,10 +7,11 @@ import {
   PlayingWrapper,
   Button
 } from "../PlayingStyle";
-import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 import styled from "styled-components";
 import TextInput from "../../../../views/design/TextInput";
 import Countdown from "../../../../views/Countdown";
+import { api } from "../../../../helpers/api";
+import MessageHandler from "../../../../views/MessageHandler";
 
 const Container = styled.div`
   display: flex;
@@ -23,28 +24,52 @@ const Form = styled.div`
   margin-left: 1rem;
 `;
 
-const Guessing = ({ l, nextState }) => {
+const Guessing = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [guess, setGuess] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
+  const [error, setError] = React.useState("");
   const handleInputChange = (key, input) => {
     setGuess(input);
+    checkGuessForError(input);
   };
-  const submitGuess = () => {
+  const submitGuess = async () => {
     setSubmitted(true);
-    //alert("You would've submitted the clue " + clue);
+    try {
+      const requestBody = JSON.stringify({
+        guess: guess
+      });
+
+      // make POST request to Server to choose Number
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      await api.post("/lobbies/" + lobby.id + "/guess", requestBody);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
   };
   const skipGuess = () => {
-    alert("You would've skipped this guess!");
+    // set guess to empty and submit it.
+    setGuess("");
+    submitGuess();
   };
+
+  const checkGuessForError = clue => {
+    if (clue.match(/(\s)/g)) {
+      setError("The Guess should consist of one word (no white spaces)");
+    } else {
+      setError("");
+    }
+  };
+
   return (
-    <PlayingWrapper>
+    <PlayingWrapper
+      headerText={
+        submitted && "You would submit the guess " + guess + " to the server."
+      }
+    >
       <PlayingTitle>Guess the Mystery Word</PlayingTitle>
-      <PlayingDescription>
-        {submitted
-          ? "You would submit the guess " + guess + " to the server."
-          : "Try to guess the mystery word!"}
-      </PlayingDescription>
+      <PlayingDescription>Try to guess the mystery word!</PlayingDescription>
       <Container>
         <p>This is where the clues would be displayed.</p>
         <Form>
@@ -57,7 +82,7 @@ const Guessing = ({ l, nextState }) => {
             handleChange={handleInputChange}
           />
           <Button
-            disabled={!guess || submitted}
+            disabled={!guess || submitted || error}
             onClick={() => {
               submitGuess();
             }}
@@ -72,9 +97,10 @@ const Guessing = ({ l, nextState }) => {
           >
             Skip
           </Button>
-          {!submitted && <Countdown functionWhenDone={nextState} time={30} />}
+          {!submitted && <Countdown functionWhenDone={skipGuess} time={30} />}
         </Form>
       </Container>
+      <MessageHandler message={error} show={error} />
     </PlayingWrapper>
   );
 };
