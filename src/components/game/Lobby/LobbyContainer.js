@@ -280,15 +280,18 @@ class LobbyContainer extends React.Component {
               >
                 Leave Lobby
               </Button>
-              <Button
-                onClick={() => {
-                  this.startGame();
-                }}
-                disabled={!this.state.lobbyReady}
-                background={"#44d63f"}
-              >
-                Start game
-              </Button>
+              {this.state.lobby.creator.id ==
+                localStorage.getItem("userId") && (
+                <Button
+                  onClick={() => {
+                    this.startGame();
+                  }}
+                  disabled={!this.state.lobbyReady}
+                  background={"#44d63f"}
+                >
+                  Start game
+                </Button>
+              )}
             </ButtonGroup>
             {/*this.state.lobbyReady ? (
               <Countdown
