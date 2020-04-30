@@ -25,7 +25,8 @@ class OnlineUsers extends React.Component {
     super();
     this.state = {
       users: null,
-      error: null
+      error: null,
+      mounted: true
     };
     this.getUsers = this.getUsers.bind(this);
   }
@@ -36,7 +37,11 @@ class OnlineUsers extends React.Component {
       const response = await api.get("/users");
 
       // call this function again in 1s
-      this.intervalID = setTimeout(this.getUsers, 1000);
+      if (this.state.mounted) {
+        this.intervalID = setTimeout(this.getUsers, 1000);
+      } else {
+        this.componentCleanup();
+      }
 
       // only show Users that are online
       const filtered_users = response.data.filter(function(user) {
@@ -51,7 +56,7 @@ class OnlineUsers extends React.Component {
       console.log(
         `Something went wrong while fetching the users: \n${handleError(error)}`
       );
-      clearTimeout(this.intervalID);
+      this.componentCleanup();
     }
   };
 
@@ -60,9 +65,12 @@ class OnlineUsers extends React.Component {
   }
 
   componentWillUnmount() {
-    // stop Interval when Component gets hidden.
-    // If you don't do this, it will call the API every 1s even the component is not active anymore!
+    this.componentCleanup();
+  }
+
+  componentCleanup() {
     clearTimeout(this.intervalID);
+    this.setState({ mounted: false });
   }
 
   render() {
