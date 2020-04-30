@@ -77,6 +77,8 @@ const ButtonGroup = styled.div`
 `;
 
 class LobbyContainer extends React.Component {
+  intervalID;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -104,27 +106,23 @@ class LobbyContainer extends React.Component {
       if (l.lobbyStatus != "WAITING") {
         // automatically redirect to game when lobby status changes!
         this.redirectToGame(l.id);
-      }
-      if (this.state.lobby === null && response.data) {
-        // make API call every 1s to get Updated Lobby.
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobby, 1000);
-      }
+      } else {
+        this.intervalID = setTimeout(this.getLobby, 1000);
 
-      // Get the returned lobby and update the state.
-      this.setState({
-        lobby: l,
-        nonCreators: this.getNonCreator(l),
-        lobbyReady: this.isLobbyReady(l),
-        error: null
-      });
+        // Get the returned lobby and update the state.
+        this.setState({
+          lobby: l,
+          nonCreators: this.getNonCreator(l),
+          lobbyReady: this.isLobbyReady(l),
+          error: null
+        });
+      }
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
         `Something went wrong while fetching the lobby: \n${handleError(error)}`
       );
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
       this.props.history.push("/game/");
     }
   }
@@ -132,7 +130,6 @@ class LobbyContainer extends React.Component {
   isLobbyReady(lobby) {
     // return true when lobby is ready e.g. all players have status ready and there are at least 4 players
     lobby = new Lobby(lobby);
-    console.log(lobby);
     let allReady = true;
     lobby.players.forEach(player => {
       if (player.status != "READY") {
@@ -143,7 +140,7 @@ class LobbyContainer extends React.Component {
   }
 
   redirectToGame(lobbyID) {
-    clearInterval(this.interval);
+    clearTimeout(this.intervalID);
     this.props.history.push("/game/lobby/" + lobbyID + "/game");
   }
 
@@ -176,7 +173,7 @@ class LobbyContainer extends React.Component {
       const url = isCreator ? url_start + "/terminate" : url_start + "/leave";
       const response = await api.put(url);
       console.log(response);
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
       this.props.history.push("/game");
     } catch (error) {
       this.setState({

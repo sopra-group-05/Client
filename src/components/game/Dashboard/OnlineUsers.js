@@ -20,6 +20,7 @@ const PlayerContainer = styled.li`
 `;
 
 class OnlineUsers extends React.Component {
+  intervalID;
   constructor() {
     super();
     this.state = {
@@ -29,17 +30,13 @@ class OnlineUsers extends React.Component {
     this.getUsers = this.getUsers.bind(this);
   }
 
-  async getUsers() {
+  getUsers = async () => {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/users");
 
-      if (this.state.users === null && response.data) {
-        // make API call every 1s to get Updated User List.
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getUsers, 1000);
-      }
+      // call this function again in 1s
+      this.intervalID = setTimeout(this.getUsers, 1000);
 
       // only show Users that are online
       const filtered_users = response.data.filter(function(user) {
@@ -54,9 +51,9 @@ class OnlineUsers extends React.Component {
       console.log(
         `Something went wrong while fetching the users: \n${handleError(error)}`
       );
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
     }
-  }
+  };
 
   componentDidMount() {
     this.getUsers();
@@ -65,7 +62,7 @@ class OnlineUsers extends React.Component {
   componentWillUnmount() {
     // stop Interval when Component gets hidden.
     // If you don't do this, it will call the API every 1s even the component is not active anymore!
-    clearInterval(this.interval);
+    clearTimeout(this.intervalID);
   }
 
   render() {

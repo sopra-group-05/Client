@@ -29,6 +29,8 @@ const MetaInfo = styled.div`
 `;
 
 class PlayingContainer extends React.Component {
+  intervalID;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,17 +46,13 @@ class PlayingContainer extends React.Component {
     this.toggleShowRules = this.toggleShowRules.bind(this);
   }
 
-  async getLobbyStatus() {
+  getLobbyStatus = async () => {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + this.props.match.params.id);
 
-      if (this.state.lobby === null && response.data) {
-        // make API call every 1s to get Updated lobbies List.
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobbyStatus, 1000);
-      }
+      // make a new call to the lobby to update data in 1s
+      this.intervalID = setTimeout(this.getLobbyStatus, 1000);
 
       // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
@@ -66,9 +64,9 @@ class PlayingContainer extends React.Component {
           error
         )}`
       );
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
     }
-  }
+  };
 
   async leaveGame() {
     try {
@@ -78,7 +76,7 @@ class PlayingContainer extends React.Component {
         "/lobbies/" + this.state.lobby.id + "/leave"
       );
       console.log(response);
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
       this.props.history.push("/game");
     } catch (error) {
       this.setState({
@@ -95,9 +93,7 @@ class PlayingContainer extends React.Component {
   }
 
   componentWillUnmount() {
-    // stop Interval when Component gets hidden.
-    // If you don't do this, it will call the API every 1s even the component is not active anymore!
-    clearInterval(this.interval);
+    clearTimeout(this.intervalID);
   }
 
   nextState() {
