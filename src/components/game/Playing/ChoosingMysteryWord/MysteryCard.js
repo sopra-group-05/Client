@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import BigNumber from "./BigNumber";
@@ -101,18 +102,26 @@ const MysteryWord = ({ word }) => {
   const [definition, setDefinition] = React.useState("");
   const [showPopup, setShowPopup] = React.useState(false);
 
-  const getDefinition = async () => {
+  const getDefinition = async word => {
     setShowPopup(true);
     if (!definition) {
       // only make API call when there wasn't already one.
       try {
-        api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+        /*api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
         const response = await api.get(
           "/lobbies/" + this.props.match.params.id + "/definition"
+        );*/
+
+        const response = await axios.get(
+          "http://api.urbandictionary.com/v0/define?term=" + word
         );
 
+        let def = response.data.list
+          ? response.data.list[0].definition
+          : "No definition found.";
+
         // get Definition of active Mystery Word
-        setDefinition(response.data);
+        setDefinition(def);
       } catch (error) {
         console.log(error);
         // todo remove once API Endpoint works
@@ -131,7 +140,10 @@ const MysteryWord = ({ word }) => {
       <BigNumber number={word.id} small={true} />
       {word.word}
       {" " + word.status}
-      <Information src={InformationIcon} onClick={() => getDefinition()} />
+      <Information
+        src={InformationIcon}
+        onClick={() => getDefinition(word.word)}
+      />
       {showPopup && (
         <Popup
           word={word.word}
