@@ -113,8 +113,6 @@ const MysteryWord = ({ word }) => {
 
         // get Definition of active Mystery Word
         setDefinition(response.data);
-
-        this.setState({ mysteryCard: response.data, error: null });
       } catch (error) {
         console.log(error);
         // todo remove once API Endpoint works
