@@ -12,6 +12,7 @@ import styled from "styled-components";
 import TextInput from "../../../../views/design/TextInput";
 import Countdown from "../../../../views/Countdown";
 import { api } from "../../../../helpers/api";
+import MessageHandler from "../../../../views/MessageHandler";
 
 const Container = styled.div`
   display: flex;
@@ -24,12 +25,14 @@ const Form = styled.div`
   margin-left: 1rem;
 `;
 
-const WritingAClue = ({ l, nextState }) => {
+const WritingAClue = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [clue, setClue] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
+  const [error, setError] = React.useState("");
   const handleInputChange = (key, input) => {
     setClue(input);
+    checkClueForError(input);
   };
   const submitClue = async () => {
     setSubmitted(true);
@@ -43,8 +46,21 @@ const WritingAClue = ({ l, nextState }) => {
       await api.post("/lobbies/" + lobby.id + "/clues", requestBody);
     } catch (error) {
       console.log(error);
-      // todo remove once API Endpoint works
       alert("There was an error, see console and network log in your browser.");
+    }
+  };
+
+  const skipClue = () => {
+    // set guess to empty and submit it.
+    setClue("");
+    submitClue();
+  };
+
+  const checkClueForError = clue => {
+    if (clue.match(/(\s)/g)) {
+      setError("The Clue should consist of one word (no white spaces)");
+    } else {
+      setError("");
     }
   };
 
@@ -68,16 +84,17 @@ const WritingAClue = ({ l, nextState }) => {
             handleChange={handleInputChange}
           />
           <Button
-            disabled={!clue || submitted}
+            disabled={!clue || submitted || error}
             onClick={() => {
               submitClue();
             }}
           >
             Send
           </Button>
-          {!submitted && <Countdown functionWhenDone={submitClue} time={30} />}
+          {!submitted && <Countdown functionWhenDone={skipClue} time={30} />}
         </Form>
       </Container>
+      <MessageHandler message={error} show={error} />
     </PlayingWrapper>
   );
 };
