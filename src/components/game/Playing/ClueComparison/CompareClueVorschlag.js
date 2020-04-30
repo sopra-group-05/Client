@@ -11,6 +11,7 @@ import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 import styled from "styled-components";
 import { api } from "../../../../helpers/api";
 import MessageHandler from "../../../../views/MessageHandler";
+import Countdown from "../../../../views/Countdown";
 
 const Container = styled.div`
   display: flex;
@@ -167,6 +168,9 @@ const CompareCluesVorschlag = ({ l }) => {
             >
               Send
             </Button>
+            {!submitted && (
+              <Countdown functionWhenDone={submitClues} time={30} />
+            )}
           </Form>
         </ClueReview>
       </Container>
