@@ -36,7 +36,6 @@ class PlayingContainer extends React.Component {
     this.state = {
       lobby: null,
       error: null,
-      dummyState: 0,
       rulesShown: false
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
@@ -97,7 +96,9 @@ class PlayingContainer extends React.Component {
   }
 
   nextState() {
-    this.setState({ dummyState: this.state.dummyState + 1 });
+    this.setState({
+      dummyState: this.state.dummyState ? this.state.dummyState + 1 : 1
+    });
   }
 
   isGuesser(playerList) {
@@ -151,7 +152,7 @@ class PlayingContainer extends React.Component {
             onClick={() => {
               this.nextState();
             }}
-            disabled={true}
+            disabled={false}
           >
             Preview next State
           </Button>
