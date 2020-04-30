@@ -34,6 +34,11 @@ const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
     states.set("WAITING_FOR_REVIEW", ClueComparison);
     states.set("REVIEWING_CLUES", ClueComparison);
 
+    states.set("GUESSING_WORD", Guess);
+    states.set("WAITING_FOR_GUESS", Guess);
+
+    states.set("END_OF_TURN", EndRound);
+
     // Select Component to render depending on the players OWN Status!
     lobby = new Lobby(lobby);
     let player = lobby.players.find(
