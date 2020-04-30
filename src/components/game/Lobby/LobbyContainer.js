@@ -143,6 +143,7 @@ class LobbyContainer extends React.Component {
   }
 
   redirectToGame(lobbyID) {
+    clearInterval(this.interval);
     this.props.history.push("/game/lobby/" + lobbyID + "/game");
   }
 
@@ -175,6 +176,7 @@ class LobbyContainer extends React.Component {
       const url = isCreator ? url_start + "/terminate" : url_start + "/leave";
       const response = await api.put(url);
       console.log(response);
+      clearInterval(this.interval);
       this.props.history.push("/game");
     } catch (error) {
       this.setState({

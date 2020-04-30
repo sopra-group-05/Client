@@ -78,6 +78,7 @@ class PlayingContainer extends React.Component {
         "/lobbies/" + this.state.lobby.id + "/leave"
       );
       console.log(response);
+      clearInterval(this.interval);
       this.props.history.push("/game");
     } catch (error) {
       this.setState({
