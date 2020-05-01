@@ -31,14 +31,23 @@ const CardTitle = styled.h4`
 
 const MysteryWordContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
+  width: 100%;
+  ${props =>
+    props.status === "IN_USE" &&
+    "border: 1px solid #ffff00; border-radius: 20px"}
 `;
 
 const Information = styled.img`
   width: 20px;
   height: 20px;
   margin: 0.3rem;
+`;
+
+const MWText = styled.p`
+  font-size: 1.1rem;
+  color: ${props => (props.status === "IN_USE" ? "#ffff00" : "#fff")};
 `;
 
 class MysteryCard extends React.Component {
@@ -125,9 +134,7 @@ const MysteryWord = ({ word }) => {
       } catch (error) {
         console.log(error);
         // todo remove once API Endpoint works
-        setDefinition(
-          "a representation or copy of something, as for displaying to indicate appearance."
-        );
+        setDefinition("There was an error looking up the definition");
 
         // todo only show information icon for active card
         // todo highlight active card
@@ -136,14 +143,15 @@ const MysteryWord = ({ word }) => {
   };
 
   return (
-    <MysteryWordContainer>
+    <MysteryWordContainer status={word.status}>
       <BigNumber number={word.id} small={true} />
-      {word.word}
-      {" " + word.status}
-      <Information
-        src={InformationIcon}
-        onClick={() => getDefinition(word.word)}
-      />
+      <MWText status={word.status}>{word.word}</MWText>
+      {word.status === "IN_USE" && (
+        <Information
+          src={InformationIcon}
+          onClick={() => getDefinition(word.word)}
+        />
+      )}
       {showPopup && (
         <Popup
           word={word.word}
