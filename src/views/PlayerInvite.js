@@ -64,7 +64,7 @@ const Button = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Player = ({ user }) => {
+const PlayerInvite = ({ user }) => {
   return (
     <Container>
       <Link title={"To the profile"} to={"/game/dashboard/profile/" + user.id}>
@@ -73,10 +73,10 @@ const Player = ({ user }) => {
           <UserName>{user.username}</UserName>
           <UserScore>Score: XY</UserScore>
         </UserInfo>
-        <Button>View Profile</Button>
+        <Button>Invite Player</Button>
       </Link>
     </Container>
   );
 };
 
-export default Player;
+export default PlayerInvite;

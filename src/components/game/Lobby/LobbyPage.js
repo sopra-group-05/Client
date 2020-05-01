@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Sidebar from "../Sidebar/Sidebar";
-import OnlineUsers from "../Dashboard/OnlineUsers";
+import OnlineUsersInvite from "../Dashboard/OnlineUsersInvite";
 import { BaseContainer } from "../../../helpers/layout";
 import LobbyContainer from "./LobbyContainer";
 
@@ -31,7 +31,7 @@ class LobbyPage extends React.Component {
         <Container>
           <BoxContainer>
             <LobbyContainer />
-            <OnlineUsers />
+            <OnlineUsersInvite />
           </BoxContainer>
         </Container>
       </React.Fragment>
