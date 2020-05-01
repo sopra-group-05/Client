@@ -89,7 +89,9 @@ class MysteryCard extends React.Component {
           <CardTitle>Mystery Words</CardTitle>
           {this.state.mysteryCard ? (
             this.state.mysteryCard.map(w => {
-              return <MysteryWord word={w} />;
+              return (
+                <MysteryWord lobbyId={this.props.match.params.id} word={w} />
+              );
             })
           ) : (
             <React.Fragment>
@@ -107,7 +109,7 @@ class MysteryCard extends React.Component {
   }
 }
 
-const MysteryWord = ({ word }) => {
+const MysteryWord = ({ lobbyId, word }) => {
   const [definition, setDefinition] = React.useState("");
   const [showPopup, setShowPopup] = React.useState(false);
 
@@ -116,34 +118,22 @@ const MysteryWord = ({ word }) => {
     if (!definition) {
       // only make API call when there wasn't already one.
       try {
-        /*api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+        api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
         const response = await api.get(
-          "/lobbies/" + this.props.match.params.id + "/definition"
-        );*/
-
-        // todo remove when backend implemented defintion api
-        axios.defaults.headers.common["x-rapidapi-host"] =
-          "mashape-community-urban-dictionary.p.rapidapi.com";
-        axios.defaults.headers.common["x-rapidapi-key"] =
-          "568d4a60a1msh60e1c4aadfdfcf9p1a0c11jsn1e969ba24ddc";
-        const response = await axios.get(
-          "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term=" +
-            word
+          "/lobbies/" + lobbyId + "/definition/" + word
         );
 
-        let def = response.data.list
-          ? response.data.list[0].definition
+        // set definition ifh there was one
+        let def = response.data.results
+          ? response.data.results[0].lexicalEntries[0].entries[0].senses[0]
+              .definitions[0]
           : "No definition found.";
 
         // get Definition of active Mystery Word
         setDefinition(def);
       } catch (error) {
         console.log(error);
-        // todo remove once API Endpoint works
-        setDefinition("There was an error looking up the definition");
-
-        // todo only show information icon for active card
-        // todo highlight active card
+        setDefinition("No definition found.");
       }
     }
   };
@@ -217,7 +207,7 @@ const Popup = ({ definition, word, setShowPopup }) => {
       <PopupInner>
         <PupupContent>
           <h1>{word}</h1>
-          <p>{definition}</p>
+          <p>{definition ? definition : <Spinner />}</p>
           <ClosePopup onClick={() => setShowPopup(false)}>Close</ClosePopup>
         </PupupContent>
       </PopupInner>
