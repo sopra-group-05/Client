@@ -289,7 +289,7 @@ class LobbyContainer extends React.Component {
                   disabled={!this.state.lobbyReady}
                   background={"#44d63f"}
                 >
-                  Start game
+                  Start Game
                 </Button>
               )}
             </ButtonGroup>
