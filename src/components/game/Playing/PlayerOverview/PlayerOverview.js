@@ -20,6 +20,7 @@ const PlayerOverview = props => {
   const lobby = new Lobby(props.l); //transform input into Lobby Model
   const toggleShowRules = props.toggleShowRules;
   const leaveGame = props.leaveGame;
+  const showHideRules = props.showHideRules ? "Hide Rules" : "Show Rules";
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
@@ -46,7 +47,7 @@ const PlayerOverview = props => {
               toggleShowRules();
             }}
           >
-            Show Rules
+            {showHideRules}
           </Button>
         </ButtonContainer>
       </React.Fragment>

@@ -135,6 +135,7 @@ class PlayingContainer extends React.Component {
                   l={this.state.lobby}
                   leaveGame={this.leaveGame}
                   toggleShowRules={this.toggleShowRules}
+                  showHideRules={this.state.rulesShown}
                 />
                 <RuleContainer
                   l={this.state.lobby}
