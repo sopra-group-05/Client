@@ -73,7 +73,7 @@ const Player = ({ user }) => {
           <UserName>{user.username}</UserName>
           <UserScore>Score: XY</UserScore>
         </UserInfo>
-        <Button>VIEW PROFILE</Button>
+        <Button>View Profile</Button>
       </Link>
     </Container>
   );
