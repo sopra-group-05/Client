@@ -9,6 +9,7 @@ const Container = styled.div`
   border-radius: 15px;
   display: flex;
   background-color: #454c62;
+  width: 100%;
   a {
     color: #ce552e;
     display: flex;

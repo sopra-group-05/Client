@@ -7,11 +7,21 @@ import Box from "../../../views/Box";
 import JoinLobby from "../../../views/JoinLobby";
 import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
+import Player from "../../../views/Player";
 
 const Users = styled.ul`
   list-style: none;
   padding-left: 0;
 `;
+
+const PlayerContainer = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+
 
 class OpenLobbies extends React.Component {
   constructor() {
@@ -92,7 +102,9 @@ class OpenLobbies extends React.Component {
               {this.state.lobbies.length
                 ? this.state.lobbies.map(l => {
                     return (
+                    <PlayerContainer>
                       <JoinLobby joinLobby={this.joinLobbyFunction} lobby={l} />
+                    </PlayerContainer>
                     );
                   })
                 : "There are no Lobbies for you to join"}

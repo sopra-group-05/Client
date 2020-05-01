@@ -13,6 +13,7 @@ const Container = styled.div`
   display: flex;
   background-color: #454c62;
   cursor: pointer;
+  width: 100%;
 `;
 
 const LobbyName = styled.p`
