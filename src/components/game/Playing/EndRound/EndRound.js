@@ -8,6 +8,7 @@ import {
   PlayingWrapper
 } from "../PlayingStyle";
 import Countdown from "../../../../views/Countdown";
+import EndRoundContent from "./EndRoundContent";
 
 const DeckOverview = styled.div`
   display: flex;
@@ -46,27 +47,11 @@ const DeckCount = styled.span`
 const EndRound = ({ lobby, isGuesser, nextState }) => {
   const l = new Lobby(lobby); //transform input into Lobby Model
   const player = l.players.find(x => x.role == "GUESSER");
+  
   return (
     <PlayingWrapper>
       <PlayingTitle> Round is over </PlayingTitle>
-      <PlayingDescription>
-        Player {player.username} did guess the correct Mysteryword!!
-      </PlayingDescription>
-      <DeckOverview>
-        <DeckContainer>
-          <DeckTitle> Remaining Cards in Deck </DeckTitle>
-          <DeckCount color={"#00a5ee"}> {8} </DeckCount>
-        </DeckContainer>
-        <DeckContainer>
-          <DeckTitle> Won Cards </DeckTitle>
-          <DeckCount color={"#39b346"}> {3} </DeckCount>
-        </DeckContainer>
-        <DeckContainer>
-          <DeckTitle> Lost Cards </DeckTitle>
-          <DeckCount color={"#ee232b"}> {2} </DeckCount>
-        </DeckContainer>
-      </DeckOverview>
-
+      <EndRoundContent user={player.username} lobbyId={lobby.id}/>
       <Countdown functionWhenDone={nextState} time={30} />
     </PlayingWrapper>
   );
