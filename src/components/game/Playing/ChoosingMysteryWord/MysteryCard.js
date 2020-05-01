@@ -121,8 +121,14 @@ const MysteryWord = ({ word }) => {
           "/lobbies/" + this.props.match.params.id + "/definition"
         );*/
 
+        // todo remove when backend implemented defintion api
+        axios.defaults.headers.common["x-rapidapi-host"] =
+          "mashape-community-urban-dictionary.p.rapidapi.com";
+        axios.defaults.headers.common["x-rapidapi-key"] =
+          "568d4a60a1msh60e1c4aadfdfcf9p1a0c11jsn1e969ba24ddc";
         const response = await axios.get(
-          "http://api.urbandictionary.com/v0/define?term=" + word
+          "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term=" +
+            word
         );
 
         let def = response.data.list
