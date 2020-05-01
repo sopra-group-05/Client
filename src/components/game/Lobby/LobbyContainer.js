@@ -20,6 +20,10 @@ const PlayerStatus = styled.div`
   cursor: pointer;
 `;
 
+const ButtonSpacer = styled.div`
+  width: 5em;
+`;
+
 const CheckBox = styled.div`
   height: 25px;
   width: 25px;
@@ -280,6 +284,7 @@ class LobbyContainer extends React.Component {
               >
                 Leave Lobby
               </Button>
+              <ButtonSpacer/>
               {this.state.lobby.creator.id ==
                 localStorage.getItem("userId") && (
                 <Button
