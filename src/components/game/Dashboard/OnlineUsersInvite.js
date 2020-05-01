@@ -75,7 +75,7 @@ class OnlineUsersInvite extends React.Component {
 
   render() {
     return (
-      <Box title="Online">
+      <Box title="Invite Player">
         <MessageHandler
           success={false}
           show={this.state.error}

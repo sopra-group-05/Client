@@ -10,7 +10,7 @@ const BoxContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
   > div {
-    margin: 1rem;
+    margin: 3rem;
   }
 `;
 

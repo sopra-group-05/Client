@@ -73,7 +73,7 @@ const PlayerInvite = ({ user }) => {
           <UserName>{user.username}</UserName>
           <UserScore>Score: XY</UserScore>
         </UserInfo>
-        <Button>Invite Player</Button>
+        <Button>Invite</Button>
       </Link>
     </Container>
   );

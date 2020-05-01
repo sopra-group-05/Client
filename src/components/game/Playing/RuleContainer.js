@@ -10,12 +10,18 @@ const RuleList = styled.ol`
   padding-left: 2em;
 `;
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 70%;
-  margin-top: 5em;
+  margin-top: 1em;
 `;
 
 const RuleContainer = ({ l, isShown, showRules }) => {
@@ -30,6 +36,7 @@ const RuleContainer = ({ l, isShown, showRules }) => {
   ];
   return isShown ? (
     <Box maxWidth="350px" title={"Quick Rules"}>
+        <Container>
       <RuleList>
         {rules.map(rule => {
           return <li>{rule}</li>;
@@ -43,9 +50,10 @@ const RuleContainer = ({ l, isShown, showRules }) => {
             showRules();
           }}
         >
-          Rules
+          Show all Rules
         </Button>
       </ButtonContainer>
+        </Container>
     </Box>
   ) : null;
 };
