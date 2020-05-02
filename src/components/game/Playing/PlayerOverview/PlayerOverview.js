@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import Lobby from "../../../shared/models/Lobby";
 import Box from "../../../../views/Box";
 import PlayerInOverview from "../../../../views/PlayerInOverview";
-import { BaseContainer } from "../../../../helpers/layout";
 import { Button } from "../../../../views/design/Button";
 
 const ButtonContainer = styled.div`

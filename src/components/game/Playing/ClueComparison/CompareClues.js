@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Lobby from "../../../shared/models/Lobby";
 import {
+  Button,
   PlayingDescription,
   PlayingTitle,
   PlayingWrapper
@@ -11,6 +12,7 @@ import Countdown from "../../../../views/Countdown";
 import { api, handleError } from "../../../../helpers/api";
 import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 import Clue from "../../../shared/models/Clue";
+import MessageHandler from "../../../../views/MessageHandler";
 
 const CheckBox = styled.div`
   height: 25px;
@@ -65,9 +67,8 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Clues = styled.ul`
-  list-style: none;
-  padding-left: 0;
+const ClueReview = styled.div`
+  width: 70%;
 `;
 
 const ClueContainer = styled.li`
@@ -75,6 +76,11 @@ const ClueContainer = styled.li`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const Form = styled.div`
+  padding: 1rem;
+  margin-left: 1rem;
 `;
 
 let exampleClues = [
@@ -86,41 +92,64 @@ class CompareClues extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      l: this.props.l,
+      lobby: this.props.l,
       nextState: this.props.nextState,
-      clues: exampleClues, //TODO: empty when rest works
+      clues: [],
+      submitted: false,
+      cluesToFlag: [],
       error: null
     };
     this.getClues = this.getClues.bind(this);
-    this.toggleCheckbox = this.toggleCheckbox.bind(this);
+    this.flagClue = this.flagClue.bind(this);
+    this.submitClues = this.submitClues.bind(this);
   }
 
   async getClues() {
     try {
-      const lobby = new Lobby(this.state.l);
+      const lobby = new Lobby(this.state.lobby);
 
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
       console.log(response);
-      const clues = response.data.map(data => {
-        return new Clue(data);
-      });
-      console.log(clues);
+      this.setState({ clues: response.data, error: null });
 
+      // make API call every 1s to get Updated lobbies List.
       if (this.state.lobby === null && response.data) {
-        // make API call every 1s to get Updated lobbies List.
         // Will have to be destroyed in componentWIllUnmount()!
         // only set interval the very first time you call the API
         this.interval = setInterval(this.getLobbyStatus, 1000);
       }
-
-      this.setState({ clues: clues, error: null });
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
         `Something went wrong while fetching the clues: \n${handleError(error)}`
       );
       clearInterval(this.interval);
+    }
+  }
+
+  flagClue(clueId) {
+    if (this.state.cluesToFlag.includes(clueId)) {
+      let newArray = this.state.cluesToFlag.filter(item => item !== clueId);
+      this.setState({ cluesToFlag: newArray });
+    } else {
+      this.setState({ cluesToFlag: [clueId].concat(this.state.cluesToFlag) });
+    }
+  }
+
+  async submitClues() {
+    this.setState({ submitted: true });
+
+    try {
+      // make POST request to Server to choose Number
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      await api.put(
+        "/lobbies/" + this.state.lobby.id + "/clues/flag",
+        this.state.cluesToFlag
+      );
+    } catch (error) {
+      console.log(error);
+      alert("There was an error, see console and network log in your browser.");
     }
   }
 
@@ -134,61 +163,48 @@ class CompareClues extends React.Component {
     clearInterval(this.interval);
   }
 
-  async toggleCheckbox(clue) {
-    const previousStatus = clue.clueStatus; // TODO: when game works check if this is okay
-    try {
-      // set clue status via put request
-      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.put(
-        "/lobbies/" + this.state.l.id + "/clues/" + clue.id
-      );
-      console.log(response);
-      clue.clueStatus = previousStatus === 0 ? 1 : 0;
-    } catch (error) {
-      this.setState({
-        error: error ? error.message : "Unknown error",
-        playerStatus: previousStatus
-      });
-      console.log(
-        `Something went wrong while setting clue status: \n${handleError(
-          error
-        )}`
-      );
-    }
-  }
-
   render() {
-    const lobby = new Lobby(this.state.l); //transform input into Lobby Model
+    const lobby = new Lobby(this.state.lobby); //transform input into Lobby Model
     const clues = this.state.clues;
     return (
-      <PlayingWrapper headerText="Choose clues to remove! ">
-        <PlayingTitle>Teammate</PlayingTitle>
+      <PlayingWrapper>
+        <PlayingTitle>Reviewing Clues</PlayingTitle>
         <PlayingDescription>
-          You will choose which clues to remove from the following list!
+          If you think any of the following Clues does not follow the games rule
+          then please remove the tick. If enough Players remove the tick of the
+          Clue it will be disabled!
         </PlayingDescription>
         <Container>
-          <React.Fragment>
-            <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
-          </React.Fragment>
-          <Clues>
-            {
-              // TODO: clue data structure how cf key=clue.id
-            }
-            {clues.map(clue => {
-              return (
-                <ClueContainer clue={clue}>
-                  <ClueStatus onClick={() => this.toggleCheckbox(clue)}>
+          <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
+          <ClueReview>
+            <Form>
+              {clues.map(clue => (
+                <ClueContainer>
+                  <ClueStatus onClick={() => this.flagClue(clue.id)}>
                     <CheckBox>
-                      <CheckboxTick checked={clue.clueStatus === 1} />
+                      <CheckboxTick
+                        checked={!this.state.cluesToFlag.includes(clue.id)}
+                      />
                     </CheckBox>
                     {clue.hint}
                   </ClueStatus>
                 </ClueContainer>
-              );
-            })}
-          </Clues>
+              ))}
+              <Button
+                disabled={!clues || this.state.submitted || this.state.error}
+                onClick={() => {
+                  this.submitClues();
+                }}
+              >
+                Send
+              </Button>
+              {!this.state.submitted && (
+                <Countdown functionWhenDone={this.submitClues} time={30} />
+              )}
+            </Form>
+          </ClueReview>
         </Container>
-        <Countdown time={30} functionWhenDone={this.state.nextState} />
+        <MessageHandler show={this.state.error} message={this.state.error} />
       </PlayingWrapper>
     );
   }

@@ -2,10 +2,10 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Lobby from "../../../shared/models/Lobby";
 import {
+  Button,
   PlayingDescription,
   PlayingTitle,
-  PlayingWrapper,
-  Button
+  PlayingWrapper
 } from "../PlayingStyle";
 import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 import styled from "styled-components";
@@ -82,28 +82,13 @@ const CheckboxTick = styled.div`
   }
 `;
 
-const CompareCluesVorschlag = ({ l }) => {
+function CompareCluesVorschlag(props) {
+  let { l } = props;
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [submitted, setSubmitted] = React.useState(false);
   const [clues, setClues] = React.useState([]);
   const [cluesToFlag, setCluesToFlag] = React.useState([]);
   const [error, setError] = React.useState("");
-
-  const submitClues = async () => {
-    setSubmitted(true);
-    try {
-      /*const requestBody = JSON.stringify({
-        cluesToFlag: cluesToFlag
-      });*/
-
-      // make POST request to Server to choose Number
-      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      await api.put("/lobbies/" + lobby.id + "/clues/flag", cluesToFlag);
-    } catch (error) {
-      console.log(error);
-      alert("There was an error, see console and network log in your browser.");
-    }
-  };
 
   const getClues = async () => {
     // get Clues
@@ -122,6 +107,22 @@ const CompareCluesVorschlag = ({ l }) => {
 
       // todo only show information icon for active card
       // todo highlight active card
+    }
+  };
+
+  const submitClues = async () => {
+    setSubmitted(true);
+    try {
+      /*const requestBody = JSON.stringify({
+        cluesToFlag: cluesToFlag
+      });*/
+
+      // make POST request to Server to choose Number
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      await api.put("/lobbies/" + lobby.id + "/clues/flag", cluesToFlag);
+    } catch (error) {
+      console.log(error);
+      alert("There was an error, see console and network log in your browser.");
     }
   };
 
@@ -177,6 +178,6 @@ const CompareCluesVorschlag = ({ l }) => {
       <MessageHandler show={error} message={error} />
     </PlayingWrapper>
   );
-};
+}
 
 export default withRouter(CompareCluesVorschlag);

@@ -6,7 +6,7 @@ import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
 import ErrorPage from "../ErrorPage";
-import { api, handleError } from "../../../helpers/api";
+import { api } from "../../../helpers/api";
 
 /**
  * Main router of your application.

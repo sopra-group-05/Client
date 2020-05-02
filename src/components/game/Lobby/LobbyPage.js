@@ -20,10 +20,6 @@ const Container = styled(BaseContainer)`
 `;
 
 class LobbyPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <React.Fragment>
