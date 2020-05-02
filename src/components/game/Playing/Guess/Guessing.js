@@ -10,8 +10,11 @@ import {
 import styled from "styled-components";
 import TextInput from "../../../../views/design/TextInput";
 import Countdown from "../../../../views/Countdown";
-import { api } from "../../../../helpers/api";
+import { api, handleError } from "../../../../helpers/api";
 import MessageHandler from "../../../../views/MessageHandler";
+import Clue from "../../../shared/models/Clue";
+import { Spinner } from "../../../../views/design/Spinner";
+import Clues from "./Clues";
 
 const Container = styled.div`
   display: flex;
@@ -27,6 +30,7 @@ const Form = styled.div`
 const Guessing = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [guess, setGuess] = React.useState("");
+  const [clues, setClues] = React.useState([]);
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState("");
   const handleInputChange = (key, input) => {
@@ -62,6 +66,21 @@ const Guessing = ({ l }) => {
     }
   };
 
+  const getClues = async () => {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.get("/lobbies/" + lobby.id + "/clues");
+      setClues(response.data);
+    } catch (error) {
+      console.log(error);
+      setError("There was a problem getting the Clues");
+    }
+  };
+
+  React.useEffect(() => {
+    getClues();
+  }, []);
+
   return (
     <PlayingWrapper
       headerText={
@@ -71,7 +90,7 @@ const Guessing = ({ l }) => {
       <PlayingTitle>Guess the Mystery Word</PlayingTitle>
       <PlayingDescription>Try to guess the mystery word!</PlayingDescription>
       <Container>
-        <p>This is where the clues would be displayed.</p>
+        {clues ? <Clues cluesList={clues} /> : <Spinner />}
         <Form>
           <TextInput
             disabled={submitted}
