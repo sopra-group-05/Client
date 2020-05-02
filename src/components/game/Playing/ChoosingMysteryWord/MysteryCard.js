@@ -90,7 +90,11 @@ class MysteryCard extends React.Component {
           {this.state.mysteryCard ? (
             this.state.mysteryCard.map(w => {
               return (
-                <MysteryWord lobbyId={this.props.match.params.id} word={w} />
+                <MysteryWord
+                  lobbyLanguage={this.props.lobbyLanguage}
+                  lobbyId={this.props.match.params.id}
+                  word={w}
+                />
               );
             })
           ) : (
@@ -109,7 +113,7 @@ class MysteryCard extends React.Component {
   }
 }
 
-const MysteryWord = ({ lobbyId, word }) => {
+const MysteryWord = ({ lobbyId, word, lobbyLanguage }) => {
   const [definition, setDefinition] = React.useState("");
   const [showPopup, setShowPopup] = React.useState(false);
 
@@ -142,7 +146,7 @@ const MysteryWord = ({ lobbyId, word }) => {
     <MysteryWordContainer status={word.status}>
       <BigNumber number={word.id} small={true} />
       <MWText status={word.status}>{word.word}</MWText>
-      {word.status === "IN_USE" && (
+      {word.status === "IN_USE" && lobbyLanguage === "EN" && (
         <Information
           src={InformationIcon}
           onClick={() => getDefinition(word.word)}

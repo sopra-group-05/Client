@@ -147,7 +147,7 @@ const CompareCluesVorschlag = ({ l }) => {
         Clue it will be disabled!
       </PlayingDescription>
       <Container>
-        <MysteryCard lobbyId={lobby.id} />
+        <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
         <ClueReview>
           <Form>
             {clues.map(clue => (
