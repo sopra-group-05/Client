@@ -180,9 +180,9 @@ class CompareClues extends React.Component {
       >
         <PlayingTitle>Reviewing Clues</PlayingTitle>
         <PlayingDescription>
-          If you think any of the following Clues does not follow the games rule
+          If you think any of the following Clues does not follow the game rules
           then please remove the tick. If enough Players remove the tick of the
-          Clue it will be disabled!
+          Clue, it will be disabled!
         </PlayingDescription>
         <Container>
           <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
