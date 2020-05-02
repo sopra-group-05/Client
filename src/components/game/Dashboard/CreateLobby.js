@@ -156,7 +156,9 @@ class CreateLobby extends React.Component {
 
   changeLanguage(languageCode) {
     this.setState({ language: languageCode });
-    console.log(languageCode);
+    if (languageCode === "DE") {
+      this.setState({ gameMode: 0 });
+    }
   }
 
   toggleCheckbox() {
@@ -208,15 +210,17 @@ class CreateLobby extends React.Component {
               labelAlign={"center"}
               handleChange={this.handleInputChange}
             />
-            <BotContainer>
-              <GameMode onClick={() => this.toggleCheckbox()}>
-                <CheckBox>
-                  <CheckboxTick checked={this.state.gameMode === 1} />
-                </CheckBox>
-                Add Bots
-              </GameMode>
-              {!(this.state.gameMode === 0) ? <Dropdown /> : ""}
-            </BotContainer>
+            {this.state.language === "EN" && (
+              <BotContainer>
+                <GameMode onClick={() => this.toggleCheckbox()}>
+                  <CheckBox>
+                    <CheckboxTick checked={this.state.gameMode === 1} />
+                  </CheckBox>
+                  Add Bots
+                </GameMode>
+                {!(this.state.gameMode === 0) ? <Dropdown /> : ""}
+              </BotContainer>
+            )}
             <Label>Select Lobby Language</Label>
             <Languages>
               <Flag
