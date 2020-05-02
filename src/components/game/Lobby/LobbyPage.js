@@ -27,7 +27,7 @@ class LobbyPage extends React.Component {
         <Container>
           <BoxContainer>
             <LobbyContainer />
-            <OnlineUsersInvite />
+            <OnlineUsersInvite lobbyId={this.props.match.params.id} />
           </BoxContainer>
         </Container>
       </React.Fragment>

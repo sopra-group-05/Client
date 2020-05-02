@@ -89,7 +89,7 @@ class OnlineUsersInvite extends React.Component {
               {this.state.users.map(user => {
                 return (
                   <PlayerContainer key={user.id}>
-                    <PlayerInvite user={user} />
+                    <PlayerInvite user={user} lobbyId={this.props.lobbyId} />
                   </PlayerContainer>
                 );
               })}

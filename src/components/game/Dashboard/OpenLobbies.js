@@ -53,7 +53,7 @@ class OpenLobbies extends React.Component {
             this.props.history.push("/game/lobby/" + lobby.id);
           }
         });
-        this.setState({ shouldRedirectToLobby: false });
+        //this.setState({ shouldRedirectToLobby: false });
       }
 
       const filtered_lobbies = response.data.filter(function(lobby) {

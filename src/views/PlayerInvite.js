@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
+import { api } from "../helpers/api";
+import { withRouter } from "react-router-dom";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -54,6 +55,7 @@ const Button = styled.div`
   display: block;
   padding: 0.5rem 0.75rem 0.5rem 0.75rem;
   margin-left: auto;
+  cursor: pointer;
 `;
 
 /**
@@ -64,19 +66,35 @@ const Button = styled.div`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const PlayerInvite = ({ user }) => {
+const PlayerInvite = ({ user, lobbyId }) => {
+  const inviteUser = async () => {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.put(
+        "/lobbies/" + lobbyId + "/invite/" + user.id
+      );
+      console.log(response);
+    } catch (error) {
+      console.log("Could not add user: " + error);
+    }
+  };
+
   return (
     <Container>
-      <Link title={"To the profile"} to={"/game/dashboard/profile/" + user.id}>
-        <Avatar size={40} user={user} />
-        <UserInfo>
-          <UserName>{user.username}</UserName>
-          <UserScore>Score: XY</UserScore>
-        </UserInfo>
-        <Button>Invite</Button>
-      </Link>
+      <Avatar size={40} user={user} />
+      <UserInfo>
+        <UserName>{user.username}</UserName>
+        <UserScore>Score: XY</UserScore>
+      </UserInfo>
+      <Button
+        onClick={() => {
+          inviteUser();
+        }}
+      >
+        Invite
+      </Button>
     </Container>
   );
 };
 
-export default PlayerInvite;
+export default withRouter(PlayerInvite);
