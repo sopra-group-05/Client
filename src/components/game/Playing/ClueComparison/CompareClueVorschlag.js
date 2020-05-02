@@ -109,7 +109,7 @@ const CompareCluesVorschlag = ({ l }) => {
     // get Clues
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.get("/lobbies/" + this.lobby.id + "/clues");
+      const response = await api.get("/lobbies/" + lobby.id + "/clues");
       setClues(response.data);
     } catch (error) {
       console.log(error);
