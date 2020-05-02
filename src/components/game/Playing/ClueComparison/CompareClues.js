@@ -106,7 +106,10 @@ class CompareClues extends React.Component {
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
       this.setState({ clues: response.data, waiting: false, error: null });
     } catch (error) {
-      if (error.response && error.response.status === 500) {
+      if (
+        error.response &&
+        (error.response.status === 500 || error.response.status === 400)
+      ) {
         this.setState({ waiting: true, error: "" });
         setTimeout(this.getClues, 1000);
       } else {
