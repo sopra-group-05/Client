@@ -83,23 +83,17 @@ const Form = styled.div`
   margin-left: 1rem;
 `;
 
-let exampleClues = [
-  { id: 1, clueStatus: 0, hint: "test1" },
-  { id: 2, clueStatus: 1, hint: "test2" }
-];
-
 class CompareClues extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lobby: this.props.l,
-      nextState: this.props.nextState,
       clues: [],
       submitted: false,
       cluesToFlag: [],
       waiting: true,
       error: null
     };
+
     this.getClues = this.getClues.bind(this);
     this.flagClue = this.flagClue.bind(this);
     this.submitClues = this.submitClues.bind(this);
@@ -107,29 +101,22 @@ class CompareClues extends React.Component {
 
   async getClues() {
     try {
-      const lobby = new Lobby(this.state.lobby);
-
+      const lobby = new Lobby(this.props.l);
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
-      console.log(response);
       this.setState({ clues: response.data, waiting: false, error: null });
-
-      // make API call every 1s to get Updated lobbies List.
-      if (this.state.lobby === null && response.data) {
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobbyStatus, 1000);
-      }
     } catch (error) {
-      this.setState({
-        error: error ? error.message : "Unknown error",
-        waiting: true
-      });
-      setTimeout(this.getClues, 1000);
-      console.log(
-        `Something went wrong while fetching the clues: \n${handleError(error)}`
-      );
-      clearInterval(this.interval);
+      if (error.response && error.response.status === 500) {
+        this.setState({ waiting: true, error: "" });
+        setTimeout(this.getClues, 1000);
+      } else {
+        this.setState({ error: error ? error.message : "Unknown error" });
+        console.log(
+          `Something went wrong while fetching the clues: \n${handleError(
+            error
+          )}`
+        );
+      }
     }
   }
 
@@ -149,23 +136,19 @@ class CompareClues extends React.Component {
       // make POST request to Server to choose Number
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       await api.put(
-        "/lobbies/" + this.state.lobby.id + "/clues/flag",
+        "/lobbies/" + this.props.l.id + "/clues/flag",
         this.state.cluesToFlag
       );
+      this.setState({ error: "" });
     } catch (error) {
-      console.log(error);
-      alert("There was an error, see console and network log in your browser.");
+      this.setState({
+        error: error.response ? error.response.status : "unknown error"
+      });
     }
   }
 
   componentDidMount() {
     this.getClues();
-  }
-
-  componentWillUnmount() {
-    // stop Interval when Component gets hidden.
-    // If you don't do this, it will call the API every 1s even the component is not active anymore!
-    clearInterval(this.interval);
   }
 
   render() {
@@ -187,31 +170,35 @@ class CompareClues extends React.Component {
         <Container>
           <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
           <ClueReview>
-            <Form>
-              {clues.map(clue => (
-                <ClueContainer>
-                  <ClueStatus onClick={() => this.flagClue(clue.id)}>
-                    <CheckBox>
-                      <CheckboxTick
-                        checked={!this.state.cluesToFlag.includes(clue.id)}
-                      />
-                    </CheckBox>
-                    {clue.hint}
-                  </ClueStatus>
-                </ClueContainer>
-              ))}
-              <Button
-                disabled={!clues || this.state.submitted || this.state.error}
-                onClick={() => {
-                  this.submitClues();
-                }}
-              >
-                Send
-              </Button>
-              {!this.state.submitted && (
-                <Countdown functionWhenDone={this.submitClues} time={30} />
-              )}
-            </Form>
+            {clues && clues.length > 0 ? (
+              <Form>
+                {clues.map(clue => (
+                  <ClueContainer>
+                    <ClueStatus onClick={() => this.flagClue(clue.id)}>
+                      <CheckBox>
+                        <CheckboxTick
+                          checked={!this.state.cluesToFlag.includes(clue.id)}
+                        />
+                      </CheckBox>
+                      {clue.hint}
+                    </ClueStatus>
+                  </ClueContainer>
+                ))}
+                <Button
+                  disabled={!clues || this.state.submitted || this.state.error}
+                  onClick={() => {
+                    this.submitClues();
+                  }}
+                >
+                  Send
+                </Button>
+                {!this.state.submitted && !this.state.waiting && (
+                  <Countdown functionWhenDone={this.submitClues} time={30} />
+                )}
+              </Form>
+            ) : (
+              <Spinner />
+            )}
           </ClueReview>
         </Container>
         <MessageHandler show={this.state.error} message={this.state.error} />
