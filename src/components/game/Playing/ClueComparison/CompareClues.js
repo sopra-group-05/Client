@@ -11,7 +11,7 @@ import styled from "styled-components";
 import Countdown from "../../../../views/Countdown";
 import { api, handleError } from "../../../../helpers/api";
 import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
-import Clue from "../../../shared/models/Clue";
+import { Spinner } from "../../../../views/design/Spinner";
 import MessageHandler from "../../../../views/MessageHandler";
 
 const CheckBox = styled.div`
@@ -97,6 +97,7 @@ class CompareClues extends React.Component {
       clues: [],
       submitted: false,
       cluesToFlag: [],
+      waiting: true,
       error: null
     };
     this.getClues = this.getClues.bind(this);
@@ -111,7 +112,7 @@ class CompareClues extends React.Component {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
       console.log(response);
-      this.setState({ clues: response.data, error: null });
+      this.setState({ clues: response.data, waiting: false, error: null });
 
       // make API call every 1s to get Updated lobbies List.
       if (this.state.lobby === null && response.data) {
@@ -120,7 +121,11 @@ class CompareClues extends React.Component {
         this.interval = setInterval(this.getLobbyStatus, 1000);
       }
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error: error ? error.message : "Unknown error",
+        waiting: true
+      });
+      setTimeout(this.getClues, 1000);
       console.log(
         `Something went wrong while fetching the clues: \n${handleError(error)}`
       );
@@ -167,7 +172,12 @@ class CompareClues extends React.Component {
     const lobby = new Lobby(this.state.lobby); //transform input into Lobby Model
     const clues = this.state.clues;
     return (
-      <PlayingWrapper>
+      <PlayingWrapper
+        headerText={
+          this.state.waiting &&
+          "Waiting for other Players to submit their clues..."
+        }
+      >
         <PlayingTitle>Reviewing Clues</PlayingTitle>
         <PlayingDescription>
           If you think any of the following Clues does not follow the games rule

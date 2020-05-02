@@ -25,6 +25,10 @@ const Container = styled.div`
   }
 `;
 
+const GridContainer = styled.div`
+  display: grid;
+`;
+
 const FactorTitle = styled.h4`
   font-size: 0.8rem;
   font-weight: bold;
@@ -114,19 +118,10 @@ const TestRankingData = [
     clues: 50,
     good: 36,
     time_to_write_clues: 24
-  },
-  {
-    playerId: 5,
-    name: "ABC",
-    score: 33,
-    guesses: 20,
-    correct: 8,
-    time_to_guess: 38,
-    clues: 50,
-    good: 36,
-    time_to_write_clues: 24
   }
 ];
+
+const teamPoints = { name: "Team Points", points: 42 };
 
 class RankingBox extends React.Component {
   constructor(props) {
@@ -153,32 +148,50 @@ class RankingBox extends React.Component {
     const actualData = this.state.rankingData.slice(1);
     return this.state.rankingData ? (
       <Box title={"Ranking"}>
-        <RankingRow>
-          {Object.keys(factors).map(key => {
-            return (
-              key !== "playerId" && <FactorTitle>{factors[key]}</FactorTitle>
-            );
-          })}
-        </RankingRow>
-        <Container>
-          {Object.keys(actualData).map(data => {
-            const ComponentClass =
-              data[0] == localStorage.getItem("userId")
-                ? FactorLocalPlayer
-                : FactorOtherPlayer;
-            return (
-              <RankingRow>
-                {Object.keys(actualData[data]).map(key => {
-                  return (
-                    key !== "playerId" && (
-                      <ComponentClass>{actualData[data][key]}</ComponentClass>
-                    )
-                  );
-                })}
-              </RankingRow>
-            );
-          })}
-        </Container>
+        {this.state.lobby && (
+          <FactorTitle>
+            As a Team, you got{" "}
+            {
+              teamPoints.points // TODO: get points from BE
+            }{" "}
+            points!
+          </FactorTitle>
+        )}
+        <GridContainer>
+          <RankingRow>
+            {Object.keys(factors).map(key => {
+              return (
+                key !== "playerId" && <FactorTitle>{factors[key]}</FactorTitle>
+              );
+            })}
+            <FactorTitle>
+              {
+                teamPoints.name
+                // TODO: get points from BE
+              }
+            </FactorTitle>
+          </RankingRow>
+          <Container>
+            {Object.keys(actualData).map(data => {
+              const ComponentClass =
+                data[0] == localStorage.getItem("userId")
+                  ? FactorLocalPlayer
+                  : FactorOtherPlayer;
+              return (
+                <RankingRow>
+                  {Object.keys(actualData[data]).map(key => {
+                    return (
+                      key !== "playerId" && (
+                        <ComponentClass>{actualData[data][key]}</ComponentClass>
+                      )
+                    );
+                  })}
+                  {this.state.lobby && teamPoints.points}
+                </RankingRow>
+              );
+            })}
+          </Container>
+        </GridContainer>
       </Box>
     ) : (
       <Spinner />
