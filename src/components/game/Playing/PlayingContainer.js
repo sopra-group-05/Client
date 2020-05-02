@@ -175,7 +175,7 @@ class PlayingContainer extends React.Component {
             onClick={() => {
               this.nextState();
             }}
-            disabled={true}
+            disabled={false}
           >
             Preview next State
           </Button>

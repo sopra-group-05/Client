@@ -38,6 +38,7 @@ const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
     states.set("WAITING_FOR_GUESS", Guess);
 
     states.set("END_OF_TURN", EndRound);
+    states.set("READY", EndRound);
 
     // Select Component to render depending on the players OWN Status!
     lobby = new Lobby(lobby);
