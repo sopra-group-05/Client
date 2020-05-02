@@ -69,11 +69,11 @@ class EndRoundContent extends React.Component {
       this.setState({ guess: response.data.guess, success: response.data.success });
       if (this.state.success)
       {
-    	  this.setState({successWord:"correct", textColor:"lightgreen"});
+    	  this.setState({successWord:"correct", textColor:"#39b346"});
       }
       else
       {
-    	  this.setState({successWord:"wrong", textColor:"red"});
+    	  this.setState({successWord:"wrong", textColor:"#ee232b"});
       }
     	  
     } catch (error) {
@@ -89,7 +89,7 @@ class EndRoundContent extends React.Component {
     return (
     <div>
 	    <GuessDescription color={this.state.textColor}>
-	      Player {this.props.user} guess was {this.state.guess} and this guess was {this.state.successWord}
+	      {this.props.user}s guess was {this.state.guess} and this guess was {this.state.successWord}!!
 	    </GuessDescription>
 	    <DeckOverview>
 	      <DeckContainer>
