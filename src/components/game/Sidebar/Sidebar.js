@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Avatar from "../../../views/Avatar";
 import User from "../../shared/models/User";
 import DashBoardIcon from "../../../images/Dashboard.png";
+import RuleIcon from "../../../images/rules.png";
 
 const Wrapper = styled.div`
   width: 80px;
@@ -57,6 +58,10 @@ const Sidebar = ({ disabled }) => {
         <SideBarLink to="/game/dashboard" disabled={disabled} title="Dashboard">
           <Icon src={DashBoardIcon} />
         </SideBarLink>
+
+      <SideBarLink to="/game/rules" disabled={disabled} title="Rules">
+          <Icon src={RuleIcon} />
+      </SideBarLink>
       </Wrapper>
     );
   }

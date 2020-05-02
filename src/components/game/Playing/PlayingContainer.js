@@ -36,7 +36,9 @@ class PlayingContainer extends React.Component {
     this.state = {
       lobby: null,
       error: null,
-      rulesShown: false
+      rulesShown: false,
+      guess: null,
+      success: false
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
     this.nextState = this.nextState.bind(this);
@@ -64,6 +66,24 @@ class PlayingContainer extends React.Component {
         )}`
       );
       clearTimeout(this.intervalID);
+    }
+  };
+
+  getGuess = async () => {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.get("/lobbies/" + this.props.match.params.id + "/guess");
+
+      // Get the returned guess and success flag.
+      this.setState({ guess: response.data[0], success: response.data[1] });
+      //console.log(response);
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+          `Something went wrong while fetching the lobbies: \n${handleError(
+              error
+          )}`
+      );
     }
   };
 

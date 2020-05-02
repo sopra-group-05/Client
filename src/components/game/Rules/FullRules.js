@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { BaseContainer } from "../../../helpers/layout";
 import Sidebar from "../Sidebar/Sidebar";
 import { Button } from "../../../views/design/Button";
-import GameRules from "../../../images/GameRules.jpg";
+import GameRules from "../../../images/GameRulesDark.jpg";
 
 const ButtonContainer = styled.div`
   display: flex;
