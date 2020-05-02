@@ -20,7 +20,7 @@ const WaitForNumber = ({ l }) => {
           active Player can guess it
         </PlayingDescription>
       </PlayingDescription>
-      <MysteryCard lobbyId={lobby.id} />
+      <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
     </PlayingWrapper>
   );
 };

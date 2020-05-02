@@ -73,7 +73,7 @@ const WritingAClue = ({ l }) => {
           : "Try tp come up with a hint for the mystery word!"}
       </PlayingDescription>
       <Container>
-        <MysteryCard lobbyId={lobby.id} />
+        <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
         <Form>
           <TextInput
             disabled={submitted}

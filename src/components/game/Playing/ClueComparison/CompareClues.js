@@ -168,7 +168,7 @@ class CompareClues extends React.Component {
         </PlayingDescription>
         <Container>
           <React.Fragment>
-            <MysteryCard />
+            <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
           </React.Fragment>
           <Clues>
             {
