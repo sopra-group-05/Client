@@ -35,18 +35,18 @@ const WritingAClue = ({ l }) => {
     checkClueForError(input);
   };
   const submitClue = async () => {
-    setSubmitted(true);
     try {
       const requestBody = JSON.stringify({
         hint: clue
       });
-
       // make POST request to Server to choose Number
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       await api.post("/lobbies/" + lobby.id + "/clues", requestBody);
+      setSubmitted(true);
     } catch (error) {
-      console.log(error);
-      alert("There was an error, see console and network log in your browser.");
+      console.log(error.response ? error.response : "Unknown error");
+      setError("There was an error with your clue. Try again");
+      setClue("");
     }
   };
 
