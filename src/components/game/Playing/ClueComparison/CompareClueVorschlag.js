@@ -2,16 +2,17 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import Lobby from "../../../shared/models/Lobby";
 import {
-  Button,
   PlayingDescription,
   PlayingTitle,
-  PlayingWrapper
+  PlayingWrapper,
+  Button
 } from "../PlayingStyle";
 import MysteryCard from "../ChoosingMysteryWord/MysteryCard";
 import styled from "styled-components";
 import { api } from "../../../../helpers/api";
 import MessageHandler from "../../../../views/MessageHandler";
 import Countdown from "../../../../views/Countdown";
+import { Spinner } from "../../../../views/design/Spinner";
 
 const Container = styled.div`
   display: flex;
@@ -82,13 +83,25 @@ const CheckboxTick = styled.div`
   }
 `;
 
-function CompareCluesVorschlag(props) {
-  let { l } = props;
+const CompareCluesVorschlag = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [submitted, setSubmitted] = React.useState(false);
   const [clues, setClues] = React.useState([]);
   const [cluesToFlag, setCluesToFlag] = React.useState([]);
   const [error, setError] = React.useState("");
+  const [waiting, setWaiting] = React.useState(true);
+
+  const submitClues = async () => {
+    setSubmitted(true);
+    try {
+      // make POST request to Server to choose Number
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      await api.put("/lobbies/" + lobby.id + "/clues/flag", cluesToFlag);
+    } catch (error) {
+      console.log(error);
+      alert("There was an error, see console and network log in your browser.");
+    }
+  };
 
   const getClues = async () => {
     // get Clues
@@ -96,33 +109,15 @@ function CompareCluesVorschlag(props) {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
       setClues(response.data);
+      setWaiting(false);
     } catch (error) {
       console.log(error);
-      // todo remove once API Endpoint works
-      let demoClues = [
-        { id: 1, hint: "test1" },
-        { id: 2, hint: "test2" }
-      ];
-      setClues(demoClues);
-
-      // todo only show information icon for active card
-      // todo highlight active card
-    }
-  };
-
-  const submitClues = async () => {
-    setSubmitted(true);
-    try {
-      /*const requestBody = JSON.stringify({
-        cluesToFlag: cluesToFlag
-      });*/
-
-      // make POST request to Server to choose Number
-      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      await api.put("/lobbies/" + lobby.id + "/clues/flag", cluesToFlag);
-    } catch (error) {
-      console.log(error);
-      alert("There was an error, see console and network log in your browser.");
+      if (error.response && error.response.status === 500) {
+        setWaiting(true);
+        setTimeout(getClues, 1000);
+      } else {
+        setError("There was an error getting the other clues");
+      }
     }
   };
 
@@ -140,7 +135,11 @@ function CompareCluesVorschlag(props) {
   }, []);
 
   return (
-    <PlayingWrapper>
+    <PlayingWrapper
+      headerText={
+        waiting && "Waiting for other Players to submit their clues..."
+      }
+    >
       <PlayingTitle>Reviewing Clues</PlayingTitle>
       <PlayingDescription>
         If you think any of the following Clues does not follow the games rule
@@ -150,34 +149,36 @@ function CompareCluesVorschlag(props) {
       <Container>
         <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
         <ClueReview>
-          <Form>
-            {clues.map(clue => (
-              <ClueContainer>
-                <ClueStatus onClick={() => flagClue(clue.id)}>
-                  <CheckBox>
-                    <CheckboxTick checked={!cluesToFlag.includes(clue.id)} />
-                  </CheckBox>
-                  {clue.hint}
-                </ClueStatus>
-              </ClueContainer>
-            ))}
-            <Button
-              disabled={!clues || submitted || error}
-              onClick={() => {
-                submitClues();
-              }}
-            >
-              Send
-            </Button>
-            {!submitted && (
-              <Countdown functionWhenDone={submitClues} time={30} />
-            )}
-          </Form>
+          {clues && clues.length > 0 ? (
+            <Form>
+              {clues.map(clue => (
+                <ClueContainer>
+                  <ClueStatus onClick={() => flagClue(clue.id)}>
+                    <CheckBox>
+                      <CheckboxTick checked={!cluesToFlag.includes(clue.id)} />
+                    </CheckBox>
+                    {clue.hint}
+                  </ClueStatus>
+                </ClueContainer>
+              ))}
+              <Button
+                disabled={!clues || submitted || error}
+                onClick={() => {
+                  submitClues();
+                }}
+              >
+                Send
+              </Button>
+              {false && <Countdown functionWhenDone={submitClues} time={30} />}
+            </Form>
+          ) : (
+            <Spinner />
+          )}
         </ClueReview>
       </Container>
       <MessageHandler show={error} message={error} />
     </PlayingWrapper>
   );
-}
+};
 
 export default withRouter(CompareCluesVorschlag);

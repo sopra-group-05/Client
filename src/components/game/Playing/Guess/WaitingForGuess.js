@@ -16,7 +16,6 @@ const WaitingForGuess = ({ nextState }) => {
       <PlayingDescription>
         Text Text show all the clues etc..
       </PlayingDescription>
-      <Countdown time={30} functionWhenDone={nextState} />
     </PlayingWrapper>
   );
 };
