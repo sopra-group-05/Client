@@ -21,8 +21,6 @@ const PlayerContainer = styled.li`
   justify-content: center;
 `;
 
-
-
 class OpenLobbies extends React.Component {
   constructor() {
     super();
@@ -102,9 +100,12 @@ class OpenLobbies extends React.Component {
               {this.state.lobbies.length
                 ? this.state.lobbies.map(l => {
                     return (
-                    <PlayerContainer>
-                      <JoinLobby joinLobby={this.joinLobbyFunction} lobby={l} />
-                    </PlayerContainer>
+                      <PlayerContainer>
+                        <JoinLobby
+                          joinLobby={this.joinLobbyFunction}
+                          lobby={l}
+                        />
+                      </PlayerContainer>
                     );
                   })
                 : "There are no Lobbies for you to join"}

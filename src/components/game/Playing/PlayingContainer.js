@@ -72,7 +72,9 @@ class PlayingContainer extends React.Component {
   getGuess = async () => {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.get("/lobbies/" + this.props.match.params.id + "/guess");
+      const response = await api.get(
+        "/lobbies/" + this.props.match.params.id + "/guess"
+      );
 
       // Get the returned guess and success flag.
       this.setState({ guess: response.data[0], success: response.data[1] });
@@ -80,9 +82,9 @@ class PlayingContainer extends React.Component {
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
-          `Something went wrong while fetching the lobbies: \n${handleError(
-              error
-          )}`
+        `Something went wrong while fetching the lobbies: \n${handleError(
+          error
+        )}`
       );
     }
   };

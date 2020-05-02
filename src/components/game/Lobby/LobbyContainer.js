@@ -284,7 +284,7 @@ class LobbyContainer extends React.Component {
               >
                 Leave Lobby
               </Button>
-              <ButtonSpacer/>
+              <ButtonSpacer />
               {this.state.lobby.creator.id ==
                 localStorage.getItem("userId") && (
                 <Button

@@ -59,9 +59,9 @@ const Sidebar = ({ disabled }) => {
           <Icon src={DashBoardIcon} />
         </SideBarLink>
 
-      <SideBarLink to="/game/rules" disabled={disabled} title="Rules">
+        <SideBarLink to="/game/rules" disabled={disabled} title="Rules">
           <Icon src={RuleIcon} />
-      </SideBarLink>
+        </SideBarLink>
       </Wrapper>
     );
   }

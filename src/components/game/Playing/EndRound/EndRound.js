@@ -47,11 +47,11 @@ const DeckCount = styled.span`
 const EndRound = ({ lobby, isGuesser, nextState }) => {
   const l = new Lobby(lobby); //transform input into Lobby Model
   const player = l.players.find(x => x.role == "GUESSER");
-  
+
   return (
     <PlayingWrapper>
       <PlayingTitle> Round is over </PlayingTitle>
-      <EndRoundContent user={player.username} lobbyId={lobby.id}/>
+      <EndRoundContent user={player.username} lobbyId={lobby.id} />
       <Countdown functionWhenDone={nextState} time={30} />
     </PlayingWrapper>
   );

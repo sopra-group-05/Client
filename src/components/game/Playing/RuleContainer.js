@@ -36,24 +36,24 @@ const RuleContainer = ({ l, isShown, showRules }) => {
   ];
   return isShown ? (
     <Box maxWidth="350px" title={"Quick Rules"}>
-        <Container>
-      <RuleList>
-        {rules.map(rule => {
-          return <li>{rule}</li>;
-        })}
-      </RuleList>
-      <ButtonContainer>
-        <Button
-          marginbottom="15px"
-          colorDef={"#3b85ff"}
-          onClick={() => {
-            showRules();
-          }}
-        >
-          Show all Rules
-        </Button>
-      </ButtonContainer>
-        </Container>
+      <Container>
+        <RuleList>
+          {rules.map(rule => {
+            return <li>{rule}</li>;
+          })}
+        </RuleList>
+        <ButtonContainer>
+          <Button
+            marginbottom="15px"
+            colorDef={"#3b85ff"}
+            onClick={() => {
+              showRules();
+            }}
+          >
+            Show all Rules
+          </Button>
+        </ButtonContainer>
+      </Container>
     </Box>
   ) : null;
 };
