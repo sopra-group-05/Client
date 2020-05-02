@@ -90,7 +90,7 @@ class EndRoundContent extends React.Component {
     return (
       <div>
         <GuessDescription color={this.state.textColor}>
-          {this.props.user}s guess was {this.state.guess} and this guess was{" "}
+          {this.props.user}'s guess was {this.state.guess} and this guess was{" "}
           {this.state.successWord}!!
         </GuessDescription>
         <DeckOverview>
