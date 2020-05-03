@@ -1,4 +1,4 @@
-# SoPra FS20 - Client Template 
+# SoPra FS20 - Client Template (M3 Releasd!)
 
 ## Getting started with React
 
