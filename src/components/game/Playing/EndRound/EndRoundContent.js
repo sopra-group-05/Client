@@ -107,11 +107,44 @@ const GuessDescription = styled(PlayingDescription)`
   color: ${props => (props.color ? props.color : "yellow")};
 `;
 
+
+
+const OutputText = ({user,success,guess,mysteryWord}) => {
+	  if (guess === "") {
+	    return (
+	    		<GuessDescription color = {"#00a5ee"}>
+		    		{user} had no idea what the mystery word was!!
+		    		
+		    		The searched mystery word was {mysteryWord}!!
+		    	</GuessDescription>);
+	    
+	  } else {
+		  if(success){
+		    return (
+		    		<GuessDescription color = {"#39b346"}>
+			    		{user}s guess was {guess} and this guess was correct!!
+			    	</GuessDescription>);			  
+		  }
+		  else{
+			    return (
+			    		<GuessDescription color = {"#ee232b"}>
+				    		{user}s guess was {guess} and this guess was wrong!!
+				    		
+				    		The searched mystery word was {mysteryWord}!!
+				    	</GuessDescription>);	
+		  }
+
+	  }
+	};
+
+
+
 class EndRoundContent extends React.Component {
   constructor() {
     super();
     this.state = {
       guess: null,
+      mysteryWord:"",
       success: false,
       successWord: "",
       textColor: null,
@@ -137,7 +170,8 @@ class EndRoundContent extends React.Component {
         success: response.data.success,
         leftCards: response.data.leftCards,
         wonCards: response.data.wonCards,
-        lostCards: response.data.lostCards
+        lostCards: response.data.lostCards,
+        mysteryWord: response.data.mysteryWord
       });
 
       if (this.state.success) {
@@ -230,14 +264,12 @@ class EndRoundContent extends React.Component {
   componentDidMount() {
     this.getLobbyguess();
   }
+  
 
   render() {
     return (
       <div>
-        <GuessDescription color={this.state.textColor}>
-          {this.props.user}'s guess was {this.state.guess} and this guess was{" "}
-          {this.state.successWord}!!
-        </GuessDescription>
+      	<OutputText user={this.props.user} success = {this.state.success} guess = {this.state.guess} mysteryWord = {this.state.mysteryWord}/>
         <DeckOverview>
           <DeckContainer>
             <DeckTitle> Remaining Cards in Deck </DeckTitle>

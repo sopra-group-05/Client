@@ -169,7 +169,7 @@ const CompareCluesVorschlag = ({ l }) => {
               >
                 Send
               </Button>
-              {false && <Countdown functionWhenDone={submitClues} time={30} />}
+              {false && <Countdown functionWhenDone={submitClues} time={60} />}
             </Form>
           ) : (
             <Spinner />
