@@ -75,7 +75,7 @@ class BotInLobby extends React.Component {
         <Avatar size={40} user={this.state.botName} />
         <BotMeta>
           <BotName>{this.state.botName}</BotName>
-          <BotInfo>BOT | is ready</BotInfo>
+          <BotInfo>CLUE_CREATOR | is ready</BotInfo>
         </BotMeta>
       </Container>
     );

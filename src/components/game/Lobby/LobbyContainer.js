@@ -266,7 +266,7 @@ class LobbyContainer extends React.Component {
                 ""
               ) : (
                 <PlayerContainer key={99}>
-                  <BotInLobby botName="Bot1" />
+                  <BotInLobby botName="Bots are here" />
                 </PlayerContainer>
               )}
             </Players>

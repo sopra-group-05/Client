@@ -189,6 +189,8 @@ class CreateLobby extends React.Component {
     }
   }
 
+  //TODO add this line at 222 (after </GameMode> : {!(this.state.gameMode === 0) ? <Dropdown /> : ""}
+  
   render() {
     return (
       <Box title="new Game">
@@ -217,8 +219,7 @@ class CreateLobby extends React.Component {
                     <CheckboxTick checked={this.state.gameMode === 1} />
                   </CheckBox>
                   Add Bots
-                </GameMode>
-                {!(this.state.gameMode === 0) ? <Dropdown /> : ""}
+                </GameMode>             
               </BotContainer>
             )}
             <Label>Select Lobby Language</Label>
