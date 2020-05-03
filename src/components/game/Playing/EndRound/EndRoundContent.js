@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { api, handleError } from "../../../../helpers/api";
 import { Spinner } from "../../../../views/design/Spinner";
-import {Button, PlayingDescription} from "../PlayingStyle";
+import { Button, PlayingDescription } from "../PlayingStyle";
 import Lobby from "../../../shared/models/Lobby";
 import Countdown from "../../../../views/Countdown";
 
@@ -155,7 +155,7 @@ class EndRoundContent extends React.Component {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
-          "/lobbies/" + this.props.lobby.id + "/nextRound"
+        "/lobbies/" + this.props.lobby.id + "/nextRound"
       );
       console.log(response);
     } catch (error) {
@@ -163,7 +163,7 @@ class EndRoundContent extends React.Component {
         error: error ? error.message : "Unknown error"
       });
       console.log(
-          `Something went wrong while starting the game: \n${handleError(error)}`
+        `Something went wrong while starting the game: \n${handleError(error)}`
       );
     }
   }
@@ -181,11 +181,11 @@ class EndRoundContent extends React.Component {
     lobby = new Lobby(lobby);
     let allReady = true;
     lobby.players.forEach(player => {
-      if ((player.status != "READY")) {
+      if (player.status != "READY") {
         allReady = false;
       }
     });
-    this.setState({playersReady: allReady});
+    this.setState({ playersReady: allReady });
   }
 
   async toggleCheckbox() {
@@ -194,7 +194,7 @@ class EndRoundContent extends React.Component {
       // set player status via put request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
-          "/lobbies/" + this.props.lobby.id + "/ready"
+        "/lobbies/" + this.props.lobby.id + "/ready"
       );
       console.log(response);
       this.setState({ playerStatus: true });
@@ -205,9 +205,9 @@ class EndRoundContent extends React.Component {
         playerStatus: previousStatus
       });
       console.log(
-          `Something went wrong while setting player status: \n${handleError(
-              error
-          )}`
+        `Something went wrong while setting player status: \n${handleError(
+          error
+        )}`
       );
     }
   }
@@ -216,7 +216,7 @@ class EndRoundContent extends React.Component {
     this.toggleCheckbox();
   }
 
-  endGame(){
+  endGame() {
     this.props.history.push("/game/lobby/" + this.props.lobby.id + "/gameover");
   }
 
@@ -254,7 +254,7 @@ class EndRoundContent extends React.Component {
 
         {this.state.leftCards <= 0 ? (
           <React.Fragment>
-            <GuessDescription color = "white">
+            <GuessDescription color="white">
               There are no cards left to play. The game is over now.
             </GuessDescription>
             <ButtonGroup>
@@ -268,7 +268,7 @@ class EndRoundContent extends React.Component {
               </NextRoundButton>
             </ButtonGroup>
           </React.Fragment>
-        ):(
+        ) : (
           <React.Fragment>
             <ButtonGroup>
               <PlayerStatus onClick={() => this.toggleCheckbox()}>
@@ -278,27 +278,30 @@ class EndRoundContent extends React.Component {
                 Ready for next round
               </PlayerStatus>
 
-              <ButtonSpacer/>
+              <ButtonSpacer />
 
               {this.props.lobby.creator.id ==
-              localStorage.getItem("userId") && (
-                  <NextRoundButton
-                      onClick={() => {
-                        this.nextRound();
-                      }}
-                      disabled={!this.props.ready}
-                      background={"#44d63f"}
-                  >
-                    Start next Round
-                  </NextRoundButton>
+                localStorage.getItem("userId") && (
+                <NextRoundButton
+                  onClick={() => {
+                    this.nextRound();
+                  }}
+                  disabled={!this.props.ready}
+                  background={"#44d63f"}
+                >
+                  Start next Round
+                </NextRoundButton>
               )}
-              </ButtonGroup>
-            <Countdown activeText={"Wait to set ready: "} timeoutText= {"Lobby Creator should start next round"} functionWhenDone={this.setReady} time={5} />
+            </ButtonGroup>
+            <Countdown
+              activeText={"Wait to set ready: "}
+              timeoutText={"Lobby Creator should start next round"}
+              functionWhenDone={this.setReady}
+              time={5}
+            />
           </React.Fragment>
-          )}
-
+        )}
       </div>
-
     );
   }
 }

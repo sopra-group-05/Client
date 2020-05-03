@@ -6,6 +6,7 @@ import { Spinner } from "../../../views/design/Spinner";
 import PlayerInvite from "../../../views/PlayerInvite";
 import Box from "../../../views/Box";
 import User from "../../shared/models/User";
+import Lobby from "../../shared/models/Lobby";
 
 const Users = styled.ul`
   list-style: none;
@@ -21,11 +22,13 @@ const PlayerContainer = styled.li`
 
 class OnlineUsersInvite extends React.Component {
   intervalID;
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     this.state = {
       users: null,
       error: null,
+      lobbyId: this.props.lobbyId,
       mounted: true
     };
     this.getUsers = this.getUsers.bind(this);
@@ -89,7 +92,7 @@ class OnlineUsersInvite extends React.Component {
               {this.state.users.map(user => {
                 return (
                   <PlayerContainer key={user.id}>
-                    <PlayerInvite user={user} lobbyId={this.props.lobbyId} />
+                    <PlayerInvite user={user} lobbyId={this.state.lobbyId} />
                   </PlayerContainer>
                 );
               })}

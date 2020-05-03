@@ -42,23 +42,21 @@ const DeckCount = styled.span`
 `;
 //TODO: Add button to start with next round
 
-
-
 const EndRound = ({ lobby, isGuesser, nextState }) => {
   const l = new Lobby(lobby); //transform input into Lobby Model
   const player = l.players.find(x => x.role == "GUESSER");
 
   let allReady = true;
   lobby.players.forEach(player => {
-      if (player.status != "READY") {
-          allReady = false;
-      }
+    if (player.status != "READY") {
+      allReady = false;
+    }
   });
 
   return (
     <PlayingWrapper>
       <PlayingTitle> Round is over </PlayingTitle>
-      <EndRoundContent user={player.username} lobby={lobby} ready={allReady}/>
+      <EndRoundContent user={player.username} lobby={lobby} ready={allReady} />
     </PlayingWrapper>
   );
 };
