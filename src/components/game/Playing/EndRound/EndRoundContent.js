@@ -218,6 +218,7 @@ class EndRoundContent extends React.Component {
 
   endGame() {
     this.props.history.push("/game/lobby/" + this.props.lobby.id + "/gameover");
+    clearInterval(this.interval);
   }
 
   componentWillUnmount() {

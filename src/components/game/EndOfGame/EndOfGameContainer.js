@@ -105,7 +105,7 @@ class EndOfGameContainer extends React.Component {
                   this.props.history.push("/game/lobby/" + lobby.id);
                 }}
               >
-                Back to Lobby
+                Back to Overview
               </Button>
               <ButtonSpacer />
               {lobby.creator.id == localStorage.getItem("userId") && (

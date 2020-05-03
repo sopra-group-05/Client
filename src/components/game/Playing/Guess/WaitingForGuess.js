@@ -14,7 +14,7 @@ const WaitingForGuess = ({ nextState }) => {
     <PlayingWrapper headerText="Waiting for Guess!">
       <PlayingTitle>Waiting..</PlayingTitle>
       <PlayingDescription>
-        Text Text show all the clues etc..
+        Waiting for the active players's guess..
       </PlayingDescription>
     </PlayingWrapper>
   );
