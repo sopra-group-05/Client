@@ -70,7 +70,7 @@ const WritingAClue = ({ l }) => {
       <PlayingDescription>
         {submitted
           ? "You would submit the clue " + clue + " to the server."
-          : "Try tp come up with a hint for the mystery word!"}
+          : "Try up come up with a hint for the mystery word!"}
       </PlayingDescription>
       <Container>
         <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />

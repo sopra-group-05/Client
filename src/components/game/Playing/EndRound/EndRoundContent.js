@@ -113,8 +113,7 @@ const OutputText = ({user,success,guess,mysteryWord}) => {
 	  if (guess === "") {
 	    return (
 	    		<GuessDescription color = {"#00a5ee"}>
-		    		{user} had no idea what the mystery word was!!
-		    		
+		    		{user} had no idea what the mystery word was!! <br />
 		    		The searched mystery word was {mysteryWord}!!
 		    	</GuessDescription>);
 	    
@@ -128,8 +127,7 @@ const OutputText = ({user,success,guess,mysteryWord}) => {
 		  else{
 			    return (
 			    		<GuessDescription color = {"#ee232b"}>
-				    		{user}s guess was {guess} and this guess was wrong!!
-				    		
+				    		{user}s guess was {guess} and this guess was wrong!! <br />
 				    		The searched mystery word was {mysteryWord}!!
 				    	</GuessDescription>);	
 		  }
