@@ -6,7 +6,6 @@ import { Spinner } from "../../../views/design/Spinner";
 import PlayerInvite from "../../../views/PlayerInvite";
 import Box from "../../../views/Box";
 import User from "../../shared/models/User";
-import Lobby from "../../shared/models/Lobby";
 
 const Users = styled.ul`
   list-style: none;
