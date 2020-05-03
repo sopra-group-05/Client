@@ -4,6 +4,8 @@ import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Box from "../../../views/Box";
 import { Spinner } from "../../../views/design/Spinner";
+import Stats from "../../shared/models/Stats";
+import Lobby from "../../shared/models/Lobby";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -37,6 +39,7 @@ const FactorTitle = styled.h4`
   margin: 0;
   text-transform: uppercase;
 `;
+
 const RankingRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -53,6 +56,7 @@ const FactorLocalPlayer = styled.h4`
   margin: 0;
   text-transform: uppercase;
 `;
+
 const FactorOtherPlayer = styled.h4`
   font-size: 1rem;
   font-weight: normal;
@@ -62,131 +66,106 @@ const FactorOtherPlayer = styled.h4`
   text-transform: uppercase;
 `;
 
-// TODO: remove/change data structure when BE is there
-const TestRankingData = [
-  {
-    playerId: "",
-    name: "Name",
-    score: "Score",
-    guesses: "Guesses",
-    correct: "Correct",
-    time_to_guess: "Time to guess",
-    clues: "Clues",
-    good: "Good",
-    time_to_write_clues: "Time to write clues"
-  },
-  {
-    playerId: 1,
-    name: "Florian",
-    score: 200,
-    guesses: 20,
-    correct: 8,
-    time_to_guess: 38,
-    clues: 50,
-    good: 36,
-    time_to_write_clues: 24
-  },
-  {
-    playerId: 2,
-    name: "Yanik",
-    score: 170,
-    guesses: 20,
-    correct: 8,
-    time_to_guess: 38,
-    clues: 50,
-    good: 36,
-    time_to_write_clues: 24
-  },
-  {
-    playerId: 3,
-    name: "Player XYZ",
-    score: 137,
-    guesses: 20,
-    correct: 8,
-    time_to_guess: 38,
-    clues: 50,
-    good: 36,
-    time_to_write_clues: 24
-  },
-  {
-    playerId: 4,
-    name: "Anja",
-    score: 87,
-    guesses: 20,
-    correct: 8,
-    time_to_guess: 38,
-    clues: 50,
-    good: 36,
-    time_to_write_clues: 24
-  }
-];
-
-const teamPoints = { name: "Team Points", points: 42 };
+const rankingNames = new Stats({
+  playerId: "Id",
+  playerName: "Name",
+  score: "Score",
+  guessCount: "Guesses",
+  correctGuessCount: "Correct",
+  timeToGuess: "Time to guess",
+  givenClues: "Clues",
+  goodClues: "Good",
+  timeForClue: "Time to write clues",
+  teamPoints: "Team Points"
+});
 
 class RankingBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lobby: this.props,
-      error: null,
-      rankingData: TestRankingData // TODO: null when BE ready
+      lobby: this.props.lobby,
+      stats: [],
+      error: null
     };
-    this.getRanking = this.getRanking.bind(this);
+    this.getStats = this.getStats.bind(this);
   }
 
-  async getRanking() {
-    // TODO: fetch data from server? or in lobby data already?
-    console.log("Rankings will be fetched");
+  async getStats() {
+    const lobby = new Lobby(this.state.lobby);
+    try {
+      // add token to request
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.get("lobbies/" + lobby.id + "/stats");
+
+      // convert to Stats model
+      const stats = response.data.map(data => {
+        return new Stats(data);
+      });
+
+      if (this.state.stats === [] && response.data) {
+        // make API call every 1s to get Updated lobbies List.
+        // Will have to be destroyed in componentWIllUnmount()!
+        // only set interval the very first time you call the API
+        this.interval = setInterval(this.getLobbies, 1000);
+      }
+
+      this.setState({ stats: stats, error: null });
+      //console.log(this.state.stats);
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while fetching the stats: \n${handleError(error)}`
+      );
+      clearInterval(this.interval);
+    }
   }
 
   componentDidMount() {
-    this.getRanking();
+    this.getStats();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
-    const factors = this.state.rankingData[0];
-    const actualData = this.state.rankingData.slice(1);
-    return this.state.rankingData ? (
+    const stats = this.state.stats;
+    return stats.length > 0 ? (
       <Box title={"Ranking"}>
         {this.state.lobby && (
           <FactorTitle>
-            As a Team, you got{" "}
-            {
-              teamPoints.points // TODO: get points from BE
-            }{" "}
-            points!
+            As a Team, you got {stats[0].teamPoints} points!
           </FactorTitle>
         )}
         <GridContainer>
           <RankingRow>
-            {Object.keys(factors).map(key => {
-              return (
-                key !== "playerId" && <FactorTitle>{factors[key]}</FactorTitle>
-              );
-            })}
-            <FactorTitle>
-              {
-                teamPoints.name
-                // TODO: get points from BE
-              }
-            </FactorTitle>
+            <FactorTitle>{rankingNames.playerName}</FactorTitle>
+            <FactorTitle>{rankingNames.score}</FactorTitle>
+            <FactorTitle>{rankingNames.guessCount}</FactorTitle>
+            <FactorTitle>{rankingNames.correctGuessCount}</FactorTitle>
+            <FactorTitle>{rankingNames.timeToGuess}</FactorTitle>
+            <FactorTitle>{rankingNames.givenClues}</FactorTitle>
+            <FactorTitle>{rankingNames.goodClues}</FactorTitle>
+            <FactorTitle>{rankingNames.timeForClue}</FactorTitle>
+            <FactorTitle>{rankingNames.teamPoints}</FactorTitle>
           </RankingRow>
           <Container>
-            {Object.keys(actualData).map(data => {
+            {stats.map(stat => {
               const ComponentClass =
-                data[0] == localStorage.getItem("userId")
+                stat.playerId == localStorage.getItem("userId")
                   ? FactorLocalPlayer
                   : FactorOtherPlayer;
               return (
-                <RankingRow>
-                  {Object.keys(actualData[data]).map(key => {
-                    return (
-                      key !== "playerId" && (
-                        <ComponentClass>{actualData[data][key]}</ComponentClass>
-                      )
-                    );
-                  })}
-                  {this.state.lobby && teamPoints.points}
+                <RankingRow key={stat.playerId}>
+                  <ComponentClass>{stat.playerName}</ComponentClass>
+                  <ComponentClass>{stat.score}</ComponentClass>
+                  <ComponentClass>{stat.guessCount}</ComponentClass>
+                  <ComponentClass>{stat.correctGuessCount}</ComponentClass>
+                  <ComponentClass>{stat.timeToGuess}</ComponentClass>
+                  <ComponentClass>{stat.givenClues}</ComponentClass>
+                  <ComponentClass>{stat.goodClues}</ComponentClass>
+                  <ComponentClass>{stat.timeForClue}</ComponentClass>
+                  <ComponentClass>{stat.teamPoints}</ComponentClass>
                 </RankingRow>
               );
             })}
