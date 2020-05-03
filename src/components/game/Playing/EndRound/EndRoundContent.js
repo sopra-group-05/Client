@@ -181,7 +181,7 @@ class EndRoundContent extends React.Component {
     lobby = new Lobby(lobby);
     let allReady = true;
     lobby.players.forEach(player => {
-      if (player.status != "READY") {
+      if ((player.status != "READY")) {
         allReady = false;
       }
     });
@@ -216,6 +216,10 @@ class EndRoundContent extends React.Component {
     this.toggleCheckbox();
   }
 
+  endGame(){
+    this.props.history.push("/game/lobby/" + this.props.lobby.id + "/gameover");
+  }
+
   componentWillUnmount() {
     // stop Interval when Component gets hidden.
     // If you don't do this, it will call the API every 1s even the component is not active anymore!
@@ -248,31 +252,51 @@ class EndRoundContent extends React.Component {
           </DeckContainer>
         </DeckOverview>
 
-
-        <ButtonGroup>
-          <PlayerStatus onClick={() => this.toggleCheckbox()}>
-            <CheckBox>
-              <CheckboxTick checked={this.state.playerStatus === true} />
-            </CheckBox>
-            Set ready
-          </PlayerStatus>
-
-          <ButtonSpacer/>
-
-          {this.props.lobby.creator.id ==
-          localStorage.getItem("userId") && (
+        {this.state.leftCards <= 0 ? (
+          <React.Fragment>
+            <GuessDescription color = "white">
+              There are no cards left to play. The game is over now.
+            </GuessDescription>
+            <ButtonGroup>
               <NextRoundButton
-                  onClick={() => {
-                    this.nextRound();
-                  }}
-                  disabled={!this.props.ready}
-                  background={"#44d63f"}
+                onClick={() => {
+                  this.endGame();
+                }}
+                background={"#44d63f"}
               >
-                Start next Round
+                Go to ranking board
               </NextRoundButton>
+            </ButtonGroup>
+          </React.Fragment>
+        ):(
+          <React.Fragment>
+            <ButtonGroup>
+              <PlayerStatus onClick={() => this.toggleCheckbox()}>
+                <CheckBox>
+                  <CheckboxTick checked={this.state.playerStatus === true} />
+                </CheckBox>
+                Ready for next round
+              </PlayerStatus>
+
+              <ButtonSpacer/>
+
+              {this.props.lobby.creator.id ==
+              localStorage.getItem("userId") && (
+                  <NextRoundButton
+                      onClick={() => {
+                        this.nextRound();
+                      }}
+                      disabled={!this.props.ready}
+                      background={"#44d63f"}
+                  >
+                    Start next Round
+                  </NextRoundButton>
+              )}
+              </ButtonGroup>
+            <Countdown activeText={"Wait to set ready: "} timeoutText= {"Lobby Creator should start next round"} functionWhenDone={this.setReady} time={5} />
+          </React.Fragment>
           )}
-          </ButtonGroup>
-        <Countdown activeText={"Wait to set ready: "} timeoutText= {"Lobby Creator should start next round"} functionWhenDone={this.setReady} time={5} />
+
       </div>
 
     );
