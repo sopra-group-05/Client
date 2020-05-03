@@ -8,27 +8,19 @@ import Stats from "../../shared/models/Stats";
 import Lobby from "../../shared/models/Lobby";
 
 const Container = styled.div`
-  margin-top: 1rem;
-  padding: 1rem;
   border-radius: 15px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   background-color: #454c62;
-  width: available;
-  a {
-    color: #ce552e;
-    display: flex;
-    justify-content: stretch;
-    align-items: center;
-    min-width: 300px;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-  }
+  justify-items: stretch;
+  grid-column: 1 / 10;
+  grid-row: 2 / 10;
 `;
 
 const GridContainer = styled.div`
   display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: ${props => props.length + 1};
+  justify-items: stretch;
 `;
 
 const FactorTitle = styled.h4`
@@ -41,11 +33,13 @@ const FactorTitle = styled.h4`
 `;
 
 const RankingRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: available;
-  justify-self: stretch;
-  justify-content: space-between;
+  display: grid;
+  justify-items: stretch;
+  grid-template-columns: repeat(9, ${100 / 9}%);
+  grid-template-rows: 100%;
+  grid-column-start: 1;
+  grid-column-end: 10;
+  grid-row-start: ${props => props.row + 1};
 `;
 
 const FactorLocalPlayer = styled.h4`
@@ -79,6 +73,69 @@ const rankingNames = new Stats({
   teamPoints: "Team Points"
 });
 
+/*const exampleStats = [
+  new Stats({
+    playerId: 15,
+    playerName: "TestOne",
+    score: 2,
+    guessCount: 5,
+    correctGuessCount: 4,
+    timeToGuess: 34,
+    givenClues: 6,
+    goodClues: 2,
+    timeForClue: 20,
+    teamPoints: 13
+  }),
+  new Stats({
+    playerId: 16,
+    playerName: "Tom",
+    score: 45,
+    guessCount: 7,
+    correctGuessCount: 6,
+    timeToGuess: 14,
+    givenClues: 4,
+    goodClues: 4,
+    timeForClue: 24,
+    teamPoints: 13
+  }),
+  new Stats({
+    playerId: 17,
+    playerName: "balaaaa",
+    score: 10,
+    guessCount: 7,
+    correctGuessCount: 7,
+    timeToGuess: 7,
+    givenClues: 7,
+    goodClues: 7,
+    timeForClue: 7,
+    teamPoints: 13
+  }),
+  new Stats({
+    playerId: 18,
+    playerName: "IdiotNo18",
+    score: 0,
+    guessCount: 0,
+    correctGuessCount: 0,
+    timeToGuess: 0,
+    givenClues: 0,
+    goodClues: 0,
+    timeForClue: 0,
+    teamPoints: 13
+  }),
+  new Stats({
+    playerId: 20,
+    playerName: "Jimantha",
+    score: 35,
+    guessCount: 10,
+    correctGuessCount: 5,
+    timeToGuess: 50,
+    givenClues: 6,
+    goodClues: 8,
+    timeForClue: 89,
+    teamPoints: 13
+  })
+];*/
+
 class RankingBox extends React.Component {
   constructor(props) {
     super(props);
@@ -110,7 +167,20 @@ class RankingBox extends React.Component {
       }
 
       this.setState({ stats: stats, error: null });
-      //console.log(this.state.stats);
+      /*      const creatorStats = new Stats({
+        playerId: lobby.creator.id,
+        playerName: lobby.creator.username,
+        score: 35,
+        guessCount: 10,
+        correctGuessCount: 5,
+        timeToGuess: 50,
+        givenClues: 6,
+        goodClues: 8,
+        timeForClue: 89,
+        teamPoints: 13
+      });
+      exampleStats.push(creatorStats);
+      this.setState({ stats: exampleStats, error: null });*/
     } catch (error) {
       this.setState({ error: error ? error.message : "Unknown error" });
       console.log(
@@ -137,8 +207,8 @@ class RankingBox extends React.Component {
             As a Team, you got {stats[0].teamPoints} points!
           </FactorTitle>
         )}
-        <GridContainer>
-          <RankingRow>
+        <GridContainer length={stats.length}>
+          <RankingRow row={0}>
             <FactorTitle>{rankingNames.playerName}</FactorTitle>
             <FactorTitle>{rankingNames.score}</FactorTitle>
             <FactorTitle>{rankingNames.guessCount}</FactorTitle>
@@ -156,7 +226,7 @@ class RankingBox extends React.Component {
                   ? FactorLocalPlayer
                   : FactorOtherPlayer;
               return (
-                <RankingRow key={stat.playerId}>
+                <RankingRow key={stat.playerId} row={stats.indexOf(stat) + 1}>
                   <ComponentClass>{stat.playerName}</ComponentClass>
                   <ComponentClass>{stat.score}</ComponentClass>
                   <ComponentClass>{stat.guessCount}</ComponentClass>
