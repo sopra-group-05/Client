@@ -8,7 +8,6 @@ import PlayerInLobby from "../../../views/PlayerInLobby";
 import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 import { Button } from "../Playing/PlayingStyle";
-import Countdown from "../../../views/Countdown";
 import BotInLobby from "../../../views/BotInLobby";
 
 const PlayerStatus = styled.div`
@@ -97,7 +96,6 @@ class LobbyContainer extends React.Component {
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.startGame = this.startGame.bind(this);
     this.leaveLobby = this.leaveLobby.bind(this);
-    //this.previewPlaying = this.previewPlaying.bind(this);
   }
 
   async getLobby() {
@@ -132,7 +130,7 @@ class LobbyContainer extends React.Component {
   }
 
   isLobbyReady(lobby) {
-    // return true when lobby is ready e.g. all players have status ready and there are at least 4 players
+    // return true when lobby is ready e.g. all players have status ready
     lobby = new Lobby(lobby);
     let allReady = true;
     lobby.players.forEach(player => {
@@ -140,7 +138,11 @@ class LobbyContainer extends React.Component {
         allReady = false;
       }
     });
-    return lobby.players.length >= 2 ? allReady : false;
+    if (lobby.gameMode === "HUMANS") {
+      return lobby.players.length >= 3 ? allReady : false;
+    } else {
+      return lobby.players.length >= 2 ? allReady : false;
+    }
   }
 
   redirectToGame(lobbyID) {
@@ -188,10 +190,6 @@ class LobbyContainer extends React.Component {
       );
     }
   }
-
-  /*  previewPlaying() {
-    this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
-  }*/
 
   getNonCreator(l) {
     let nonCreators = Array.from(l.players);
@@ -294,7 +292,7 @@ class LobbyContainer extends React.Component {
                   disabled={!this.state.lobbyReady}
                   background={"#44d63f"}
                 >
-                  Start Game
+                  {this.state.lobbyReady ? "Start Game" : "Lobby not ready"}
                 </Button>
               )}
             </ButtonGroup>
