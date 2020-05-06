@@ -35,7 +35,6 @@ const Guessing = ({ l }) => {
   const [error, setError] = React.useState("");
   const handleInputChange = (key, input) => {
     setGuess(input);
-    checkGuessForError(input);
   };
   const submitGuess = async () => {
     setSubmitted(true);
@@ -56,14 +55,6 @@ const Guessing = ({ l }) => {
     // set guess to empty and submit it.
     setGuess("");
     submitGuess();
-  };
-
-  const checkGuessForError = clue => {
-    if (clue.match(/(\s)/g)) {
-      setError("The Guess should consist of one word (no white spaces)");
-    } else {
-      setError("");
-    }
   };
 
   const getClues = async () => {
