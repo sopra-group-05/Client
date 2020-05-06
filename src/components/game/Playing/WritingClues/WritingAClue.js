@@ -28,39 +28,57 @@ const Form = styled.div`
 const WritingAClue = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [clue, setClue] = React.useState("");
+  const [secondClue, setSecondClue] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState("");
-  const handleInputChange = (key, input) => {
+  const [clueTypeError, setClueTypeError] = React.useState(false);
+  const handleClueChange = (key, input) => {
     setClue(input);
     checkClueForError(input);
   };
+  const handleSecondClueChange = (key, input) => {
+    setSecondClue(input);
+    checkClueForError(input);
+  };
   const submitClue = async () => {
+    setSubmitted(true);
     try {
-      const requestBody = JSON.stringify({
+      let requestBody = JSON.stringify({
         hint: clue
       });
+      if (lobby.players.length === 3) {
+        // send two clues if there are exactly 3 players in the lobby.
+        requestBody = JSON.stringify({
+          hint: clue,
+          hint2: secondClue
+        });
+      }
+
       // make POST request to Server to choose Number
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       await api.post("/lobbies/" + lobby.id + "/clues", requestBody);
-      setSubmitted(true);
     } catch (error) {
       console.log(error.response ? error.response : "Unknown error");
       setError("There was an error with your clue. Try again");
       setClue("");
+      setSubmitted(false);
     }
   };
 
   const skipClue = () => {
-    // set guess to empty and submit it.
+    // set Clue(s) empty and submit it.
     setClue("");
+    setSecondClue("");
     submitClue();
   };
 
   const checkClueForError = clue => {
     if (clue.match(/(\s)/g)) {
+      setClueTypeError(true);
       setError("The Clue should consist of one word (no white spaces)");
     } else {
       setError("");
+      setClueTypeError(false);
     }
   };
 
@@ -68,9 +86,7 @@ const WritingAClue = ({ l }) => {
     <PlayingWrapper headerText={submitted && "Waiting for other players"}>
       <PlayingTitle>Writing Clues</PlayingTitle>
       <PlayingDescription>
-        {submitted
-          ? "You would submit the clue " + clue + " to the server."
-          : "Try up come up with a hint for the mystery word!"}
+        Try up come up with a hint for the mystery word!
       </PlayingDescription>
       <Container>
         <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
@@ -81,10 +97,20 @@ const WritingAClue = ({ l }) => {
             label="Your Clue"
             state={clue}
             labelAlign={"left"}
-            handleChange={handleInputChange}
+            handleChange={handleClueChange}
           />
+          {lobby.players.length === 3 && (
+            <TextInput
+              disabled={submitted}
+              field="secondClue"
+              label="Your second Clue"
+              state={secondClue}
+              labelAlign={"left"}
+              handleChange={handleSecondClueChange}
+            />
+          )}
           <Button
-            disabled={!clue || submitted || error}
+            disabled={(!clue && !secondClue) || submitted || clueTypeError}
             onClick={() => {
               submitClue();
             }}
