@@ -9,7 +9,7 @@ const Container = styled.div`
   border-radius: 15px;
   display: flex;
   flex-direction: row;
-  background-color: #454c62;
+  background-color: ${props => (props.color ? props.color : "#454c62")};
   a {
     color: #ce552e;
     display: flex;
@@ -84,6 +84,39 @@ const PlayerStatus = ({ status, role }) => {
     : status == "END_OF_TURN"
     ? "orange"
     : "pink";
+
+    const statusOutput =
+        status == "JOINED"
+        ? "Joined"
+        : status == "READY"
+        ? "Ready"
+        : status == "FINISHED"
+        ? "Finished"
+        : status == "PICKING_NUMBER"
+        ? "Picking a Number"
+        : status == "WAITING_FOR_NUMBER"
+        ? "Waiting for a Number"
+        : status == "WAITING_FOR_CLUES"
+        ? "Waiting for Clues"
+        : status == "WRITING_CLUES"
+        ? "Writing a Clue"
+        : status == "WAITING_FOR_REVIEW"
+        ? "Waiting for Clue been reviewed"
+        : status == "REVIEWING_CLUES"
+        ? "Reviewing Clues"
+        : status == "GUESSING_WORD"
+        ? "Guessing..."
+        : status == "WAITING_FOR_GUESS"
+        ? "Waiting for the Guess"
+        : status == "END_OF_TURN"
+        ? "End of Turn"
+        : "wtf?!";
+
+    const playerRole =
+        role == "GUESSER" ? "GUESSER" :
+        role == "CLUE_CREATOR" ? "CLUE CREATOR":
+        "WHO AM I?";
+
   return (
     <PlayerInfo>
       <StatusCycle
@@ -91,7 +124,7 @@ const PlayerStatus = ({ status, role }) => {
           backgroundColor: color
         }}
       />{" "}
-      {role} | {status}
+      {playerRole} | {statusOutput}
     </PlayerInfo>
   );
 };
@@ -104,8 +137,11 @@ class PlayerInOverview extends React.Component {
     };
   }
   render() {
+
+  const containerColor =
+      this.props.player.role == "GUESSER" ? "rgba(0, 0, 0, 0.3)" : "#454c62";
     return (
-      <Container>
+      <Container color = {containerColor}>
         <Avatar size={40} user={this.props.player} />
         <PlayerMeta>
           <PlayerName>{this.props.player.username}</PlayerName>
