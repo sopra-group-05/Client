@@ -60,16 +60,30 @@ const StatusCycle = styled.div`
 const PlayerStatus = ({ status, role }) => {
   const color =
     status == "JOINED"
-      ? "yellow"
-      : status == "READY"
-      ? "green"
-      : status == "PLAYING"
-      ? "blue"
-      : status == "FINISHED"
-      ? "orange"
-      : status == "LEFT"
-      ? "red"
-      : "pink";
+    ? "blue"
+    : status == "READY"
+    ? "green"
+    : status == "FINISHED"
+    ? "orange"
+    : status == "PICKING_NUMBER"
+    ? "blue"
+    : status == "WAITING_FOR_NUMBER"
+    ? "yellow"
+    : status == "WAITING_FOR_CLUES"
+    ? "yellow"
+    : status == "WRITING_CLUES"
+    ? "yellow"
+    : status == "WAITING_FOR_REVIEW"
+    ? "yellow"
+    : status == "REVIEWING_CLUES"
+    ? "blue"
+    : status == "GUESSING_WORD"
+    ? "blue"
+    : status == "WAITING_FOR_GUESS"
+    ? "yellow"
+    : status == "END_OF_TURN"
+    ? "orange"
+    : "pink";
   return (
     <PlayerInfo>
       <StatusCycle
