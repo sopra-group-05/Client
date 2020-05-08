@@ -32,6 +32,19 @@ const FactorTitle = styled.h4`
   text-transform: uppercase;
 `;
 
+const FactorButton = styled.button`
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 0;
+  text-transform: uppercase;
+`;
+
 const RankingRow = styled.div`
   display: grid;
   justify-items: stretch;
@@ -73,7 +86,8 @@ const rankingNames = new Stats({
   teamPoints: "Team Points"
 });
 
-/*const exampleStats = [
+/*
+const exampleStats = [
   new Stats({
     playerId: 15,
     playerName: "TestOne",
@@ -134,7 +148,8 @@ const rankingNames = new Stats({
     timeForClue: 89,
     teamPoints: 13
   })
-];*/
+];
+*/
 
 class RankingBox extends React.Component {
   constructor(props) {
@@ -142,9 +157,16 @@ class RankingBox extends React.Component {
     this.state = {
       lobby: this.props.lobby,
       stats: [],
+      sortConfig: {
+        key: this.props.sortKey ? this.props.sortKey : "score",
+        dir: this.props.sortDir ? this.props.sortDir : "descending"
+      },
+      sortedStats: [],
       error: null
     };
     this.getStats = this.getStats.bind(this);
+    this.sortBy = this.sortBy.bind(this);
+    this.setSortConfig = this.setSortConfig.bind(this);
   }
 
   async getStats() {
@@ -166,8 +188,18 @@ class RankingBox extends React.Component {
         this.interval = setInterval(this.getLobbies, 1000);
       }
 
-      this.setState({ stats: stats, error: null });
-      /*      const creatorStats = new Stats({
+      this.setState({
+        stats: stats,
+        sortedStats: this.sortBy(stats),
+        error: null
+      });
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while fetching the stats: \n${handleError(error)}`
+      );
+      clearInterval(this.interval);
+      /*const creatorStats = new Stats({
         playerId: lobby.creator.id,
         playerName: lobby.creator.username,
         score: 35,
@@ -180,14 +212,39 @@ class RankingBox extends React.Component {
         teamPoints: 13
       });
       exampleStats.push(creatorStats);
-      this.setState({ stats: exampleStats, error: null });*/
-    } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
-      console.log(
-        `Something went wrong while fetching the stats: \n${handleError(error)}`
-      );
-      clearInterval(this.interval);
+      this.setState({
+        stats: exampleStats,
+        sortedStats: this.sortBy(exampleStats)
+      });
+      console.log(exampleStats);*/
     }
+  }
+
+  sortBy(stats) {
+    const sortConfig = this.state.sortConfig;
+    const sortedStats = [...stats];
+    const compareFnDefault = (a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.dir === "ascending" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.dir === "ascending" ? 1 : -1;
+      }
+      return 0;
+    };
+    const compareFnName = (a, b) => {
+      if (a[sortConfig.key].toLowerCase() < b[sortConfig.key].toLowerCase()) {
+        return sortConfig.dir === "ascending" ? -1 : 1;
+      }
+      if (a[sortConfig.key].toLowerCase() > b[sortConfig.key].toLowerCase()) {
+        return sortConfig.dir === "ascending" ? 1 : -1;
+      }
+      return 0;
+    };
+    const sortFn =
+      sortConfig.key === "playerName" ? compareFnName : compareFnDefault;
+    sortedStats.sort(sortFn);
+    return sortedStats;
   }
 
   componentDidMount() {
@@ -198,8 +255,25 @@ class RankingBox extends React.Component {
     clearInterval(this.interval);
   }
 
+  setSortConfig(sortKey) {
+    let direction = "descending";
+    if (
+      this.state.sortConfig.key === sortKey &&
+      this.state.sortConfig.dir === "descending"
+    ) {
+      direction = "ascending";
+      console.log("changed direction");
+    }
+    this.setState({ sortConfig: { key: sortKey, dir: direction } });
+  }
+
+  arrowSorted(sortKey) {
+    if (sortKey !== this.state.sortConfig.key) return " ";
+    return this.state.sortConfig.dir === "ascending" ? "↑" : "↓";
+  }
+
   render() {
-    const stats = this.state.stats;
+    const stats = this.sortBy(this.state.stats);
     return stats.length > 0 ? (
       <Box title={"Ranking"}>
         {this.state.lobby && (
@@ -209,15 +283,44 @@ class RankingBox extends React.Component {
         )}
         <GridContainer length={stats.length}>
           <RankingRow row={0}>
-            <FactorTitle>{rankingNames.playerName}</FactorTitle>
-            <FactorTitle>{rankingNames.score}</FactorTitle>
-            <FactorTitle>{rankingNames.guessCount}</FactorTitle>
-            <FactorTitle>{rankingNames.correctGuessCount}</FactorTitle>
-            <FactorTitle>{rankingNames.timeToGuess}</FactorTitle>
-            <FactorTitle>{rankingNames.givenClues}</FactorTitle>
-            <FactorTitle>{rankingNames.goodClues}</FactorTitle>
-            <FactorTitle>{rankingNames.timeForClue}</FactorTitle>
-            <FactorTitle>{rankingNames.teamPoints}</FactorTitle>
+            <FactorButton onClick={() => this.setSortConfig("playerName")}>
+              {rankingNames.playerName}
+              {this.arrowSorted("playerName")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("score")}>
+              {rankingNames.score}
+              {this.arrowSorted("score")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("guessCount")}>
+              {rankingNames.guessCount}
+              {this.arrowSorted("guessCount")}
+            </FactorButton>
+            <FactorButton
+              onClick={() => this.setSortConfig("correctGuessCount")}
+            >
+              {rankingNames.correctGuessCount}
+              {this.arrowSorted("correctGuessCount")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("timeToGuess")}>
+              {rankingNames.timeToGuess}
+              {this.arrowSorted("timeToGuess")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("givenClues")}>
+              {rankingNames.givenClues}
+              {this.arrowSorted("givenClues")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("goodClues")}>
+              {rankingNames.goodClues}
+              {this.arrowSorted("goodClues")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("timeForClue")}>
+              {rankingNames.timeForClue}
+              {this.arrowSorted("timeForClue")}
+            </FactorButton>
+            <FactorButton onClick={() => this.setSortConfig("teamPoints")}>
+              {rankingNames.teamPoints}
+              {this.arrowSorted("teamPoints")}
+            </FactorButton>
           </RankingRow>
           <Container>
             {stats.map(stat => {
