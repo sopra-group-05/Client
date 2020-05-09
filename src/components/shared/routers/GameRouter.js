@@ -7,6 +7,7 @@ import LobbyPage from "../../game/Lobby/LobbyPage";
 import PlayingContainer from "../../game/Playing/PlayingContainer";
 import EndOfGameContainer from "../../game/EndOfGame/EndOfGameContainer";
 import FullRules from "../../game/Rules/FullRules";
+import RankingContainer from "../../game/Ranking/RankingContainer";
 
 const Container = styled.div`
   display: flex;
@@ -60,6 +61,11 @@ class GameRouter extends React.Component {
             exact
             path={`${this.props.base}/lobby/:id/gameover`}
             component={EndOfGameContainer}
+          />
+          <Route
+            exact
+            path={`${this.props.base}/ranking`}
+            component={RankingContainer}
           />
         </Switch>
       </Container>
