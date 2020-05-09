@@ -5,6 +5,7 @@ import Avatar from "../../../views/Avatar";
 import User from "../../shared/models/User";
 import DashBoardIcon from "../../../images/Dashboard.png";
 import RuleIcon from "../../../images/rules.png";
+import RankingIcon from "../../../images/podium_white.png";
 
 const Wrapper = styled.div`
   width: 80px;
@@ -61,6 +62,14 @@ const Sidebar = ({ disabled }) => {
 
         <SideBarLink to="/game/rules" disabled={disabled} title="Rules">
           <Icon src={RuleIcon} />
+        </SideBarLink>
+
+        {
+          // FIXME: is api endpoint to ranking correct?
+          //Icon made by Freepik from www.flaticon.com
+        }
+        <SideBarLink to="/game/ranking" disabled={disabled} title="Ranking">
+          <Icon src={RankingIcon} />
         </SideBarLink>
       </Wrapper>
     );
