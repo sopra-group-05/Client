@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { api, handleError } from "../../../helpers/api";
+import { api, handleError } from "../helpers/api";
 import { withRouter } from "react-router-dom";
-import Box from "../../../views/Box";
-import { Spinner } from "../../../views/design/Spinner";
-import Stats from "../../shared/models/Stats";
-import Lobby from "../../shared/models/Lobby";
+import Box from "./Box";
+import { Spinner } from "./design/Spinner";
+import Stats from "../components/shared/models/Stats";
+import Lobby from "../components/shared/models/Lobby";
 
 const Container = styled.div`
   border-radius: 15px;

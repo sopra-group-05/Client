@@ -5,7 +5,7 @@ import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 import { Button } from "../Playing/PlayingStyle";
-import RankingBox from "./RankingBox";
+import RankingBox from "../../../views/RankingBox";
 import Lobby from "../../shared/models/Lobby";
 
 const Container = styled(BaseContainer)`
