@@ -65,7 +65,6 @@ const Sidebar = ({ disabled }) => {
         </SideBarLink>
 
         {
-          // FIXME: is api endpoint to ranking correct?
           //Icon made by Freepik from www.flaticon.com
         }
         <SideBarLink to="/game/ranking" disabled={disabled} title="Ranking">
