@@ -188,7 +188,7 @@ class RankingBox extends React.Component {
         response = await api.get("lobbies/" + lobby.id + "/stats");
       } else {
         // TODO: what is endpoint uri
-        response = await api.get("ranking");
+        response = await api.get("users/ranking");
       }
 
       // convert to Stats model
