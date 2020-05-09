@@ -7,18 +7,24 @@ import { Spinner } from "./design/Spinner";
 import Stats from "../components/shared/models/Stats";
 import Lobby from "../components/shared/models/Lobby";
 
+const NO_LOBBY = 8;
+const YES_LOBBY = 9;
+
 const Container = styled.div`
   border-radius: 15px;
   display: grid;
   background-color: #454c62;
   justify-items: stretch;
-  grid-column: 1 / 10;
-  grid-row: 2 / 10;
+  grid-column: 1 / ${props => (props.hasLobby ? YES_LOBBY + 1 : NO_LOBBY + 1)};
+  grid-row: 2 / end;
 `;
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(
+    ${props => (props.hasLobby ? YES_LOBBY : NO_LOBBY)},
+    1fr
+  );
   grid-template-rows: ${props => props.length + 1};
   justify-items: stretch;
 `;
@@ -48,10 +54,13 @@ const FactorButton = styled.button`
 const RankingRow = styled.div`
   display: grid;
   justify-items: stretch;
-  grid-template-columns: repeat(9, ${100 / 9}%);
+  grid-template-columns: repeat(
+    ${props => (props.hasLobby ? YES_LOBBY : NO_LOBBY)},
+    ${props => (props.hasLobby ? 100 / YES_LOBBY : 100 / NO_LOBBY)}%
+  );
   grid-template-rows: 100%;
   grid-column-start: 1;
-  grid-column-end: 10;
+  grid-column-end: ${props => (props.hasLobby ? YES_LOBBY + 1 : NO_LOBBY + 1)};
   grid-row-start: ${props => props.row + 1};
 `;
 
@@ -170,11 +179,17 @@ class RankingBox extends React.Component {
   }
 
   async getStats() {
-    const lobby = new Lobby(this.state.lobby);
     try {
       // add token to request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.get("lobbies/" + lobby.id + "/stats");
+      let response;
+      if (this.state.lobby) {
+        const lobby = new Lobby(this.state.lobby);
+        response = await api.get("lobbies/" + lobby.id + "/stats");
+      } else {
+        // TODO: what is endpoint uri
+        response = await api.get("ranking");
+      }
 
       // convert to Stats model
       const stats = response.data.map(data => {
@@ -185,7 +200,7 @@ class RankingBox extends React.Component {
         // make API call every 1s to get Updated lobbies List.
         // Will have to be destroyed in componentWIllUnmount()!
         // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobbies, 1000);
+        this.interval = setInterval(this.getStats, 1000);
       }
 
       this.setState({
@@ -199,7 +214,8 @@ class RankingBox extends React.Component {
         `Something went wrong while fetching the stats: \n${handleError(error)}`
       );
       clearInterval(this.interval);
-      /*const creatorStats = new Stats({
+      /*
+      const creatorStats = new Stats({
         playerId: lobby.creator.id,
         playerName: lobby.creator.username,
         score: 35,
@@ -216,7 +232,8 @@ class RankingBox extends React.Component {
         stats: exampleStats,
         sortedStats: this.sortBy(exampleStats)
       });
-      console.log(exampleStats);*/
+      console.log(exampleStats);
+      */
     }
   }
 
@@ -262,7 +279,6 @@ class RankingBox extends React.Component {
       this.state.sortConfig.dir === "descending"
     ) {
       direction = "ascending";
-      console.log("changed direction");
     }
     this.setState({ sortConfig: { key: sortKey, dir: direction } });
   }
@@ -281,8 +297,8 @@ class RankingBox extends React.Component {
             As a Team, you got {stats[0].teamPoints} points!
           </FactorTitle>
         )}
-        <GridContainer length={stats.length}>
-          <RankingRow row={0}>
+        <GridContainer length={stats.length} hasLobby={this.state.lobby}>
+          <RankingRow row={0} hasLobby={this.state.lobby}>
             <FactorButton onClick={() => this.setSortConfig("playerName")}>
               {rankingNames.playerName}
               {this.arrowSorted("playerName")}
@@ -317,19 +333,25 @@ class RankingBox extends React.Component {
               {rankingNames.timeForClue}
               {this.arrowSorted("timeForClue")}
             </FactorButton>
-            <FactorButton onClick={() => this.setSortConfig("teamPoints")}>
-              {rankingNames.teamPoints}
-              {this.arrowSorted("teamPoints")}
-            </FactorButton>
+            {this.state.lobby && (
+              <FactorButton onClick={() => this.setSortConfig("teamPoints")}>
+                {rankingNames.teamPoints}
+                {this.arrowSorted("teamPoints")}
+              </FactorButton>
+            )}
           </RankingRow>
-          <Container>
+          <Container hasLobby={this.state.lobby}>
             {stats.map(stat => {
               const ComponentClass =
                 stat.playerId == localStorage.getItem("userId")
                   ? FactorLocalPlayer
                   : FactorOtherPlayer;
               return (
-                <RankingRow key={stat.playerId} row={stats.indexOf(stat) + 1}>
+                <RankingRow
+                  key={stat.playerId}
+                  row={stats.indexOf(stat) + 1}
+                  hasLobby={this.state.lobby}
+                >
                   <ComponentClass>{stat.playerName}</ComponentClass>
                   <ComponentClass>{stat.score}</ComponentClass>
                   <ComponentClass>{stat.guessCount}</ComponentClass>
@@ -338,7 +360,9 @@ class RankingBox extends React.Component {
                   <ComponentClass>{stat.givenClues}</ComponentClass>
                   <ComponentClass>{stat.goodClues}</ComponentClass>
                   <ComponentClass>{stat.timeForClue}</ComponentClass>
-                  <ComponentClass>{stat.teamPoints}</ComponentClass>
+                  {this.state.lobby && (
+                    <ComponentClass>{stat.teamPoints}</ComponentClass>
+                  )}
                 </RankingRow>
               );
             })}
