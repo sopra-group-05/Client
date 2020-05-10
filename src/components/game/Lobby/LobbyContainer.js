@@ -223,6 +223,16 @@ class LobbyContainer extends React.Component {
     }
   }
 
+  isPlayerReady(players) {
+    let player = players.find(
+      player => player.id == localStorage.getItem("userId")
+    );
+    if (player.status === "READY") {
+      return true;
+    }
+    return false;
+  }
+
   componentDidMount() {
     this.getLobby();
   }
@@ -270,7 +280,9 @@ class LobbyContainer extends React.Component {
             </Players>
             <PlayerStatus onClick={() => this.toggleCheckbox()}>
               <CheckBox>
-                <CheckboxTick checked={this.state.playerStatus === true} />
+                <CheckboxTick
+                  checked={this.isPlayerReady(this.state.lobby.players)}
+                />
               </CheckBox>
               Set ready
             </PlayerStatus>
@@ -296,14 +308,6 @@ class LobbyContainer extends React.Component {
                 </Button>
               )}
             </ButtonGroup>
-            {/*this.state.lobbyReady ? (
-              <Countdown
-                time={6}
-                activeText={"Game starts in "}
-                timeoutText={"Go!"}
-                functionWhenDone={this.startGame}
-              />
-            ) : null*/}
           </div>
         )}
       </Box>
