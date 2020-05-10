@@ -7,7 +7,7 @@ import { Spinner } from "./design/Spinner";
 import Stats from "../components/shared/models/Stats";
 import Lobby from "../components/shared/models/Lobby";
 
-const NO_LOBBY = 8;
+const NO_LOBBY = 4;
 const YES_LOBBY = 9;
 
 const Container = styled.div`
@@ -87,10 +87,10 @@ const rankingNames = new Stats({
   playerName: "Name",
   score: "Score",
   guessCount: "Guesses",
-  correctGuessCount: "Correct",
+  correctGuessCount: "Correct Guesses",
   timeToGuess: "Time to guess",
   givenClues: "Clues",
-  goodClues: "Good",
+  goodClues: "Good Clues",
   timeForClue: "Time to write clues",
   teamPoints: "Team Points"
 });
@@ -167,8 +167,8 @@ class RankingBox extends React.Component {
       lobby: this.props.lobby,
       stats: [],
       sortConfig: {
-        key: this.props.sortKey ? this.props.sortKey : "score",
-        dir: this.props.sortDir ? this.props.sortDir : "descending"
+        key: "score",
+        dir: "descending"
       },
       sortedStats: [],
       error: null
@@ -183,21 +183,23 @@ class RankingBox extends React.Component {
       // add token to request
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       let response;
+      let stats;
       if (this.state.lobby) {
         const lobby = new Lobby(this.state.lobby);
         response = await api.get("lobbies/" + lobby.id + "/stats");
+        // convert to Stats model
+        stats = response.data.map(data => {
+          return new Stats(data);
+        });
       } else {
-        // TODO: what is endpoint uri
-        response = await api.get("users/ranking");
+        response = await api.get("users/ranking/" + this.state.sortConfig.key);
+        stats = response.data;
       }
 
-      // convert to Stats model
-      const stats = response.data.map(data => {
-        return new Stats(data);
-      });
+      console.log(response.data);
 
-      if (this.state.stats === [] && response.data) {
-        // make API call every 1s to get Updated lobbies List.
+      if (this.state.stats.length === 0 && response.data) {
+        // make API call every 1s to get Updated stats.
         // Will have to be destroyed in componentWIllUnmount()!
         // only set interval the very first time you call the API
         this.interval = setInterval(this.getStats, 1000);
@@ -299,40 +301,72 @@ class RankingBox extends React.Component {
         )}
         <GridContainer length={stats.length} hasLobby={this.state.lobby}>
           <RankingRow row={0} hasLobby={this.state.lobby}>
-            <FactorButton onClick={() => this.setSortConfig("playerName")}>
-              {rankingNames.playerName}
-              {this.arrowSorted("playerName")}
-            </FactorButton>
+            {this.state.lobby ? (
+              <FactorButton onClick={() => this.setSortConfig("playerName")}>
+                {rankingNames.playerName}
+                {this.arrowSorted("playerName")}
+              </FactorButton>
+            ) : (
+              <FactorButton onClick={() => this.setSortConfig("username")}>
+                {rankingNames.playerName}
+                {this.arrowSorted("username")}
+              </FactorButton>
+            )}
+
             <FactorButton onClick={() => this.setSortConfig("score")}>
               {rankingNames.score}
               {this.arrowSorted("score")}
             </FactorButton>
-            <FactorButton onClick={() => this.setSortConfig("guessCount")}>
-              {rankingNames.guessCount}
-              {this.arrowSorted("guessCount")}
-            </FactorButton>
-            <FactorButton
-              onClick={() => this.setSortConfig("correctGuessCount")}
-            >
-              {rankingNames.correctGuessCount}
-              {this.arrowSorted("correctGuessCount")}
-            </FactorButton>
-            <FactorButton onClick={() => this.setSortConfig("timeToGuess")}>
-              {rankingNames.timeToGuess}
-              {this.arrowSorted("timeToGuess")}
-            </FactorButton>
-            <FactorButton onClick={() => this.setSortConfig("givenClues")}>
-              {rankingNames.givenClues}
-              {this.arrowSorted("givenClues")}
-            </FactorButton>
-            <FactorButton onClick={() => this.setSortConfig("goodClues")}>
-              {rankingNames.goodClues}
-              {this.arrowSorted("goodClues")}
-            </FactorButton>
-            <FactorButton onClick={() => this.setSortConfig("timeForClue")}>
-              {rankingNames.timeForClue}
-              {this.arrowSorted("timeForClue")}
-            </FactorButton>
+            {this.state.lobby && (
+              <FactorButton onClick={() => this.setSortConfig("guessCount")}>
+                {rankingNames.guessCount}
+                {this.arrowSorted("guessCount")}
+              </FactorButton>
+            )}
+            {this.state.lobby ? (
+              <FactorButton
+                onClick={() => this.setSortConfig("correctGuessCount")}
+              >
+                {rankingNames.correctGuessCount}
+                {this.arrowSorted("correctGuessCount")}
+              </FactorButton>
+            ) : (
+              <FactorButton
+                onClick={() => this.setSortConfig("correctGuesses")}
+              >
+                {rankingNames.correctGuessCount}
+                {this.arrowSorted("correctGuesses")}
+              </FactorButton>
+            )}
+            {this.state.lobby && (
+              <FactorButton onClick={() => this.setSortConfig("timeToGuess")}>
+                {rankingNames.timeToGuess}
+                {this.arrowSorted("timeToGuess")}
+              </FactorButton>
+            )}
+            {this.state.lobby && (
+              <FactorButton onClick={() => this.setSortConfig("givenClues")}>
+                {rankingNames.givenClues}
+                {this.arrowSorted("givenClues")}
+              </FactorButton>
+            )}
+            {this.state.lobby ? (
+              <FactorButton onClick={() => this.setSortConfig("goodClues")}>
+                {rankingNames.goodClues}
+                {this.arrowSorted("goodClues")}
+              </FactorButton>
+            ) : (
+              <FactorButton onClick={() => this.setSortConfig("bestClues")}>
+                {rankingNames.goodClues}
+                {this.arrowSorted("bestClues")}
+              </FactorButton>
+            )}
+            {this.state.lobby && (
+              <FactorButton onClick={() => this.setSortConfig("timeForClue")}>
+                {rankingNames.timeForClue}
+                {this.arrowSorted("timeForClue")}
+              </FactorButton>
+            )}
             {this.state.lobby && (
               <FactorButton onClick={() => this.setSortConfig("teamPoints")}>
                 {rankingNames.teamPoints}
@@ -342,24 +376,45 @@ class RankingBox extends React.Component {
           </RankingRow>
           <Container hasLobby={this.state.lobby}>
             {stats.map(stat => {
+              const keyId = this.state.lobby ? stat.playerId : stat.id;
               const ComponentClass =
-                stat.playerId == localStorage.getItem("userId")
+                keyId == localStorage.getItem("userId")
                   ? FactorLocalPlayer
                   : FactorOtherPlayer;
               return (
                 <RankingRow
-                  key={stat.playerId}
+                  key={keyId}
                   row={stats.indexOf(stat) + 1}
                   hasLobby={this.state.lobby}
                 >
-                  <ComponentClass>{stat.playerName}</ComponentClass>
+                  {this.state.lobby ? (
+                    <ComponentClass>{stat.playerName}</ComponentClass>
+                  ) : (
+                    <ComponentClass>{stat.username}</ComponentClass>
+                  )}
                   <ComponentClass>{stat.score}</ComponentClass>
-                  <ComponentClass>{stat.guessCount}</ComponentClass>
-                  <ComponentClass>{stat.correctGuessCount}</ComponentClass>
-                  <ComponentClass>{stat.timeToGuess}</ComponentClass>
-                  <ComponentClass>{stat.givenClues}</ComponentClass>
-                  <ComponentClass>{stat.goodClues}</ComponentClass>
-                  <ComponentClass>{stat.timeForClue}</ComponentClass>
+                  {this.state.lobby && (
+                    <ComponentClass>{stat.guessCount}</ComponentClass>
+                  )}
+                  {this.state.lobby ? (
+                    <ComponentClass>{stat.correctGuessCount}</ComponentClass>
+                  ) : (
+                    <ComponentClass>{stat.correctGuesses}</ComponentClass>
+                  )}
+                  {this.state.lobby && (
+                    <ComponentClass>{stat.timeToGuess}</ComponentClass>
+                  )}
+                  {this.state.lobby && (
+                    <ComponentClass>{stat.givenClues}</ComponentClass>
+                  )}
+                  {this.state.lobby ? (
+                    <ComponentClass>{stat.goodClues}</ComponentClass>
+                  ) : (
+                    <ComponentClass>{stat.bestClues}</ComponentClass>
+                  )}
+                  {this.state.lobby && (
+                    <ComponentClass>{stat.timeForClue}</ComponentClass>
+                  )}
                   {this.state.lobby && (
                     <ComponentClass>{stat.teamPoints}</ComponentClass>
                   )}
