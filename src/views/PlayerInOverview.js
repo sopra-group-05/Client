@@ -112,8 +112,8 @@ const PlayerStatus = ({ status, role }) => {
       ? "Waiting for the Guess"
       : status == "END_OF_TURN"
       ? "End of Turn"
-	  : status == "PLAYER_LEFT"
-	  ? "A Player has left"    		
+      : status == "PLAYER_LEFT"
+      ? "A Player has left"
       : "wtf?!";
 
   const playerRole =
