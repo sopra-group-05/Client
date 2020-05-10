@@ -31,16 +31,21 @@ const Guessing = ({ l }) => {
   const lobby = new Lobby(l); //transform input into Lobby Model
   const [guess, setGuess] = React.useState("");
   const [clues, setClues] = React.useState([]);
+  const [timeToGuess, setTimeToGuess] = React.useState(0);
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState("");
   const handleInputChange = (key, input) => {
     setGuess(input);
   };
+  
+  
+  
   const submitGuess = async () => {
     setSubmitted(true);
     try {
       const requestBody = JSON.stringify({
-        guess: guess
+        guess: guess,
+        timeToGuess: timeToGuess
       });
 
       // make POST request to Server to choose Number
@@ -51,6 +56,7 @@ const Guessing = ({ l }) => {
       console.log(error);
     }
   };
+  
   const skipGuess = () => {
     // set guess to empty and submit it.
     setGuess("");
@@ -107,7 +113,7 @@ const Guessing = ({ l }) => {
           >
             Skip
           </Button>
-          {!submitted && <Countdown functionWhenDone={skipGuess} time={30} />}
+          {!submitted && <Countdown functionWhenDone={skipGuess} time={30} returnTime={setTimeToGuess}/>}
         </Form>
       </Container>
       <MessageHandler message={error} show={error} />

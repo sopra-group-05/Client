@@ -31,6 +31,7 @@ const WritingAClue = ({ l }) => {
   const [secondClue, setSecondClue] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState("");
+  const [timeForClue, setTimeForClue] = React.useState(0);
   const [clueTypeError, setClueTypeError] = React.useState(false);
   const handleClueChange = (key, input) => {
     setClue(input);
@@ -50,7 +51,8 @@ const WritingAClue = ({ l }) => {
         // send two clues if there are exactly 3 players in the lobby.
         requestBody = JSON.stringify({
           hint: clue,
-          hint2: secondClue
+          hint2: secondClue,
+          timeForClue: timeForClue
         });
       }
 
@@ -117,7 +119,7 @@ const WritingAClue = ({ l }) => {
           >
             Send
           </Button>
-          {!submitted && <Countdown functionWhenDone={skipClue} time={30} />}
+          {!submitted && <Countdown functionWhenDone={skipClue} time={30} returnTime={setTimeForClue}/>}
         </Form>
       </Container>
       <MessageHandler message={error} show={error} />
