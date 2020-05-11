@@ -283,7 +283,7 @@ class EndRoundContent extends React.Component {
           </DeckContainer>
         </DeckOverview>
 
-        {this.state.leftCards <= 12 ? (
+        {this.state.leftCards <= 0 ? (
           <React.Fragment>
             <GuessDescription color="white">
               There are no cards left to play. The game is over now.
