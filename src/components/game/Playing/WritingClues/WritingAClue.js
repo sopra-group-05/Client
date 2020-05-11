@@ -45,17 +45,10 @@ const WritingAClue = ({ l }) => {
     setSubmitted(true);
     try {
       let requestBody = JSON.stringify({
-        hint: clue
+        hint: clue,
+        hint2: secondClue,
+        timeForClue: timeForClue
       });
-      if (lobby.players.length === 3) {
-        // send two clues if there are exactly 3 players in the lobby.
-        requestBody = JSON.stringify({
-          hint: clue,
-          hint2: secondClue,
-          timeForClue: timeForClue
-        });
-      }
-
       // make POST request to Server to choose Number
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       await api.post("/lobbies/" + lobby.id + "/clues", requestBody);
