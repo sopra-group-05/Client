@@ -10,6 +10,7 @@ import GermanFlag from "../../../images/lang_DE.png";
 import EnglishFlag from "../../../images/lang_EN.png";
 import Label from "../../../views/design/Label";
 import Dropdown from "./Dropdown";
+import DropdownCards from "./DropdownCards";
 import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
 
@@ -102,6 +103,12 @@ const Languages = styled.div`
   justify-content: center;
 `;
 
+const Cards = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+`;
+
 const Flag = styled.img`
   opacity: ${props => (props.active ? "1.0" : "0.5")};
   height: 42px;
@@ -128,6 +135,13 @@ const BotContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
+const DropdownContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 1rem;
+`;
+
 class CreateLobby extends React.Component {
   constructor() {
     super();
@@ -136,12 +150,15 @@ class CreateLobby extends React.Component {
       lobbyName: localStorage.getItem("username") + " Lobby",
       language: "EN",
       gameMode: 0,
-      error: null
+      error: null,
+      numberOfCards: 13,
+      numberOfBots: 0
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.changeNumberOfCards = this.changeNumberOfCards.bind(this);
+    this.changeNumberOfBots = this.changeNumberOfBots.bind(this);
   }
-
   componentDidMount() {
     // get Game-Score of current player, dummy score at the moment
     //this.getScore();
@@ -163,6 +180,15 @@ class CreateLobby extends React.Component {
 
   toggleCheckbox() {
     this.setState({ gameMode: this.state.gameMode === 0 ? 1 : 0 });
+    this.state.gameMode == 0 ? this.setState({numberOfBots: 1}) : this.setState({numberOfBots: 0})
+  }
+
+  changeNumberOfCards(numOfCards){
+    this.setState({numberOfCards: numOfCards})
+  }
+
+  changeNumberOfBots(numOfBots){
+    this.setState({numberOfBots: numOfBots})
   }
 
   async createLobby() {
@@ -170,7 +196,9 @@ class CreateLobby extends React.Component {
       const requestBody = JSON.stringify({
         lobbyName: this.state.lobbyName,
         gameMode: this.state.gameMode,
-        language: this.state.language
+        language: this.state.language,
+        numberOfCards: this.state.numberOfCards,
+        numberOfBots: this.state.numberOfBots
       });
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.post("/lobbies", requestBody);
@@ -188,8 +216,6 @@ class CreateLobby extends React.Component {
       );
     }
   }
-
-  //TODO add this line at 222 (after </GameMode> : {!(this.state.gameMode === 0) ? <Dropdown /> : ""}
 
   render() {
     return (
@@ -220,6 +246,7 @@ class CreateLobby extends React.Component {
                   </CheckBox>
                   Add Bots
                 </GameMode>
+                {!(this.state.gameMode === 0) ? <Dropdown changeNumOfBots={this.changeNumberOfBots}/> : ""}
               </BotContainer>
             )}
             <Label>Select Lobby Language</Label>
@@ -237,6 +264,11 @@ class CreateLobby extends React.Component {
                 title="German"
               />
             </Languages>
+
+            <Label style={{marginTop: "1rem"}}>Select # of Cards </Label>
+            <Cards>
+              <DropdownCards changeNumOfCards={this.changeNumberOfCards}/>
+            </Cards>
             <Button
               onClick={() => {
                 this.createLobby();
