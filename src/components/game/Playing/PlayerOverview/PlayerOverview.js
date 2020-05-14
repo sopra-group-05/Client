@@ -5,6 +5,7 @@ import Lobby from "../../../shared/models/Lobby";
 import Box from "../../../../views/Box";
 import PlayerInOverview from "../../../../views/PlayerInOverview";
 import { Button } from "../../../../views/design/Button";
+import DetectPlayerStatusChange from "./DetectPlayerStatusChange";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ const PlayerOverview = props => {
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
+        <DetectPlayerStatusChange lobby={lobby} />
         {lobby.players.map(player => {
           return (
             <PlayerInOverview player={player} lobby={lobby} key={player.id} />
