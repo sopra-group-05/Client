@@ -6,6 +6,8 @@ import Guess from "./Guess/Guess";
 import React from "react";
 import EndRound from "./EndRound/EndRound";
 import Lobby from "../../shared/models/Lobby";
+import AcceptDeclineMysteryWord from "./AcceptDeclineMysteryWord/AcceptDeclineMysteryWord";
+import WaitingToAcceptDeclineMysteryWord from "./AcceptDeclineMysteryWord/WaitingToAcceptDeclineMysteryWord";
 
 const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
   // this component renders the correct state of the game
@@ -27,6 +29,12 @@ const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
     // set States and which Component should be rendered given the Status of a player.
     states.set("PICKING_NUMBER", ChoosingMysteryWord);
     states.set("WAITING_FOR_NUMBER", ChoosingMysteryWord);
+
+    states.set("ACCEPTING_MYSTERY_WORD", AcceptDeclineMysteryWord);
+    states.set(
+      "WAITING_TO_ACCEPT_MYSTERY_WORD",
+      WaitingToAcceptDeclineMysteryWord
+    );
 
     states.set("WAITING_FOR_CLUES", WritingClues);
     states.set("WRITING_CLUES", WritingClues);
