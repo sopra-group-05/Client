@@ -37,14 +37,12 @@ const Guessing = ({ l }) => {
   const handleInputChange = (key, input) => {
     setGuess(input);
   };
-  
-  
-  
-  const submitGuess = async () => {
+
+  const submitGuess = async skip => {
     setSubmitted(true);
     try {
       const requestBody = JSON.stringify({
-        guess: guess,
+        guess: skip ? "" : guess,
         timeToGuess: timeToGuess
       });
 
@@ -56,11 +54,11 @@ const Guessing = ({ l }) => {
       console.log(error);
     }
   };
-  
+
   const skipGuess = () => {
     // set guess to empty and submit it.
     setGuess("");
-    submitGuess();
+    submitGuess(true);
   };
 
   const getClues = async () => {
@@ -113,7 +111,13 @@ const Guessing = ({ l }) => {
           >
             Skip
           </Button>
-          {!submitted && <Countdown functionWhenDone={skipGuess} time={30} returnTime={setTimeToGuess}/>}
+          {!submitted && (
+            <Countdown
+              functionWhenDone={skipGuess}
+              time={30}
+              returnTime={setTimeToGuess}
+            />
+          )}
         </Form>
       </Container>
       <MessageHandler message={error} show={error} />
