@@ -170,16 +170,6 @@ class PlayingContainer extends React.Component {
             <Spinner />
           )}
         </Container>
-        <Container>
-          <Button
-            onClick={() => {
-              this.nextState();
-            }}
-            disabled={true}
-          >
-            Testing
-          </Button>
-        </Container>
       </React.Fragment>
     );
   }
