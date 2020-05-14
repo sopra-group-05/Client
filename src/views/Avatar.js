@@ -12,13 +12,13 @@ const AvatarImage = styled.img`
 
 /**
  *
- * @param user: A Object of user, needs the username prop of that, will be renamed to default if none given
+ * @param user: A Object of user, needs the id prop of this object, will be renamed to default if none given
  * @param size: default 150, how big should the avatar be?
  * @returns a div with the avatar imported from the adorable api
  */
 const Avatar = ({ user, size, padding }) => {
   size = size ? size : 100;
-  const username = user ? user.username : "default";
+  const userid = user ? user.id : "default";
   return (
     <AvatarImage
       size={size}
@@ -27,10 +27,9 @@ const Avatar = ({ user, size, padding }) => {
         "https://api.adorable.io/avatars/" +
         size +
         "/" +
-        username +
+        userid +
         "@justone.png"
       }
-      title="Your Avatar is based on your username. If you want a different avatar, change your username!"
     />
   );
 };
