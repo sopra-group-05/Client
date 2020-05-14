@@ -74,7 +74,7 @@ const AcceptDeclineMysteryWord = ({ lobby, isGuesser }) => {
               Decline
             </Button>
             {!submitted && (
-              <Countdown functionWhenDone={makeRequest} time={30} />
+              <Countdown functionWhenDone={() => makeRequest(true)} time={30} />
             )}
           </Form>
         </Container>
