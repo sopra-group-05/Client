@@ -44,7 +44,7 @@ dashboard or just have a look at all users that are currently online.
 The LobbyContainer is the Component that you will see when you created a lobby or joined another one. It's the 
 starting point to start a new game and invite other players to the lobby. It's also an overview of all players in 
 that already joined the lobby.
-[PlayingContainer.js](/src/components/game/Lobby/LobbyContainer.js)
+[LobbyContainer.js](/src/components/game/Lobby/LobbyContainer.js)
 
 ### Playing Container
 The PlayingContainer is the heart of the actual game in the frontend. It manages which components are shown at what 
