@@ -19,8 +19,10 @@ const ButtonSpacer = styled.div`
 const PlayerOverview = props => {
   const lobby = new Lobby(props.l); //transform input into Lobby Model
   const toggleShowRules = props.toggleShowRules;
-  const leaveGame = props.leaveGame;
+  const toggleLeaveGame = props.toggleLeaveGame;
   const showHideRules = props.showHideRules ? "Hide Rules" : "Show Rules";
+  const showStay = props.showStay ? "Stay" : "Leave";
+  const colorStay = props.showStay ? "#44d63f" : "red";
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
@@ -32,13 +34,13 @@ const PlayerOverview = props => {
         })}
         <ButtonContainer>
           <Button
-            colorDef={"red"}
+            colorDef={colorStay}
             width={"10em"}
             onClick={() => {
-              leaveGame();
+              toggleLeaveGame();
             }}
           >
-            Leave
+            {showStay}
           </Button>
           <ButtonSpacer />
           <Button

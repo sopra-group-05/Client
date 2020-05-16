@@ -9,6 +9,7 @@ import { Spinner } from "../../../views/design/Spinner";
 import { Button } from "./PlayingStyle";
 import PlayingLogic from "./PlayingLogic";
 import RuleContainer from "./RuleContainer";
+import LeaveContainer from "./LeaveContainer";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -37,6 +38,7 @@ class PlayingContainer extends React.Component {
       lobby: null,
       error: null,
       rulesShown: false,
+      leaveShown: false,
       guess: null,
       success: false
     };
@@ -45,6 +47,7 @@ class PlayingContainer extends React.Component {
     this.leaveGame = this.leaveGame.bind(this);
     this.showRules = this.showRules.bind(this);
     this.toggleShowRules = this.toggleShowRules.bind(this);
+    this.toggleLeaveGame = this.toggleLeaveGame.bind(this);
   }
 
   getLobbyStatus = async () => {
@@ -133,6 +136,10 @@ class PlayingContainer extends React.Component {
     this.setState({ rulesShown: !this.state.rulesShown });
   };
 
+  toggleLeaveGame = () => {
+    this.setState({ leaveShown: !this.state.leaveShown });
+  };
+
   showRules() {
     this.props.history.push("/game/rules");
   }
@@ -155,9 +162,14 @@ class PlayingContainer extends React.Component {
               <MetaInfo>
                 <PlayerOverview
                   l={this.state.lobby}
-                  leaveGame={this.leaveGame}
+                  toggleLeaveGame={this.toggleLeaveGame}
                   toggleShowRules={this.toggleShowRules}
                   showHideRules={this.state.rulesShown}
+                  showStay={this.state.leaveShown}
+                />
+                <LeaveContainer
+                    isShown={this.state.leaveShown}
+                    leave={this.leaveGame}
                 />
                 <RuleContainer
                   l={this.state.lobby}
