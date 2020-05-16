@@ -302,14 +302,6 @@ class EndRoundContent extends React.Component {
         ) : (
           <React.Fragment>
             <ButtonGroup>
-              <PlayerStatus onClick={() => this.toggleCheckbox()}>
-                <CheckBox>
-                  <CheckboxTick checked={this.state.playerStatus === true} />
-                </CheckBox>
-                Ready for next round
-              </PlayerStatus>
-
-              <ButtonSpacer />
 
               {this.props.lobby.creator.id ==
                 localStorage.getItem("userId") && (
@@ -325,7 +317,7 @@ class EndRoundContent extends React.Component {
               )}
             </ButtonGroup>
             <Countdown
-              activeText={"Wait to set ready: "}
+              activeText={"Check Score for  "}
               timeoutText={"Lobby Creator should start next round"}
               functionWhenDone={this.setReady}
               time={5}
