@@ -3,7 +3,7 @@
 ## Introduction
 
 Welcome to the digital version of the game Just One! Players are able to register and login and get a good look
-at the dashboard. There users can join other lobbies, start a game with different sizes of decks, or play in 
+at the dashboard. Users can join other lobbies, start a game with different sizes of decks, or play in 
 English or German against other Players in real time. There's also a game mode where you can play against Bots. 
 
 Players can also compare each other via a leader Board. Their score will be set according to the 
@@ -35,15 +35,17 @@ In this section we'll tell you about three main components and their role.
 
 ### Dashboard
 As the name suggest the Dashboard is the first Component a user sees when he's logged in. It's the main navigation
-for all user. User can choose what they want to do next: Do they want to create a lobby for others to join? Do they 
-want to create this lobby with or without bots? In German or English? You can also join an existing lobby from the
+for all users. They can choose what they want to do next: Do they want to create a lobby for others to join? Do they 
+want to create a lobby with or without bots? Play in German or English? Users can also join an existing lobby from the
 dashboard or just have a look at all users that are currently online.
+
 [Dashboard.js](/src/components/game/Dashboard.js)
 
 ### LobbyContainer
 The LobbyContainer is the Component that you will see when you created a lobby or joined another one. It's the 
-starting point to start a new game and invite other players to the lobby. It's also an overview of all players in 
+starting point to start a new game and invite other players to the lobby. It's also an overview of all players
 that already joined the lobby.
+
 [LobbyContainer.js](/src/components/game/Lobby/LobbyContainer.js)
 
 ### Playing Container
@@ -51,6 +53,7 @@ The PlayingContainer is the heart of the actual game in the frontend. It manages
 point of the game. It does so by looking at the status of the player of the client and matching that to the correct
 component that corresponds to that status. On the other hand it also has the task to connect to the server every 
 second to get the newest information about the lobby and pass that information on to the component one level down.
+
 [PlayingContainer.js](/src/components/game/Playing/PlayingContainer.js)
 
 ## Launch & Deployment 
