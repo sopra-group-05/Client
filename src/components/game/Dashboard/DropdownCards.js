@@ -59,14 +59,18 @@ class Dropdown extends React.Component {
 */
 
   handleClick(name) {
-    this.setState({ selected:name });
+    this.setState({ selected: name });
     this.props.changeNumOfCards(
-    name == "Demo (1)" ? 1
-    : name == "Speed (7)" ? 7
-    : name == "Normal (13)" ? 13
-    : name == "Stay@Home (21)" ? 21
-    : 13
-    );;
+      name == "Demo (1)"
+        ? 1
+        : name == "Speed (7)"
+        ? 7
+        : name == "Normal (13)"
+        ? 13
+        : name == "Stay@Home (21)"
+        ? 21
+        : 13
+    );
   }
 
   render = () => {
