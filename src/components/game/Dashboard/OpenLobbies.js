@@ -9,6 +9,8 @@ import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
 import Player from "../../../views/Player";
 
+// TODO: invite popup
+
 const Users = styled.ul`
   list-style: none;
   padding-left: 0;
