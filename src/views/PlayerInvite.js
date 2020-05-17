@@ -70,7 +70,7 @@ const PlayerInvite = ({ user, lobbyId }) => {
   const inviteUser = async () => {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.put(
+      const response = await api.post(
         "/lobbies/" + lobbyId + "/invite/" + user.id
       );
       console.log(response);
@@ -84,7 +84,7 @@ const PlayerInvite = ({ user, lobbyId }) => {
       <Avatar size={40} user={user} />
       <UserInfo>
         <UserName>{user.username}</UserName>
-        <UserScore>Score: XY</UserScore>
+        <UserScore>Score: {user.score}</UserScore>
       </UserInfo>
       <Button
         onClick={() => {

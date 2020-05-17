@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import BigNumber from "./BigNumber";
@@ -185,7 +184,7 @@ const PopupInner = styled.div`
   margin: auto;
 `;
 
-const PupupContent = styled.div`
+const PopupContent = styled.div`
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 20px;
@@ -209,11 +208,11 @@ const Popup = ({ definition, word, setShowPopup }) => {
   return (
     <PopupContainer>
       <PopupInner>
-        <PupupContent>
+        <PopupContent>
           <h1>{word}</h1>
           <p>{definition ? definition : <Spinner />}</p>
           <ClosePopup onClick={() => setShowPopup(false)}>Close</ClosePopup>
-        </PupupContent>
+        </PopupContent>
       </PopupInner>
     </PopupContainer>
   );

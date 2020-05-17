@@ -7,9 +7,7 @@ import Box from "../../../views/Box";
 import JoinLobby from "../../../views/JoinLobby";
 import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
-import Player from "../../../views/Player";
-
-// TODO: invite popup
+import Popup from "../../../views/Popup";
 
 const Users = styled.ul`
   list-style: none;
@@ -24,8 +22,8 @@ const PlayerContainer = styled.li`
 `;
 
 class OpenLobbies extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       lobbies: null,
       error: null,
@@ -43,12 +41,12 @@ class OpenLobbies extends React.Component {
         // make API call every 1s to get Updated lobbies List.
         // Will have to be destroyed in componentWIllUnmount()!
         // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobbies, 1000);
+        this.interval = setInterval(this.getLobbiesAndInvitations, 1000);
       }
 
       // redirect to lobby if user is in a lobby
       if (response.data && this.state.shouldRedirectToLobby) {
-        console.log("inside");
+        // console.log("inside");
         response.data.filter(lobby => {
           lobby = new Lobby(lobby);
           if (lobby.players.find(x => x.id == localStorage.getItem("userId"))) {
@@ -102,7 +100,7 @@ class OpenLobbies extends React.Component {
               {this.state.lobbies.length
                 ? this.state.lobbies.map(l => {
                     return (
-                      <PlayerContainer>
+                      <PlayerContainer key={l.id}>
                         <JoinLobby
                           joinLobby={this.joinLobbyFunction}
                           lobby={l}
