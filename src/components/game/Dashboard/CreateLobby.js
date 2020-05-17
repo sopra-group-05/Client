@@ -180,15 +180,17 @@ class CreateLobby extends React.Component {
 
   toggleCheckbox() {
     this.setState({ gameMode: this.state.gameMode === 0 ? 1 : 0 });
-    this.state.gameMode == 0 ? this.setState({numberOfBots: 1}) : this.setState({numberOfBots: 0})
+    this.state.gameMode == 0
+      ? this.setState({ numberOfBots: 1 })
+      : this.setState({ numberOfBots: 0 });
   }
 
-  changeNumberOfCards(numOfCards){
-    this.setState({numberOfCards: numOfCards})
+  changeNumberOfCards(numOfCards) {
+    this.setState({ numberOfCards: numOfCards });
   }
 
-  changeNumberOfBots(numOfBots){
-    this.setState({numberOfBots: numOfBots})
+  changeNumberOfBots(numOfBots) {
+    this.setState({ numberOfBots: numOfBots });
   }
 
   async createLobby() {
@@ -246,7 +248,11 @@ class CreateLobby extends React.Component {
                   </CheckBox>
                   Add Bots
                 </GameMode>
-                {!(this.state.gameMode === 0) ? <Dropdown changeNumOfBots={this.changeNumberOfBots}/> : ""}
+                {!(this.state.gameMode === 0) ? (
+                  <Dropdown changeNumOfBots={this.changeNumberOfBots} />
+                ) : (
+                  ""
+                )}
               </BotContainer>
             )}
             <Label>Select Lobby Language</Label>
@@ -265,9 +271,9 @@ class CreateLobby extends React.Component {
               />
             </Languages>
 
-            <Label style={{marginTop: "1rem"}}>Select # of Cards </Label>
+            <Label style={{ marginTop: "1rem" }}>Select # of Cards </Label>
             <Cards>
-              <DropdownCards changeNumOfCards={this.changeNumberOfCards}/>
+              <DropdownCards changeNumOfCards={this.changeNumberOfCards} />
             </Cards>
             <Button
               onClick={() => {

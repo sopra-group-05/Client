@@ -49,7 +49,7 @@ const Popup = ({ children, setShowPopup }) => {
       <PopupInner>
         <PopupContent>
           {children}
-          <ClosePopup onClick={() => setShowPopup()}>Close</ClosePopup>
+          <ClosePopup onClick={() => setShowPopup(false)}>Close</ClosePopup>
         </PopupContent>
       </PopupInner>
     </PopupContainer>

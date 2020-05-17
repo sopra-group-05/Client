@@ -302,7 +302,6 @@ class EndRoundContent extends React.Component {
         ) : (
           <React.Fragment>
             <ButtonGroup>
-
               {this.props.lobby.creator.id ==
                 localStorage.getItem("userId") && (
                 <NextRoundButton

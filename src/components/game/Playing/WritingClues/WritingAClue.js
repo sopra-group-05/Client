@@ -112,7 +112,13 @@ const WritingAClue = ({ l }) => {
           >
             Send
           </Button>
-          {!submitted && <Countdown functionWhenDone={skipClue} time={30} returnTime={setTimeForClue}/>}
+          {!submitted && (
+            <Countdown
+              functionWhenDone={skipClue}
+              time={30}
+              returnTime={setTimeForClue}
+            />
+          )}
         </Form>
       </Container>
       <MessageHandler message={error} show={error} />

@@ -71,7 +71,7 @@ const Player = ({ user }) => {
         <Avatar size={40} user={user} />
         <UserInfo>
           <UserName>{user.username}</UserName>
-          <UserScore>Score: XY</UserScore>
+          <UserScore>Score: {user.score}</UserScore>
         </UserInfo>
         <Button>View Profile</Button>
       </Link>
