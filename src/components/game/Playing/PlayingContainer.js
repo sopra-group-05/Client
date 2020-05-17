@@ -10,6 +10,7 @@ import { Button } from "./PlayingStyle";
 import PlayingLogic from "./PlayingLogic";
 import RuleContainer from "./RuleContainer";
 import LeaveContainer from "./LeaveContainer";
+import CancelGame from "./CancelGame/CancelGame";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -40,7 +41,8 @@ class PlayingContainer extends React.Component {
       rulesShown: false,
       leaveShown: false,
       guess: null,
-      success: false
+      success: false,
+      cancelGame: false
     };
     this.getLobbyStatus = this.getLobbyStatus.bind(this);
     this.nextState = this.nextState.bind(this);
@@ -48,6 +50,7 @@ class PlayingContainer extends React.Component {
     this.showRules = this.showRules.bind(this);
     this.toggleShowRules = this.toggleShowRules.bind(this);
     this.toggleLeaveGame = this.toggleLeaveGame.bind(this);
+    this.goBackToDashboard = this.goBackToDashboard.bind(this);
   }
 
   getLobbyStatus = async () => {
@@ -61,14 +64,21 @@ class PlayingContainer extends React.Component {
       // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
       //console.log(response);
-    } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
-      console.log(
-        `Something went wrong while fetching the lobbies: \n${handleError(
-          error
-        )}`
-      );
-      clearTimeout(this.intervalID);
+    } catch (err) {
+      this.setState({ error: err ? err.message : "Unknown error" });
+      if(err.response.status== 404)
+      {
+    	  this.setState({ lobby: null, cancelGame: true})
+    	  //this.intervalID = setTimeout(this.getLobbyStatus, 1000);
+      }
+      else
+      {
+    	  clearTimeout(this.intervalID);
+          console.log(
+        	        `Something went wrong while fetching the lobbies: \n        	        
+        	        ${handleError(err)}`);
+      }
+      
     }
   };
 
@@ -143,6 +153,10 @@ class PlayingContainer extends React.Component {
   showRules() {
     this.props.history.push("/game/rules");
   }
+  
+  goBackToDashboard() {
+	this.props.history.push("/game/dashboard");
+  }
 
   // TODO: potential redirect to /gameover or other solution
 
@@ -178,9 +192,10 @@ class PlayingContainer extends React.Component {
                 />
               </MetaInfo>
             </React.Fragment>
-          ) : (
-            <Spinner />
-          )}
+          ) : (<Spinner/>)}
+          {this.state.cancelGame ? (<CancelGame goBackToDashboard= {this.goBackToDashboard}/>) : null}  
+
+          
         </Container>
       </React.Fragment>
     );
