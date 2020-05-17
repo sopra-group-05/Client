@@ -168,8 +168,8 @@ class PlayingContainer extends React.Component {
                   showStay={this.state.leaveShown}
                 />
                 <LeaveContainer
-                    isShown={this.state.leaveShown}
-                    leave={this.leaveGame}
+                  isShown={this.state.leaveShown}
+                  leave={this.leaveGame}
                 />
                 <RuleContainer
                   l={this.state.lobby}
