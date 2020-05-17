@@ -5,8 +5,7 @@ import Box from "../../../views/Box";
 import { withRouter } from "react-router-dom";
 import { Button } from "../../../views/design/Button";
 
-const LeaveMsg = styled.div` 
-`;
+const LeaveMsg = styled.div``;
 
 const Container = styled.div`
   display: flex;
@@ -23,31 +22,27 @@ const ButtonContainer = styled.div`
 `;
 
 const LeaveContainer = ({ isShown, leave }) => {
-
   const leaveMessage =
     "Are you sure that you want to quit the game? " +
     "If you leave and there are less than three real players left," +
-    " the lobby will automatically close."
-  ;
+    " the lobby will automatically close.";
   return isShown ? (
-      <Box maxWidth="350px" title={"Really?"}>
-        <Container>
-          <LeaveMsg>
-            {leaveMessage}
-          </LeaveMsg>
-          <ButtonContainer>
-            <Button
-                marginbottom="15px"
-                colorDef={"red"}
-                onClick={() => {
-                  leave();
-                }}
-            >
-              Leave
-            </Button>
-          </ButtonContainer>
-        </Container>
-      </Box>
+    <Box maxWidth="350px" title={"Really?"}>
+      <Container>
+        <LeaveMsg>{leaveMessage}</LeaveMsg>
+        <ButtonContainer>
+          <Button
+            marginbottom="15px"
+            colorDef={"red"}
+            onClick={() => {
+              leave();
+            }}
+          >
+            Leave
+          </Button>
+        </ButtonContainer>
+      </Container>
+    </Box>
   ) : null;
 };
 
