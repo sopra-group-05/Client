@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import { api } from "../helpers/api";
 import { withRouter } from "react-router-dom";
+import Popup from "./Popup";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -67,6 +68,9 @@ const Button = styled.div`
  * @FunctionalComponent
  */
 const PlayerInvite = ({ user, lobbyId }) => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  const [text, setText] = useState("");
   const inviteUser = async () => {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
@@ -74,8 +78,12 @@ const PlayerInvite = ({ user, lobbyId }) => {
         "/lobbies/" + lobbyId + "/invite/" + user.id
       );
       console.log(response);
+      setShowPopup(true);
+      setText("Invitation sent successfully!");
     } catch (error) {
-      console.log("Could not add user: " + error);
+      setShowPopup(true);
+      setText("Invitation failed! Check console for more information!");
+      console.log("Could not invite user: " + error);
     }
   };
 
@@ -93,6 +101,7 @@ const PlayerInvite = ({ user, lobbyId }) => {
       >
         Invite
       </Button>
+      {showPopup && <Popup children={text} setShowPopup={setShowPopup} />}
     </Container>
   );
 };

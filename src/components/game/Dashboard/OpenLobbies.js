@@ -21,18 +21,39 @@ const PlayerContainer = styled.li`
   justify-content: center;
 `;
 
+const AcceptInvite = styled.button`
+  color: green;
+  background: transparent;
+  padding: 1rem;
+  border: none;
+`;
+
+const DeclineInvite = styled.button`
+  color: red;
+  background: transparent;
+  padding: 1rem;
+  border: none;
+`;
+
 class OpenLobbies extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      invitingLobbies: null,
+      showPopup: false,
       lobbies: null,
       error: null,
       shouldRedirectToLobby: true
     };
-    this.getLobbies = this.getLobbies.bind(this);
+    this.getLobbiesAndInvitations = this.getLobbiesAndInvitations.bind(this);
+    this.setShowPopup = this.setShowPopup.bind(this);
+    this.acceptInvitation = this.acceptInvitation.bind(this);
+    this.declineInvitation = this.declineInvitation.bind(this);
+    this.getChildrenForPopup = this.getChildrenForPopup.bind(this);
   }
 
-  async getLobbies() {
+  async getLobbiesAndInvitations() {
+    // get lobbies
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies");
@@ -72,16 +93,84 @@ class OpenLobbies extends React.Component {
       );
       clearInterval(this.interval);
     }
+
+    // get invitations
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      // get current userId from local storage
+      const userId = localStorage.getItem("userId");
+      const response = await api.get("/users/" + userId + "/invitations");
+      this.setState({ invitingLobbies: response.data });
+      this.setShowPopup(true);
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while fetching the invitations: \n${handleError(
+          error
+        )}`
+      );
+      clearInterval(this.interval);
+    }
+  }
+
+  setShowPopup(boolean) {
+    this.setState({ showPopup: boolean });
+  }
+
+  async acceptInvitation(lobbyId) {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      // get current userId from local storage
+      const userId = localStorage.getItem("userId");
+      const response = await api.put(
+        "/users/" + userId + "/invitations/" + lobbyId + "/accept"
+      );
+      this.setShowPopup(false);
+      // Redirect to Lobby Page
+      this.props.history.push("/game/lobby/" + lobbyId);
+      clearInterval(this.interval);
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while accepting the invitation: \n${handleError(
+          error
+        )}`
+      );
+      clearInterval(this.interval);
+    }
+  }
+
+  async declineInvitation(lobbyId) {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      // get current userId from local storage
+      const userId = localStorage.getItem("userId");
+      const response = await api.put(
+        "/users/" + userId + "/invitations/" + lobbyId + "/decline"
+      );
+    } catch (error) {
+      this.setState({ error: error ? error.message : "Unknown error" });
+      console.log(
+        `Something went wrong while accepting the invitation: \n${handleError(
+          error
+        )}`
+      );
+      clearInterval(this.interval);
+    }
   }
 
   componentDidMount() {
-    this.getLobbies();
+    this.getLobbiesAndInvitations();
   }
 
   componentWillUnmount() {
     // stop Interval when Component gets hidden.
     // If you don't do this, it will call the API every 1s even the component is not active anymore!
     clearInterval(this.interval);
+  }
+
+  getChildrenForPopup() {
+    return;
   }
 
   render() {
@@ -110,6 +199,27 @@ class OpenLobbies extends React.Component {
                   })
                 : "There are no Lobbies for you to join"}
             </Users>
+            {this.state.showPopup && this.state.invitingLobbies.length > 0 && (
+              <Popup setShowPopup={this.setShowPopup}>
+                {this.state.invitingLobbies.map(lobby => {
+                  return (
+                    <li key={lobby.id}>
+                      You have been invited to join {lobby.lobbyName}!
+                      <AcceptInvite
+                        onClick={() => this.acceptInvitation(lobby.id)}
+                      >
+                        Accept
+                      </AcceptInvite>
+                      <DeclineInvite
+                        onClick={() => this.declineInvitation(lobby.id)}
+                      >
+                        Decline
+                      </DeclineInvite>
+                    </li>
+                  );
+                })}
+              </Popup>
+            )}
           </div>
         )}
       </Box>
