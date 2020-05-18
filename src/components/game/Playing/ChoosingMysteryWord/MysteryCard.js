@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import BigNumber from "./BigNumber";
-import { api } from "../../../../helpers/api";
+import { api, handleError } from "../../../../helpers/api";
 import { Spinner } from "../../../../views/design/Spinner";
 import InformationIcon from "../../../../images/information.png";
+import MessageHandler from "../../../../views/MessageHandler";
 
 const CardWrapper = styled.div`
   padding: 0;
@@ -69,11 +70,20 @@ class MysteryCard extends React.Component {
       // Get the returned mysteryCard and update the state.
       this.setState({ mysteryCard: response.data, error: null });
     } catch (error) {
-      console.log(error);
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
 
-      // todo remove once API Endpoint works
-      const dummyCard = [{ word: "Dummy word", number: 1, id: 5 }];
-      this.setState({ mysteryCard: dummyCard });
+      console.log(
+        `Something went wrong during loading the mystery card: \n${handleError(
+          error
+        )}`
+      );
     }
   }
 
@@ -98,11 +108,10 @@ class MysteryCard extends React.Component {
             })
           ) : (
             <React.Fragment>
-              <p>
-                There was an error getting the mystery card from the api.
-                <br />
-                See console for more info
-              </p>
+              <MessageHandler
+                message={this.state.error}
+                show={this.state.error}
+              />
               <Spinner />
             </React.Fragment>
           )}
