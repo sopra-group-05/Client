@@ -7,6 +7,7 @@ import { Button } from "../../../views/design/Button";
 import { Spinner } from "../../../views/design/Spinner";
 import { api, handleError } from "../../../helpers/api";
 import TextInput from "../../../views/design/TextInput";
+import MessageHandler from "../../../views/MessageHandler";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ class DeleteProfile extends React.Component {
   constructor() {
     super();
     this.state = {
-      password: null,
+      password: "",
       user: null,
       error: null
     };
@@ -70,8 +71,14 @@ class DeleteProfile extends React.Component {
       // Delete successfully worked --> navigate to the login page
       this.props.handleLogout();
     } catch (error) {
+      console.log(error.response);
       this.setState({
-        error: error.response ? error.response.data : "Error"
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
       });
       //      setTimeout(() => {`
       //        this.setState({ error: null });
@@ -125,12 +132,10 @@ class DeleteProfile extends React.Component {
           <OuterContainer>
             <Box title={this.state.user.username}>
               <Container>
-                {this.state.error ? (
-                  <ErrorMessage>{this.state.error.message}</ErrorMessage>
-                ) : (
-                  ""
-                )}
-
+                <MessageHandler
+                  show={this.state.error}
+                  message={this.state.error}
+                />
                 <Avatar user={this.state.user} />
 
                 <ButtonContainer>
