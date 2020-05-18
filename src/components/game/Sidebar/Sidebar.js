@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   min-height: 100vh;
   height: 100%;
   background-color: #242b45;
-  position: absolute;
+  position: fixed;
   left: 0;
   padding: 2rem 0.5rem;
   display: flex;
