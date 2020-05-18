@@ -11,6 +11,7 @@ const PopupContainer = styled.div`
   bottom: 0;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
 `;
 
 const PopupInner = styled.div`
@@ -21,6 +22,7 @@ const PopupInner = styled.div`
   justify-content: center;
   align-items: center;
   margin: auto;
+  z-index: 10001;
 `;
 
 const PopupContent = styled.div`
@@ -34,6 +36,7 @@ const PopupContent = styled.div`
   max-width: 400px;
   display: flex;
   flex-direction: column;
+  z-index: 10002;
 `;
 
 const ClosePopup = styled.button`
@@ -41,6 +44,7 @@ const ClosePopup = styled.button`
   background: transparent;
   padding: 1rem;
   border: none;
+  z-index: 10003;
 `;
 
 const Popup = ({ children, setShowPopup }) => {
