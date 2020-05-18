@@ -55,27 +55,25 @@ class AppRouter extends React.Component {
           <ErrorPage />
         ) : (
           <Switch>
-            <div>
-              <Route
-                path="/game"
-                render={() => (
-                  <GameGuard>
-                    <GameRouter base={"/game"} />
-                  </GameGuard>
-                )}
-              />
-              <Route
-                exact
-                path="/login"
-                render={() => (
-                  <LoginGuard>
-                    <Login />
-                  </LoginGuard>
-                )}
-              />
-              <Route exact path="/register" render={() => <Register />} />
-              <Route exact path="/" render={() => <Redirect to={"/game"} />} />
-            </div>
+            <Route
+              path="/game"
+              render={() => (
+                <GameGuard>
+                  <GameRouter base={"/game"} />
+                </GameGuard>
+              )}
+            />
+            <Route
+              exact
+              path="/login"
+              render={() => (
+                <LoginGuard>
+                  <Login />
+                </LoginGuard>
+              )}
+            />
+            <Route exact path="/register" render={() => <Register />} />
+            <Route exact path="/" render={() => <Redirect to={"/game"} />} />
           </Switch>
         )}
       </BrowserRouter>
