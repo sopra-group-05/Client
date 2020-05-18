@@ -148,7 +148,7 @@ class PlayingContainer extends React.Component {
   isGuesser(playerList) {
     // checks if logged in user is active player
     const player = playerList.find(x => x.id == localStorage.getItem("userId"));
-    return player.role === "GUESSER";
+    return player && player.role === "GUESSER";
   }
 
   toggleShowRules = () => {
