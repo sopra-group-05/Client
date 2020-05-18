@@ -17,17 +17,20 @@ const Numbers = styled.div`
   margin-top: 2rem;
 `;
 
-const ChooseNumber = ({ l, nextState, match }) => {
+const ChooseNumber = ({ l, match }) => {
+  const [submitted, setSubmitted] = React.useState(false);
   const numberAlert = async num => {
-    try {
-      num = num ? num : 1;
-      // make POST request to Server to choose Number
-      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      await api.post("/lobbies/" + match.params.id + "/number", num);
-    } catch (error) {
-      console.log(error);
-      // todo remove once API Endpoint works
-      alert("There was an error");
+    if (!submitted) {
+      try {
+        num = num ? num : 1; // set default to one
+        // make POST request to Server to choose Number
+        api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+        await api.post("/lobbies/" + match.params.id + "/number", num);
+        setSubmitted(true);
+      } catch (error) {
+        console.log(error);
+        // todo proper error Handling
+      }
     }
   };
   const lobby = new Lobby(l); //transform input into Lobby Model
