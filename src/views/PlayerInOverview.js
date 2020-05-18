@@ -29,7 +29,7 @@ const PlayerName = styled.p`
   min-width: 50px;
 `;
 
-const PlayerInfo = styled.p`
+const PlayerInfo = styled.div`
   font-weight: lighter;
   font-size: 0.8rem;
   margin: 0 10px;
