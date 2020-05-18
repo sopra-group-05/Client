@@ -17,12 +17,19 @@ const Clue = styled.div`
 `;
 
 const Clues = ({ cluesList }) => {
+  cluesList = cluesList.filter(clue => clue.hint != ""); // remove empty clues if there are any
   return (
     <Wrapper>
-      <p>Your teammates clues:</p>
-      {cluesList.map(clue => {
-        return <Clue>{clue.hint}</Clue>;
-      })}
+      {cluesList.length > 0 ? (
+        <React.Fragment>
+          <p>Your teammates clues:</p>
+          {cluesList.map(clue => {
+            return <Clue>{clue.hint}</Clue>;
+          })}
+        </React.Fragment>
+      ) : (
+        <p>There were no valid clues. Make a random guess or skip!</p>
+      )}
     </Wrapper>
   );
 };
