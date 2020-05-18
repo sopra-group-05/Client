@@ -293,9 +293,10 @@ class LobbyContainer extends React.Component {
                 : "The lobby was closed. "}
               You will be redirected to the Dashboard in a few seconds.
             </p>
-            <center>
+
+            <div style={{ "text-align": "center", width: "100%" }}>
               <Spinner />
-            </center>
+            </div>
           </Popup>
         )}
         {!this.state.lobby ? (
