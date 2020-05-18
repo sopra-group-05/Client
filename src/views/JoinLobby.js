@@ -83,8 +83,6 @@ class JoinLobby extends React.Component {
       // Redirect to Lobby Page
       this.props.history.push("/game/lobby/" + lobby.id);
     } catch (error) {
-      //todo better error handling
-      alert(error);
       console.log(
         `Something went wrong while join a lobby: \n${handleError(error)}`
       );
