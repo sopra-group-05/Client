@@ -9,6 +9,7 @@ import {
 } from "../PlayingStyle";
 import Countdown from "../../../../views/Countdown";
 import { api } from "../../../../helpers/api";
+import MessageHandler from "../../../../views/MessageHandler";
 
 const Numbers = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ const Numbers = styled.div`
 
 const ChooseNumber = ({ match }) => {
   const [submitted, setSubmitted] = React.useState(false);
+  const [error, setError] = React.useState("");
   const numberAlert = async num => {
     if (!submitted) {
       try {
@@ -27,8 +29,14 @@ const ChooseNumber = ({ match }) => {
         await api.post("/lobbies/" + match.params.id + "/number", num);
         setSubmitted(true);
       } catch (error) {
+        setError(
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+        );
         console.log(error);
-        // todo proper error Handling
       }
     }
   };
@@ -44,6 +52,7 @@ const ChooseNumber = ({ match }) => {
       <PlayingDescription>
         Your teammates will then try no come up with hints.
       </PlayingDescription>
+      <MessageHandler show={error} message={error} />
       <Numbers>
         <BigNumber number={1} handleClick={numberAlert} />
         <BigNumber number={2} handleClick={numberAlert} />
