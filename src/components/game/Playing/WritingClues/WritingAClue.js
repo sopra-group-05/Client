@@ -41,12 +41,12 @@ const WritingAClue = ({ l }) => {
     setSecondClue(input);
     checkClueForError(input);
   };
-  const submitClue = async () => {
+  const submitClue = async skip => {
     setSubmitted(true);
     try {
       let requestBody = JSON.stringify({
-        hint: clue,
-        hint2: secondClue,
+        hint: skip ? "" : clue,
+        hint2: skip ? "" : secondClue,
         timeForClue: timeForClue
       });
       // make POST request to Server to choose Number
@@ -64,7 +64,7 @@ const WritingAClue = ({ l }) => {
     // set Clue(s) empty and submit it.
     setClue("");
     setSecondClue("");
-    submitClue();
+    submitClue(true);
   };
 
   const checkClueForError = clue => {
