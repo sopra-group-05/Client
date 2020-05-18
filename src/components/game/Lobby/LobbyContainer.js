@@ -9,6 +9,7 @@ import { api, handleError } from "../../../helpers/api";
 import { withRouter } from "react-router-dom";
 import { Button } from "../Playing/PlayingStyle";
 import BotInLobby from "../../../views/BotInLobby";
+import Popup from "../../../views/Popup";
 
 const PlayerStatus = styled.div`
   border-radius: 20px;
@@ -89,13 +90,15 @@ class LobbyContainer extends React.Component {
       nonCreators: null,
       playerStatus: false,
       lobbyReady: false,
-      error: null
+      error: null,
+      showPopup: false
     };
     this.getLobby = this.getLobby.bind(this);
     this.getNonCreator = this.getNonCreator.bind(this);
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
     this.startGame = this.startGame.bind(this);
     this.leaveLobby = this.leaveLobby.bind(this);
+    this.setShowPopup = this.setShowPopup.bind(this);
   }
 
   async getLobby() {
@@ -120,12 +123,22 @@ class LobbyContainer extends React.Component {
         });
       }
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while fetching the lobby: \n${handleError(error)}`
       );
       clearTimeout(this.intervalID);
-      this.props.history.push("/game/");
+
+      // show popup with message and redirect after 5s
+      this.setState({ showPopup: true });
+      setTimeout(() => this.props.history.push("/game/"), 5000);
     }
   }
 
@@ -160,7 +173,12 @@ class LobbyContainer extends React.Component {
       console.log(response);
     } catch (error) {
       this.setState({
-        error: error ? error.message : "Unknown error"
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
       });
       console.log(
         `Something went wrong while starting the game: \n${handleError(error)}`
@@ -233,6 +251,10 @@ class LobbyContainer extends React.Component {
     return false;
   }
 
+  setShowPopup(boolean) {
+    this.setState({ showPopup: boolean });
+  }
+
   componentDidMount() {
     this.getLobby();
   }
@@ -252,6 +274,20 @@ class LobbyContainer extends React.Component {
           show={this.state.error}
           message={this.state.error}
         />
+        {this.state.showPopup && (
+          <Popup setShowPopup={this.setShowPopup}>
+            <p>
+              {this.state.error ===
+              "You are not in the requested Lobby. Therefore access is Forbidden."
+                ? "You were kicked out of this lobby. "
+                : "The lobby was closed. "}
+              You will be redirected to the Dashboard in a few seconds.
+            </p>
+            <center>
+              <Spinner />
+            </center>
+          </Popup>
+        )}
         {!this.state.lobby ? (
           !this.state.error && <Spinner />
         ) : (
