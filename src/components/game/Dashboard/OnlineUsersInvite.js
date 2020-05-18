@@ -54,7 +54,14 @@ class OnlineUsersInvite extends React.Component {
       // Get the returned users and update the state.
       this.setState({ users: filtered_users, error: null });
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while fetching the users: \n${handleError(error)}`
       );

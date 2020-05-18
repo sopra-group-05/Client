@@ -103,7 +103,14 @@ class OpenLobbies extends React.Component {
       this.setState({ invitingLobbies: response.data });
       this.setShowPopup(true);
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while fetching the invitations: \n${handleError(
           error

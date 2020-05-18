@@ -210,7 +210,14 @@ class CreateLobby extends React.Component {
 
       this.props.history.push("/game/lobby/" + lobby.id);
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong during the creation of a new lobby: \n${handleError(
           error
