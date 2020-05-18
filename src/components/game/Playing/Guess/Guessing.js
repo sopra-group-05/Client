@@ -10,9 +10,8 @@ import {
 import styled from "styled-components";
 import TextInput from "../../../../views/design/TextInput";
 import Countdown from "../../../../views/Countdown";
-import { api, handleError } from "../../../../helpers/api";
+import { api } from "../../../../helpers/api";
 import MessageHandler from "../../../../views/MessageHandler";
-import Clue from "../../../shared/models/Clue";
 import { Spinner } from "../../../../views/design/Spinner";
 import Clues from "./Clues";
 

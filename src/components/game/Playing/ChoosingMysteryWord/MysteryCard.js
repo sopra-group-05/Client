@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import BigNumber from "./BigNumber";
-import { api, handleError } from "../../../../helpers/api";
+import { api } from "../../../../helpers/api";
 import { Spinner } from "../../../../views/design/Spinner";
 import InformationIcon from "../../../../images/information.png";
 

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import Lobby from "../../../shared/models/Lobby";
 import BigNumber from "./BigNumber";
 import {
   PlayingDescription,
@@ -17,7 +16,7 @@ const Numbers = styled.div`
   margin-top: 2rem;
 `;
 
-const ChooseNumber = ({ l, match }) => {
+const ChooseNumber = ({ match }) => {
   const [submitted, setSubmitted] = React.useState(false);
   const numberAlert = async num => {
     if (!submitted) {
@@ -33,7 +32,6 @@ const ChooseNumber = ({ l, match }) => {
       }
     }
   };
-  const lobby = new Lobby(l); //transform input into Lobby Model
   return (
     <PlayingWrapper>
       <PlayingTitle>You're the active Player!</PlayingTitle>

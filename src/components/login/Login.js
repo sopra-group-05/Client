@@ -8,7 +8,6 @@ import { BaseContainer } from "../../helpers/layout";
 import Box from "../../views/Box";
 import TextInput from "../../views/design/TextInput";
 import JO_LOGO from "../../images/JO_LOGO.png";
-import { Spinner } from "../../views/design/Spinner";
 
 const Image = styled.img`
   position: relative;
