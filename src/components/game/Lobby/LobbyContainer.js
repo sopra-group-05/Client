@@ -201,7 +201,12 @@ class LobbyContainer extends React.Component {
       this.props.history.push("/game");
     } catch (error) {
       this.setState({
-        error: error ? error.message : "Unknown error"
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
       });
       console.log(
         `Something went wrong while leaving: \n${handleError(error)}`
@@ -230,7 +235,12 @@ class LobbyContainer extends React.Component {
       this.forceUpdate();
     } catch (error) {
       this.setState({
-        error: error ? error.message : "Unknown error",
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error",
         playerStatus: previousStatus
       });
       console.log(

@@ -85,7 +85,14 @@ class OpenLobbies extends React.Component {
       // Get the returned lobbies and update the state.
       this.setState({ lobbies: filtered_lobbies, error: null });
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while fetching the lobbies: \n${handleError(
           error
@@ -137,7 +144,14 @@ class OpenLobbies extends React.Component {
       this.props.history.push("/game/lobby/" + lobbyId);
       clearInterval(this.interval);
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while accepting the invitation: \n${handleError(
           error
@@ -156,7 +170,14 @@ class OpenLobbies extends React.Component {
         "/users/" + userId + "/invitations/" + lobbyId + "/decline"
       );
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while accepting the invitation: \n${handleError(
           error

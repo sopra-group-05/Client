@@ -113,7 +113,14 @@ class CompareClues extends React.Component {
         this.setState({ waiting: true, error: "" });
         setTimeout(this.getClues, 1000);
       } else {
-        this.setState({ error: error ? error.message : "Unknown error" });
+        this.setState({
+          error:
+            error && error.response
+              ? error.response.data
+              : error && error.message
+              ? error.message
+              : "Unknown error"
+        });
         console.log(
           `Something went wrong while fetching the clues: \n${handleError(
             error

@@ -66,19 +66,16 @@ class PlayingContainer extends React.Component {
       //console.log(response);
     } catch (err) {
       this.setState({ error: err ? err.message : "Unknown error" });
-      if(err.response.status== 404)
-      {
-    	  this.setState({ lobby: null, cancelGame: true})
-    	  //this.intervalID = setTimeout(this.getLobbyStatus, 1000);
+      if (err.response.status == 404) {
+        this.setState({ lobby: null, cancelGame: true });
+        //this.intervalID = setTimeout(this.getLobbyStatus, 1000);
+      } else {
+        clearTimeout(this.intervalID);
+        console.log(
+          `Something went wrong while fetching the lobbies: \n        	        
+        	        ${handleError(err)}`
+        );
       }
-      else
-      {
-    	  clearTimeout(this.intervalID);
-          console.log(
-        	        `Something went wrong while fetching the lobbies: \n        	        
-        	        ${handleError(err)}`);
-      }
-      
     }
   };
 
@@ -93,7 +90,14 @@ class PlayingContainer extends React.Component {
       this.setState({ guess: response.data[0], success: response.data[1] });
       //console.log(response);
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while fetching the lobbies: \n${handleError(
           error
@@ -114,7 +118,12 @@ class PlayingContainer extends React.Component {
       this.props.history.push("/game");
     } catch (error) {
       this.setState({
-        error: error ? error.message : "Unknown error"
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
       });
       console.log(
         `Something went wrong while leaving: \n${handleError(error)}`
@@ -153,9 +162,9 @@ class PlayingContainer extends React.Component {
   showRules() {
     this.props.history.push("/game/rules");
   }
-  
+
   goBackToDashboard() {
-	this.props.history.push("/game/dashboard");
+    this.props.history.push("/game/dashboard");
   }
 
   // TODO: potential redirect to /gameover or other solution
@@ -182,8 +191,8 @@ class PlayingContainer extends React.Component {
                   showStay={this.state.leaveShown}
                 />
                 <LeaveContainer
-                    isShown={this.state.leaveShown}
-                    leave={this.leaveGame}
+                  isShown={this.state.leaveShown}
+                  leave={this.leaveGame}
                 />
                 <RuleContainer
                   l={this.state.lobby}
@@ -192,10 +201,12 @@ class PlayingContainer extends React.Component {
                 />
               </MetaInfo>
             </React.Fragment>
-          ) : (<Spinner/>)}
-          {this.state.cancelGame ? (<CancelGame goBackToDashboard= {this.goBackToDashboard}/>) : null}  
-
-          
+          ) : (
+            <Spinner />
+          )}
+          {this.state.cancelGame ? (
+            <CancelGame goBackToDashboard={this.goBackToDashboard} />
+          ) : null}
         </Container>
       </React.Fragment>
     );

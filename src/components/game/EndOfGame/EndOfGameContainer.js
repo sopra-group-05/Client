@@ -55,7 +55,14 @@ class EndOfGameContainer extends React.Component {
       this.setState({ lobby: response.data, error: null });
       console.log(response);
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while fetching the lobby: \n${handleError(error)}`
       );
@@ -81,7 +88,14 @@ class EndOfGameContainer extends React.Component {
       );
       // TODO: add redirect + clear interval??
     } catch (error) {
-      this.setState({ error: error ? error.message : "Unknown error" });
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
       console.log(
         `Something went wrong while restarting the game: \n${handleError(
           error

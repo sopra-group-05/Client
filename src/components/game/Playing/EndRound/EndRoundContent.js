@@ -188,7 +188,12 @@ class EndRoundContent extends React.Component {
       console.log(response);
     } catch (error) {
       this.setState({
-        error: error ? error.message : "Unknown error"
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
       });
       console.log(
         `Something went wrong while starting the game: \n${handleError(error)}`
@@ -229,7 +234,12 @@ class EndRoundContent extends React.Component {
       this.forceUpdate();
     } catch (error) {
       this.setState({
-        error: error ? error.message : "Unknown error",
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error",
         playerStatus: previousStatus
       });
       console.log(
