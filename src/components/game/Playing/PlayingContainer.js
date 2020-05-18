@@ -66,13 +66,13 @@ class PlayingContainer extends React.Component {
       //console.log(response);
     } catch (err) {
       this.setState({ error: err ? err.message : "Unknown error" });
-      if (err.response.status == 404) {
+      if (err.response != null && err.response.status == 404) {
         this.setState({ lobby: null, cancelGame: true });
         //this.intervalID = setTimeout(this.getLobbyStatus, 1000);
       } else {
         clearTimeout(this.intervalID);
         console.log(
-          `Something went wrong while fetching the lobbies: \n        	        
+          `Something went wrong while fetching the game: \n        	        
         	        ${handleError(err)}`
         );
       }
