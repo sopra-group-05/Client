@@ -5,6 +5,7 @@ import { api, handleError } from "../../../helpers/api";
 import { Spinner } from "../../../views/design/Spinner";
 import Avatar from "../../../views/Avatar";
 import { BaseContainer } from "../../../helpers/layout";
+import MessageHandler from "../../../views/MessageHandler";
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -57,10 +58,10 @@ class EditProfile extends React.Component {
   constructor() {
     super();
     this.state = {
-      user: null,
-      userNameBackup: null,
-      username: null,
-      error: null
+      user: "",
+      userNameBackup: "",
+      username: "",
+      error: ""
     };
   }
 
@@ -97,7 +98,12 @@ class EditProfile extends React.Component {
       } catch (error) {
         this.state.user.username = this.state.userNameBackup;
         this.setState({
-          error: error.data ? error.data : "Error"
+          error:
+            error && error.response
+              ? error.response.data
+              : error && error.message
+              ? error.message
+              : "Unknown error"
         });
         console.log(
           `Something went wrong during when trying to update the profile: \n${handleError(
@@ -122,11 +128,11 @@ class EditProfile extends React.Component {
               }}
             />
             <Container>
-              {this.state.error ? (
-                <ErrorMessage>{this.state.error}</ErrorMessage>
-              ) : (
-                ""
-              )}
+              <MessageHandler
+                show={this.state.error}
+                message={this.state.error}
+              />
+
               <Avatar user={this.state.user} />
 
               <ButtonContainer>
