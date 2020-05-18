@@ -12,8 +12,8 @@ import WaitingToAcceptDeclineMysteryWord from "./AcceptDeclineMysteryWord/Waitin
 const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
   // this component renders the correct state of the game
   let Component = ChoosingMysteryWord;
-  if (state) {
-    // todo remove when backend works
+  if (state === "somethingsomething") {
+    // don't touch yet.
     // this part is for the previewing phase. it will be removed once all part of the backend work
     const old_states = [
       ChoosingMysteryWord,
