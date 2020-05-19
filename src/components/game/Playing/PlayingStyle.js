@@ -24,7 +24,7 @@ export const PlayingTitle = styled.h3`
   color: #fff;
 `;
 
-export const PlayingDescription = styled.p`
+export const PlayingDescription = styled.div`
   font-size: 1.3rem;
   font-weight: normal;
   padding: 0;
