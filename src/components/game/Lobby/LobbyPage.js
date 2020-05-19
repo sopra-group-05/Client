@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Sidebar from "../Sidebar/Sidebar";
-import OnlineUsersInvite from "../Dashboard/OnlineUsersInvite";
+import OnlineUsersInvite from "./OnlineUsersInvite";
 import { BaseContainer } from "../../../helpers/layout";
 import LobbyContainer from "./LobbyContainer";
 
