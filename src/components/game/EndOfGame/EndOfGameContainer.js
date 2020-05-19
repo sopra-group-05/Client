@@ -84,9 +84,11 @@ class EndOfGameContainer extends React.Component {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.put(
-        "/lobbies/" + this.state.lobby.id + "/start"
+        "/lobbies/" + this.state.lobby.id + "/restart"
       );
-      // TODO: add redirect + clear interval??
+      // redirect to game
+      this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
+      clearInterval(this.interval);
     } catch (error) {
       this.setState({
         error:
