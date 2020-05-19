@@ -6,6 +6,7 @@ import { Spinner } from "../../../views/design/Spinner";
 import PlayerInvite from "../../../views/PlayerInvite";
 import Box from "../../../views/Box";
 import User from "../../shared/models/User";
+import Lobby from "../../shared/models/Lobby";
 
 const Users = styled.ul`
   list-style: none;
@@ -28,27 +29,60 @@ class OnlineUsersInvite extends React.Component {
       users: null,
       error: null,
       lobbyId: this.props.lobbyId,
-      mounted: true
+      mounted: true,
+      players: null
     };
-    this.getUsers = this.getUsers.bind(this);
+    this.getUsersAndLobby = this.getUsersAndLobby.bind(this);
   }
 
-  getUsers = async () => {
+  getUsersAndLobby = async () => {
+    // get lobby
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+
+      const response = await api.get("/lobbies/" + this.props.lobbyId);
+      const l = new Lobby(response.data);
+
+      // Get the returned lobby and update the state.
+      this.setState({
+        players: l.players,
+        error: null
+      });
+      //console.log(l.players);
+    } catch (error) {
+      this.setState({
+        error:
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
+      });
+      console.log(
+        `Something went wrong while fetching the lobby: \n${handleError(error)}`
+      );
+      clearTimeout(this.intervalID);
+    }
+
+    // get users
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/users");
 
       // call this function again in 1s
       if (this.state.mounted) {
-        this.intervalID = setTimeout(this.getUsers, 1000);
+        this.intervalID = setTimeout(this.getUsersAndLobby, 1000);
       } else {
         this.componentCleanup();
       }
 
-      // only show Users that are online
+      // only show Users that are online & not in lobby yet
+      const players = this.state.players.map(player => {
+        return player.id;
+      });
       const filtered_users = response.data.filter(function(user) {
         user = new User(user);
-        return user.status === "ONLINE";
+        return user.status === "ONLINE" && !players.includes(user.id);
       });
 
       // Get the returned users and update the state.
@@ -70,7 +104,7 @@ class OnlineUsersInvite extends React.Component {
   };
 
   componentDidMount() {
-    this.getUsers();
+    this.getUsersAndLobby();
   }
 
   componentWillUnmount() {
