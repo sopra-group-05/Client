@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 const DropDownContent = styled.div`
   display: none;
-  padding-top: 0rem;
-  border-radius: 0px 0px 20px 20px;
+  padding-top: 0;
+  border-radius: 0 0 20px 20px;
   position: absolute;
   min-width: 100px;
   background-color: rgb(0, 0, 0, 0.9);
-  margin-top: 0rem;
+  margin-top: 0;
   margin-left: -1rem;
   z-index: 1;
 `;
@@ -18,7 +18,7 @@ const DropDownMenue = styled.ul`
   border-radius: 20px;
   background-color: rgb(0, 0, 0, 0.2);
   padding: 1rem;
-  margin: 0rem 0rem 0rem 1rem;
+  margin: 0 0 0 1rem;
   cursor: pointer;
   min-width: 100px;
   text-align: center;

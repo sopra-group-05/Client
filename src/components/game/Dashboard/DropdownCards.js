@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 const DropDownContent = styled.div`
   display: none;
-  padding-top: 0rem;
-  border-radius: 0px 0px 20px 20px;
+  padding-top: 0;
+  border-radius: 0 0 20px 20px;
   position: absolute;
   min-width: 100px;
   background-color: rgb(0, 0, 0, 0.9);
-  margin-top: 0rem;
+  margin-top: 0;
   margin-left: -1rem;
   z-index: 1;
 `;
@@ -61,8 +61,8 @@ class Dropdown extends React.Component {
   handleClick(name) {
     this.setState({ selected: name });
     this.props.changeNumOfCards(
-      name == "Demo (1)"
-        ? 1
+      name == "Demo (2)"
+        ? 2
         : name == "Speed (7)"
         ? 7
         : name == "Normal (13)"
@@ -78,8 +78,8 @@ class Dropdown extends React.Component {
       <DropDownMenu>
         {this.state.selected}
         <DropDownContent>
-          <DropDownPoint onClick={() => this.handleClick("Demo (1)")}>
-            Demo (1)
+          <DropDownPoint onClick={() => this.handleClick("Demo (2)")}>
+            Demo (2)
           </DropDownPoint>
           <DropDownPoint onClick={() => this.handleClick("Speed (7)")}>
             Speed (7)
