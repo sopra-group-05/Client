@@ -11,6 +11,7 @@ import Lobby from "../../shared/models/Lobby";
 const Users = styled.ul`
   list-style: none;
   padding-left: 0;
+  margin-top: 0;
 `;
 
 const PlayerContainer = styled.li`
@@ -129,13 +130,14 @@ class OnlineUsersInvite extends React.Component {
         ) : (
           <div>
             <Users>
-              {this.state.users.map(user => {
+              {this.state.users.length
+              ? this.state.users.map(user => {
                 return (
                   <PlayerContainer key={user.id}>
                     <PlayerInvite user={user} lobbyId={this.state.lobbyId} />
                   </PlayerContainer>
                 );
-              })}
+              }) : "There are no Players who can be invited"}
             </Users>
           </div>
         )}
