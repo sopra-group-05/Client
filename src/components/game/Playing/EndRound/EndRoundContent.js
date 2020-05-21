@@ -251,9 +251,8 @@ class EndRoundContent extends React.Component {
   }
 
   setReady() {
-	if(this.state.playerStatus == false)
-    {
-		this.toggleCheckbox();
+    if (this.state.playerStatus == false) {
+      this.toggleCheckbox();
     }
   }
 
