@@ -8,7 +8,7 @@ import { isProduction } from "./isProduction";
  */
 export const getDomain = () => {
   const prodUrl = "https://sopra-fs20-group-05-server.herokuapp.com";
-  const devUrl = "http://192.168.0.143:8080";
+  const devUrl = "http://localhost:8080";
 
   return isProduction() ? prodUrl : devUrl;
 };
