@@ -96,7 +96,7 @@ class Register extends React.Component {
     } catch (error) {
       // show error message and make is disappear after 3.5 seconds
       this.setState({
-        error: error.response ? error.data : "Error"
+        error: error.response ? error.response.data : "Error"
       });
       console.log(
         `Something went wrong during the login: \n${handleError(error)}`
