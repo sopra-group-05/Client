@@ -123,7 +123,7 @@ const PlayerStatus = ({ status, role }) => {
       : status == "END_OF_TURN"
       ? "End of Turn"
       : status == "PLAYER_LEFT"
-      ? "A Player has left"
+      ? "A Player has left"	  
       : "wtf?!";
 
   const playerRole =
