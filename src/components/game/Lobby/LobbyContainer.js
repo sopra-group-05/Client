@@ -322,8 +322,8 @@ class LobbyContainer extends React.Component {
               {this.state.lobby.gameMode === "HUMANS" ? (
                 ""
               ) : (
-                <PlayerContainer key={99}>
-                  <BotInLobby botName="Bots are here" />
+                <PlayerContainer>
+                  <BotInLobby numberOfBots = {this.state.lobby.numberOfBots} />
                 </PlayerContainer>
               )}
             </Players>
