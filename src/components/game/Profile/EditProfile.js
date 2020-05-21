@@ -137,7 +137,7 @@ class EditProfile extends React.Component {
 
               <ButtonContainer>
                 <Button marginbottom="30px" colorDef={"#454c62"}>
-                  Level
+                  Score: {this.state.user.score}
                 </Button>
 
                 <Button

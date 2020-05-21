@@ -10,6 +10,7 @@ import { withRouter } from "react-router-dom";
 import { Button } from "../Playing/PlayingStyle";
 import BotInLobby from "../../../views/BotInLobby";
 import Popup from "../../../views/Popup";
+import GameInfo from "../../../views/GameInfo";
 
 const PlayerStatus = styled.div`
   border-radius: 20px;
@@ -303,6 +304,7 @@ class LobbyContainer extends React.Component {
           !this.state.error && <Spinner />
         ) : (
           <div>
+            <GameInfo lobby={this.state.lobby} cards={ true }/>
             <Players>
               <PlayerContainer key={this.state.lobby.creator.id}>
                 <PlayerInLobby
@@ -341,9 +343,10 @@ class LobbyContainer extends React.Component {
               >
                 Leave Lobby
               </Button>
-              <ButtonSpacer />
+
               {this.state.lobby.creator.id ==
                 localStorage.getItem("userId") && (
+                  <React.Fragment><ButtonSpacer />
                 <Button
                   onClick={() => {
                     this.startGame();
@@ -353,6 +356,7 @@ class LobbyContainer extends React.Component {
                 >
                   {this.state.lobbyReady ? "Start Game" : "Lobby not ready"}
                 </Button>
+                  </React.Fragment>
               )}
             </ButtonGroup>
           </div>

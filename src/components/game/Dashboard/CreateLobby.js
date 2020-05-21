@@ -13,6 +13,7 @@ import Dropdown from "./Dropdown";
 import DropdownCards from "./DropdownCards";
 import Lobby from "../../shared/models/Lobby";
 import { withRouter } from "react-router-dom";
+import User from "../../shared/models/User";
 
 const Container = styled.div`
   text-align: center;
@@ -146,7 +147,7 @@ class CreateLobby extends React.Component {
   constructor() {
     super();
     this.state = {
-      score: null,
+      score: -1,
       lobbyName: localStorage.getItem("username") + " Lobby",
       language: "EN",
       gameMode: 0,
@@ -158,11 +159,33 @@ class CreateLobby extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.changeNumberOfCards = this.changeNumberOfCards.bind(this);
     this.changeNumberOfBots = this.changeNumberOfBots.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
+
+  getUser = async () => {
+    try {
+      api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
+      const response = await api.get("/users/" + localStorage.getItem("userId"));
+
+      // Get the returned user.
+      this.setState({ score: response.data.score, error: null });
+    } catch (error) {
+      this.setState({
+        error:
+            error && error.response
+                ? error.response.data
+                : error && error.message
+                ? error.message
+                : "Unknown error"
+      });
+      console.log(
+          `Something went wrong while fetching the users: \n${handleError(error)}`
+      );
+    }
+  };
+
   componentDidMount() {
-    // get Game-Score of current player, dummy score at the moment
-    //this.getScore();
-    this.setState({ score: 4280 });
+    this.getUser();
   }
 
   handleInputChange(key, value) {
@@ -229,12 +252,12 @@ class CreateLobby extends React.Component {
   render() {
     return (
       <Box title="new Game">
-        {!this.state.score ? (
+        {this.state.score < 0 ? (
           !this.state.error && <Spinner />
         ) : (
           <Container>
             <Circle>
-              <GameRank>GAME RANK</GameRank>
+              <GameRank>PLAYER SCORE</GameRank>
               <Score>
                 {this.state.score}
                 <DiamondIcon src={Diamond} />
