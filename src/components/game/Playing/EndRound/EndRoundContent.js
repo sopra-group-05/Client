@@ -146,7 +146,6 @@ class EndRoundContent extends React.Component {
       wonCards: 0,
       lostCards: 0,
       playersReady: false,
-      playerStatus: false
     };
     this.getLobbyguess = this.getLobbyguess.bind(this);
     this.setReady = this.setReady.bind(this);
@@ -230,7 +229,6 @@ class EndRoundContent extends React.Component {
         "/lobbies/" + this.props.lobby.id + "/ready"
       );
       console.log(response);
-      this.setState({ playerStatus: true });
       this.forceUpdate();
     } catch (error) {
       this.setState({
@@ -251,7 +249,10 @@ class EndRoundContent extends React.Component {
   }
 
   setReady() {
-	if(this.state.playerStatus == false)
+    let player = this.props.lobby.players.find(
+      player => player.id == localStorage.getItem("userId")
+        ); 
+	if(player.status != "READY")
     {
 		this.toggleCheckbox();
     }
