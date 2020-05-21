@@ -46,7 +46,7 @@ class Dropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: "Select #"
+      selected: "1 Bot"
     };
   }
 
