@@ -129,12 +129,15 @@ class GameInfo extends React.Component {
 
   render() {
     const language = this.props.lobby.language == "DE" ? german : english;
+    const cardOutput = "#Cards: " + this.props.lobby.numberOfCards;
+    const roundOutput = "Round: " + (this.props.lobby.numberOfCards - this.state.leftCards + 1) + "/" + this.props.lobby.numberOfCards;
+    const cardsOrRounds = this.props.cards ? cardOutput : roundOutput;
     return (
       <Container>
         <DetectPlayerStatusChange lobby = {this.props.lobby} getGameInfo={this.getGameInfo}/>
         <Language size={40} src={language} />
         <PlayerMeta>
-          <Info>Round: {this.props.lobby.numberOfCards - this.state.leftCards +1}/{this.props.lobby.numberOfCards}</Info>
+          <Info>{cardsOrRounds}</Info>
           <PlayerInfo>#Players: {this.props.lobby.players ? this.props.lobby.players.length : "1"}/7 |{" "}
           Bots: {this.props.lobby.gameMode === "HUMANS" ? "No Bots" : "With Bots"}</PlayerInfo>
         </PlayerMeta>
