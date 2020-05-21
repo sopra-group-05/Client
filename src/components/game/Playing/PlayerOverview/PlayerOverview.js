@@ -27,7 +27,7 @@ const PlayerOverview = props => {
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
-        <GameInfo lobby={lobby}/>
+        <GameInfo lobby={lobby} />
         <DetectPlayerStatusChange lobby={lobby} />
         {lobby.players.map(player => {
           return (
