@@ -195,7 +195,9 @@ class EndRoundContent extends React.Component {
             : "Unknown error"
       });
       console.log(
-        `Something went wrong while starting the game: \n${handleError(error)}`
+        `Something went wrong while starting the next round: \n${handleError(
+          error
+        )}`
       );
     }
   }
@@ -250,9 +252,8 @@ class EndRoundContent extends React.Component {
   }
 
   setReady() {
-	if(this.state.playerStatus == false)
-    {
-		this.toggleCheckbox();
+    if (this.state.playerStatus == false) {
+      this.toggleCheckbox();
     }
   }
 
