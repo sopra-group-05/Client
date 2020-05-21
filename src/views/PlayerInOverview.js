@@ -9,7 +9,9 @@ const Container = styled.div`
   border-radius: 15px;
   display: flex;
   flex-direction: row;
-  background-color: ${props => (props.color ? props.color : "#454c62")};
+  background-color: ${props => (props.backgroundColor ? props.backgroundColor : "#454c62")};
+  border-style: ${props => (props.boarderColor ? "solid" : "none")}
+  border-color: ${props => (props.boarderColor ? props.boarderColor : "#454c62")};
   a {
     color: #ce552e;
     display: flex;
@@ -53,8 +55,8 @@ const StatusCycle = styled.div`
   margin: 0 5px 0 0;
   background-color: green;
   border-radius: 50%;
-  width: 1em;
-  height: 1em;
+  width: 0.75em;
+  height: 0.75em;
 `;
 
 const PlayerStatus = ({ status, role }) => {
@@ -151,10 +153,14 @@ class PlayerInOverview extends React.Component {
     };
   }
   render() {
-    const containerColor =
-      this.props.player.role == "GUESSER" ? "rgba(0, 0, 0, 0.3)" : "#454c62";
+    const boarderColor =
+      this.props.player.role == "GUESSER" ? "yellow" : "";
+  const containerColor =
+      this.props.player.id == localStorage.getItem("userId") ? "rgba(0, 0, 0, 0.3)" : "";
+
+      
     return (
-      <Container color={containerColor}>
+      <Container boarderColor={boarderColor} backgroundColor ={containerColor}>
         <Avatar size={40} user={this.props.player} />
         <PlayerMeta>
           <PlayerName>{this.props.player.username}</PlayerName>

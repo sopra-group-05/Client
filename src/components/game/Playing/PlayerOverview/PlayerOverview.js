@@ -6,11 +6,12 @@ import Box from "../../../../views/Box";
 import PlayerInOverview from "../../../../views/PlayerInOverview";
 import { Button } from "../../../../views/design/Button";
 import DetectPlayerStatusChange from "./DetectPlayerStatusChange";
+import GameInfo from "../../../../views/GameInfo";
 
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 1em;
+  margin-top: 2em;
 `;
 const ButtonSpacer = styled.div`
   width: 10em;
@@ -26,6 +27,7 @@ const PlayerOverview = props => {
   return (
     <Box maxWidth="350px" title={lobby.lobbyName}>
       <React.Fragment>
+        <GameInfo lobby={lobby}/>
         <DetectPlayerStatusChange lobby={lobby} />
         {lobby.players.map(player => {
           return (

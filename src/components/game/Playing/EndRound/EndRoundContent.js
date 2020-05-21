@@ -155,7 +155,7 @@ class EndRoundContent extends React.Component {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get(
-        "/lobbies/" + this.props.lobby.id + "/guess"
+        "/lobbies/" + this.props.lobby.id + "/game"
       );
       // Get the returned mysteryCard and update the state.
       this.setState({

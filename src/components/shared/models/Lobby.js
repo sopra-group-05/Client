@@ -10,6 +10,7 @@ class Lobby {
     this.gameMode = null;
     this.creator = null;
     this.players = null;
+    this.numberOfCards = null;
     Object.assign(this, data);
   }
 }
