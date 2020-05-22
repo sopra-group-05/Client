@@ -81,6 +81,16 @@ const ButtonGroup = styled.div`
   justify-content: center;
 `;
 
+const PlayerCountInfo = styled.div`
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  padding: 0.5rem;
+  margin: 0;
+  font-size: 0.8rem;
+  color: grey;
+`;
+
 class LobbyContainer extends React.Component {
   intervalID;
 
@@ -340,6 +350,15 @@ class LobbyContainer extends React.Component {
               </CheckBox>
               Set ready
             </PlayerStatus>
+            {!this.state.lobbyReady && (
+              <PlayerCountInfo>
+                All players have to be ready. There can not be more than 7
+                players.
+                {this.state.lobby.gameMode === "HUMANS"
+                  ? " There have to be at least 3 Players to start the game."
+                  : " There have to be at least two human players to start a game with bots."}
+              </PlayerCountInfo>
+            )}
             <ButtonGroup>
               <Button
                 onClick={() => {

@@ -152,7 +152,8 @@ card the team has won and/or lost. After a 5 seconds countdown the creator of th
 After all Cards were played the team can see which player got how many points for his performance in the game. 
 Players can sort by Name, Score and other attributes by clicking on them.
 
-todo: add image
+![End of Game Ranking](illustrations/Ranking_Board.png)
+
 
 ### Overall Ranking
 Players can sort by Name, Score and other attributes by clicking on them.
@@ -180,6 +181,11 @@ it some extra points.
 - The active Player should be able to click on the best clue.
 - The Player that wrote the chosen clue should get extra points.
 - The active Player should be able to skip if no clue stands out.
+
+### Frontend German Language
+
+As a user if I join a lobby that plays in German I want to play the whole game in German (and not just the words).
+- Translated text to German for all content inside a lobby.
 
 ## Authors and acknowledgement
 
