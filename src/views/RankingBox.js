@@ -176,6 +176,7 @@ class RankingBox extends React.Component {
     this.getStats = this.getStats.bind(this);
     this.sortBy = this.sortBy.bind(this);
     this.setSortConfig = this.setSortConfig.bind(this);
+    this.transformKey = this.transformKey.bind(this);
   }
 
   async getStats() {
@@ -192,13 +193,15 @@ class RankingBox extends React.Component {
           return new Stats(data);
         });
       } else {
-        response = await api.get("users/ranking/" + this.state.sortConfig.key);
+        response = await api.get(
+          "users/ranking/" + this.transformKey(this.state.sortConfig.key)
+        );
         stats = response.data;
       }
 
-      console.log(response.data);
+      console.log(stats);
 
-      if (this.state.stats.length === 0 && response.data) {
+      if (this.state.stats.length === 0 && stats) {
         // make API call every 1s to get Updated stats.
         // Will have to be destroyed in componentWIllUnmount()!
         // only set interval the very first time you call the API
@@ -264,6 +267,17 @@ class RankingBox extends React.Component {
       sortConfig.key === "playerName" ? compareFnName : compareFnDefault;
     sortedStats.sort(sortFn);
     return sortedStats;
+  }
+
+  transformKey(sortKey) {
+    const map = {
+      username: "USERNAME",
+      score: "SCORE",
+      correctGuesses: "CORRECT_GUESSES",
+      bestClues: "BEST_CLUES"
+    };
+    console.log(sortKey);
+    return map[sortKey];
   }
 
   componentDidMount() {
