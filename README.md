@@ -87,10 +87,77 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Once you push a new commit to this repository it will automatically be deployed and released on 
 [heroku](https://sopra-fs20-group-05-client.herokuapp.com/login).
 
-## Illustrations [todo]
+## Illustrations
 
-Describe and illustrate the main user flows of the interface and how does it work?
-Add Screenshots!
+In this section you can the the main user flow of the interface and how it interacts with each other.
+
+### Login and Register
+To play our version of the game Just One you first need to create a new user account. With that account you will be 
+able to login.
+
+![login and register](illustrations/Register.png)
+
+
+### Dashboard
+After login you can see other Players that are online right now, open lobbies that you can join and you can create your
+own lobby.
+
+![Dashboard](illustrations/Dashboard.png)
+
+
+### Profile
+If you click on your own Profile picture in the sidebar you get to your own profile. This is the place where you can 
+edit your information (and e.g. change your username) or delete your account if you don't want to play anymore.
+
+![Profile](illustrations/Profile.png)
+
+### Rules
+If you've never played Just One before, you can have a look at the rules to know how to play.
+
+![Rules](illustrations/Rules.png)
+
+
+### Lobby
+In the lobby you can see who you will be playing with, if there are any Bots that will join and how many cards will be 
+played in this lobby. If there are any available Players you can also invite these to join your lobby.
+for the lobby to start, all Players have to set their status to ready.
+
+![Lobby View](illustrations/Lobby.png)
+
+### Playing
+Once the lobby started playing there are a lot of different views. Here are the 5 main screens:
+
+The active Player gets to choose a number which will determine the mystery word.
+![Choosing Number](illustrations/Playing_01_Choosing_Number.png)
+
+All teammates get to accept or decline the chosen mystery word e.g. when they don't understand that word.
+![Accepting the new Mystery Word](illustrations/Playing_02_Accepting_Word.png)
+
+If you're not the active Player you get to write clues. If you're only 3 Players in the game you can even write two!
+![Writing Clues](illustrations/Playing_03_Writing_Clues.png)
+
+Once all Players have submitted their clues you get to review the clues before they are sent to the active Player to
+guess. Here you can eliminate all Clues that are not allowed by the game rules.
+![Reviewing Clues](illustrations/Playing_04_Reviewing_Clues.png)
+
+The active Players gets to guess the Mystery Word.
+![Guessing](illustrations/Playing_05_Guessing.png)
+
+After each Round the Players get to a screen which states how many Cards are still remaining in the deck and how many
+card the team has won and/or lost. After a 5 seconds countdown the creator of the lobby is able to start the next round.
+![End of Turn / Round](illustrations/Playing_06_End_of_round.png)
+
+
+### End of Game Ranking
+After all Cards were played the team can see which player got how many points for his performance in the game. 
+Players can sort by Name, Score and other attributes by clicking on them.
+
+todo: add image
+
+### Overall Ranking
+Players can sort by Name, Score and other attributes by clicking on them.
+
+todo: add image
 
 ## Roadmap
 
