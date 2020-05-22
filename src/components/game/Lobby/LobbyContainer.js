@@ -153,9 +153,14 @@ class LobbyContainer extends React.Component {
       }
     });
     if (lobby.gameMode === "HUMANS") {
-      return lobby.players.length >= 3 && lobby.players.length <= 7 ? allReady : false;
+      return lobby.players.length >= 3 && lobby.players.length <= 7
+        ? allReady
+        : false;
     } else {
-      return lobby.players.length >= 2 && (lobby.players.length + lobby.numberOfBots) <= 7 ? allReady : false;
+      return lobby.players.length >= 2 &&
+        lobby.players.length + lobby.numberOfBots <= 7
+        ? allReady
+        : false;
     }
   }
 
@@ -304,7 +309,7 @@ class LobbyContainer extends React.Component {
           !this.state.error && <Spinner />
         ) : (
           <div>
-            <GameInfo lobby={this.state.lobby} cards={ true }/>
+            <GameInfo lobby={this.state.lobby} cards={true} />
             <Players>
               <PlayerContainer key={this.state.lobby.creator.id}>
                 <PlayerInLobby
@@ -323,7 +328,7 @@ class LobbyContainer extends React.Component {
                 ""
               ) : (
                 <PlayerContainer>
-                  <BotInLobby numberOfBots = {this.state.lobby.numberOfBots} />
+                  <BotInLobby numberOfBots={this.state.lobby.numberOfBots} />
                 </PlayerContainer>
               )}
             </Players>
@@ -346,17 +351,18 @@ class LobbyContainer extends React.Component {
 
               {this.state.lobby.creator.id ==
                 localStorage.getItem("userId") && (
-                  <React.Fragment><ButtonSpacer />
-                <Button
-                  onClick={() => {
-                    this.startGame();
-                  }}
-                  disabled={!this.state.lobbyReady}
-                  background={"#44d63f"}
-                >
-                  {this.state.lobbyReady ? "Start Game" : "Lobby not ready"}
-                </Button>
-                  </React.Fragment>
+                <React.Fragment>
+                  <ButtonSpacer />
+                  <Button
+                    onClick={() => {
+                      this.startGame();
+                    }}
+                    disabled={!this.state.lobbyReady}
+                    background={"#44d63f"}
+                  >
+                    {this.state.lobbyReady ? "Start Game" : "Lobby not ready"}
+                  </Button>
+                </React.Fragment>
               )}
             </ButtonGroup>
           </div>

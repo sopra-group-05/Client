@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import german from "../images/lang_DE.png";
-import english from "../images/lang_EN.png"
+import english from "../images/lang_EN.png";
 import { withRouter } from "react-router-dom";
-import {api} from "../helpers/api";
+import { api } from "../helpers/api";
 
 const Container = styled.div`
   margin-top: 1rem;
@@ -63,12 +63,12 @@ const StatusCycle = styled.div`
 `;
 
 const Language = styled.img`
-    border-radius: 50%;
-    width: ${props => props.size + "px"};
-    height: ${props => props.size + "px"};
-    padding: ${props => (props.padding ? "1rem" : "0")};
-    flex-grow: 0;
-    flex-shrink: 0;
+  border-radius: 50%;
+  width: ${props => props.size + "px"};
+  height: ${props => props.size + "px"};
+  padding: ${props => (props.padding ? "1rem" : "0")};
+  flex-grow: 0;
+  flex-shrink: 0;
 `;
 
 function usePrevious(value) {
@@ -85,15 +85,19 @@ const DetectPlayerStatusChange = ({ lobby, getGameInfo }) => {
     // returns Status of this Player
     if (lobby) {
       let player = lobby.players.find(
-          player => player.id == localStorage.getItem("userId")
+        player => player.id == localStorage.getItem("userId")
       );
       return player.status;
     }
     return "";
   };
   const updateRoundInfo = () => {
-    if ((status == "PICKING_NUMBER" || status == "WAITING_FOR_NUMBER") && prevStatus == "READY")
-    { getGameInfo() }
+    if (
+      (status == "PICKING_NUMBER" || status == "WAITING_FOR_NUMBER") &&
+      prevStatus == "READY"
+    ) {
+      getGameInfo();
+    }
   };
 
   const status = getOwnPlayerStatus(lobby);
@@ -116,32 +120,39 @@ class GameInfo extends React.Component {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get(
-          "/lobbies/" + this.props.lobby.id + "/game"
+        "/lobbies/" + this.props.lobby.id + "/game"
       );
       // Get number of leftCards
-      this.setState({leftCards: response.data.leftCards
-      });
-
+      this.setState({ leftCards: response.data.leftCards });
     } catch (error) {
       console.log(error);
     }
   }
-  
-  componentDidMount()
-  {
-	  this.getGameInfo();
+
+  componentDidMount() {
+    this.getGameInfo();
   }
 
   render() {
     const language = this.props.lobby.language == "DE" ? german : english;
     return (
       <Container>
-        <DetectPlayerStatusChange lobby = {this.props.lobby} getGameInfo={this.getGameInfo}/>
+        <DetectPlayerStatusChange
+          lobby={this.props.lobby}
+          getGameInfo={this.getGameInfo}
+        />
         <Language size={40} src={language} />
         <PlayerMeta>
-          <Info>Round: {this.props.lobby.numberOfCards - this.state.leftCards +1}/{this.props.lobby.numberOfCards}</Info>
-          <PlayerInfo>#Players: {this.props.lobby.players ? this.props.lobby.players.length : "1"}/7 |{" "}
-          Bots: {this.props.lobby.gameMode === "HUMANS" ? "No Bots" : "With Bots"}</PlayerInfo>
+          <Info>
+            Round: {this.props.lobby.numberOfCards - this.state.leftCards + 1}/
+            {this.props.lobby.numberOfCards}
+          </Info>
+          <PlayerInfo>
+            #Players:{" "}
+            {this.props.lobby.players ? this.props.lobby.players.length : "1"}/7
+            | Bots:{" "}
+            {this.props.lobby.gameMode === "HUMANS" ? "No Bots" : "With Bots"}
+          </PlayerInfo>
         </PlayerMeta>
       </Container>
     );

@@ -70,7 +70,10 @@ class BotInLobby extends React.Component {
   }
 
   render() {
-    const botMessage = this.props.numberOfBots == 1 ? "1 Bot is happy to join" : this.props.numberOfBots + " Bots are happy to join";
+    const botMessage =
+      this.props.numberOfBots == 1
+        ? "1 Bot is happy to join"
+        : this.props.numberOfBots + " Bots are happy to join";
     return (
       <Container>
         <Avatar size={40} user={this.state.botName} />

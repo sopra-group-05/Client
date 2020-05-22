@@ -131,13 +131,17 @@ class OnlineUsersInvite extends React.Component {
           <div>
             <Users>
               {this.state.users.length
-              ? this.state.users.map(user => {
-                return (
-                  <PlayerContainer key={user.id}>
-                    <PlayerInvite user={user} lobbyId={this.state.lobbyId} />
-                  </PlayerContainer>
-                );
-              }) : "There are no Players who can be invited"}
+                ? this.state.users.map(user => {
+                    return (
+                      <PlayerContainer key={user.id}>
+                        <PlayerInvite
+                          user={user}
+                          lobbyId={this.state.lobbyId}
+                        />
+                      </PlayerContainer>
+                    );
+                  })
+                : "There are no Players who can be invited"}
             </Users>
           </div>
         )}

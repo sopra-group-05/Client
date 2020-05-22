@@ -165,21 +165,23 @@ class CreateLobby extends React.Component {
   getUser = async () => {
     try {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
-      const response = await api.get("/users/" + localStorage.getItem("userId"));
+      const response = await api.get(
+        "/users/" + localStorage.getItem("userId")
+      );
 
       // Get the returned user.
       this.setState({ score: response.data.score, error: null });
     } catch (error) {
       this.setState({
         error:
-            error && error.response
-                ? error.response.data
-                : error && error.message
-                ? error.message
-                : "Unknown error"
+          error && error.response
+            ? error.response.data
+            : error && error.message
+            ? error.message
+            : "Unknown error"
       });
       console.log(
-          `Something went wrong while fetching the users: \n${handleError(error)}`
+        `Something went wrong while fetching the users: \n${handleError(error)}`
       );
     }
   };
