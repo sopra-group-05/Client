@@ -153,9 +153,9 @@ class LobbyContainer extends React.Component {
       }
     });
     if (lobby.gameMode === "HUMANS") {
-      return lobby.players.length >= 3 ? allReady : false;
+      return lobby.players.length >= 3 && lobby.players.length <= 7 ? allReady : false;
     } else {
-      return lobby.players.length >= 2 ? allReady : false;
+      return lobby.players.length >= 2 && (lobby.players.length + lobby.numberOfBots) <= 7 ? allReady : false;
     }
   }
 
@@ -322,8 +322,8 @@ class LobbyContainer extends React.Component {
               {this.state.lobby.gameMode === "HUMANS" ? (
                 ""
               ) : (
-                <PlayerContainer key={99}>
-                  <BotInLobby botName="Bots are here" />
+                <PlayerContainer>
+                  <BotInLobby numberOfBots = {this.state.lobby.numberOfBots} />
                 </PlayerContainer>
               )}
             </Players>

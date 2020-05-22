@@ -126,6 +126,11 @@ class GameInfo extends React.Component {
       console.log(error);
     }
   }
+  
+  componentDidMount()
+  {
+	  this.getGameInfo();
+  }
 
   render() {
     const language = this.props.lobby.language == "DE" ? german : english;
