@@ -158,7 +158,7 @@ Players can sort by Name, Score and other attributes by clicking on them.
 ### Overall Ranking
 Players can sort by Name, Score and other attributes by clicking on them.
 
-todo: add image
+![Ranking](illustrations/Ranking.png)
 
 ## Roadmap
 
