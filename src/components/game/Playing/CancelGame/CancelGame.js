@@ -12,7 +12,7 @@ import { Button } from "../PlayingStyle";
 const CancelGame = ({ goBackToDashboard }) => {
   return (
     <PlayingWrapper>
-      <PlayingTitle> Game is canceled </PlayingTitle>
+      <PlayingTitle> Game is cancelled </PlayingTitle>
       <PlayingDescription style={{ margin: "2rem" }}>
         Too many players have left the game. The game will be stopped now.{" "}
         <br />
