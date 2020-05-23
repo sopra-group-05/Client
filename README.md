@@ -89,7 +89,8 @@ Once you push a new commit to this repository it will automatically be deployed 
 
 ## Illustrations
 
-In this section you can the the main user flow of the interface and how it interacts with each other.
+In this section you can have a look the the main user flow of the interface and how different views interacts with 
+each other.
 
 ### Login and Register
 To play our version of the game Just One you first need to create a new user account. With that account you will be 
@@ -120,31 +121,34 @@ If you've never played Just One before, you can have a look at the rules to know
 ### Lobby
 In the lobby you can see who you will be playing with, if there are any Bots that will join and how many cards will be 
 played in this lobby. If there are any available Players you can also invite these to join your lobby.
-for the lobby to start, all Players have to set their status to ready.
+For the lobby to start, all players have to set their status to ready.
 
 ![Lobby View](illustrations/Lobby.png)
 
 ### Playing
-Once the lobby started playing there are a lot of different views. Here are the 5 main screens:
+__Once the lobby started playing there are a lot of different views. Here are the 6 main screens:__
 
-The active Player gets to choose a number which will determine the mystery word.
+__1. Choosing the number:__ The active Player gets to choose a number which will determine the mystery word.
 ![Choosing Number](illustrations/Playing_01_Choosing_Number.png)
 
-All teammates get to accept or decline the chosen mystery word e.g. when they don't understand that word.
+__2. Accepting the Mystery Word:__ All teammates get to accept or decline the chosen mystery word e.g. when they don't 
+understand that word.
 ![Accepting the new Mystery Word](illustrations/Playing_02_Accepting_Word.png)
 
-If you're not the active Player you get to write clues. If you're only 3 Players in the game you can even write two!
+__3. Write Clues:__ If you're not the active Player you get to write clues. If you're only 3 Players in the game you 
+can even write two!
 ![Writing Clues](illustrations/Playing_03_Writing_Clues.png)
 
-Once all Players have submitted their clues you get to review the clues before they are sent to the active Player to
-guess. Here you can eliminate all Clues that are not allowed by the game rules.
+__4. Reviewing Clues:__ Once all Players have submitted their clues you get to review the clues before they are sent 
+to the active Player to guess. Here you can eliminate all Clues that are not allowed by the game rules.
 ![Reviewing Clues](illustrations/Playing_04_Reviewing_Clues.png)
 
-The active Players gets to guess the Mystery Word.
+__5. Guessing:__ The active Players gets to guess the Mystery Word.
 ![Guessing](illustrations/Playing_05_Guessing.png)
 
-After each Round the Players get to a screen which states how many Cards are still remaining in the deck and how many
-card the team has won and/or lost. After a 5 seconds countdown the creator of the lobby is able to start the next round.
+__6. End of Round:__ After each Round the Players get to a screen which states how many Cards are still remaining 
+in the deck and how many card the team has won and/or lost. After a 5 seconds countdown the creator of the lobby is 
+able to start the next round.
 ![End of Turn / Round](illustrations/Playing_06_End_of_round.png)
 
 
@@ -156,13 +160,14 @@ Players can sort by Name, Score and other attributes by clicking on them.
 
 
 ### Overall Ranking
-Players can sort by Name, Score and other attributes by clicking on them.
+Once you're out of the game you can have a look at the overall ranking. This is where you can compare yourselve against 
+all other user that created an account. Players can sort by Name, Score and other attributes by clicking on them.
 
 ![Ranking](illustrations/Ranking.png)
 
 ## Roadmap
 
-Here are two features that you, as a new member of our team, could contribute to this project!
+Here are three features that you, as a new member of our team, could contribute to this project!
 
 ### Adding custom Mystery-Word Cards
 
@@ -177,7 +182,7 @@ playing the same words over and over again.
 
 As an active Player, I want to be able to choose the best clue presented in order to award the player who wrote 
 it some extra points.
-- Alle Clues should be visible to the active Player.
+- All Clues should be visible to the active Player.
 - The active Player should be able to click on the best clue.
 - The Player that wrote the chosen clue should get extra points.
 - The active Player should be able to skip if no clue stands out.
