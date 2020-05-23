@@ -93,6 +93,11 @@ class EditProfile extends React.Component {
         api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
         await api.put("/users/" + this.props.user.id, requestBody);
 
+        // If the changed user is the local user then change the name in the localStorage
+        if(localStorage.getItem("userId") == this.props.user.id)
+    	{
+        	localStorage.setItem("username", this.state.user.username);
+    	}
         // Get the changed Data, change back to Profile-View and show Profile Updated Message
         this.props.profileUpdated();
       } catch (error) {
