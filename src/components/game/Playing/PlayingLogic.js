@@ -55,7 +55,9 @@ const PlayingLogic = ({ state, nextState, lobby, isGuesser }) => {
     let player = lobby.players.find(
       player => player.id == localStorage.getItem("userId")
     );
-    Component = states.get(player.status);
+    Component = states.has(player.status)
+      ? states.get(player.status)
+      : EndRound;
   }
 
   return (
