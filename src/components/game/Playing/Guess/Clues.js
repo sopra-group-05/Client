@@ -28,7 +28,9 @@ const Clues = ({ cluesList }) => {
           })}
         </React.Fragment>
       ) : (
-        <p>There were no valid clues. Make a random guess or skip!</p>
+        <p>
+          There were no valid clues. <br /> Make a random guess or skip!
+        </p>
       )}
     </Wrapper>
   );

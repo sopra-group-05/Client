@@ -112,7 +112,7 @@ class EndOfGameContainer extends React.Component {
     return (
       this.state.lobby && (
         <React.Fragment>
-          <Sidebar disabled={false} />
+          <Sidebar disabled={true} />
           <Container>
             <RankingBox lobby={lobby} />
             <ButtonContainer>

@@ -11,6 +11,7 @@ import PlayingLogic from "./PlayingLogic";
 import RuleContainer from "./RuleContainer";
 import LeaveContainer from "./LeaveContainer";
 import CancelGame from "./CancelGame/CancelGame";
+import Lobby from "../../shared/models/Lobby";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -63,7 +64,7 @@ class PlayingContainer extends React.Component {
 
       // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
-      //console.log(response);
+      this.goToCorrectPage(response.data);
     } catch (err) {
       this.setState({ error: err ? err.message : "Unknown error" });
       if (err.response != null && err.response.status == 404) {
@@ -77,6 +78,13 @@ class PlayingContainer extends React.Component {
         );
         this.props.history.push("/game");
       }
+    }
+  };
+
+  goToCorrectPage = lobby => {
+    lobby = new Lobby(lobby);
+    if (lobby.lobbyStatus === "WAITING") {
+      this.props.history.push("/game/lobby/" + lobby.id);
     }
   };
 

@@ -29,6 +29,7 @@ class OnlineUsersInvite extends React.Component {
     this.state = {
       users: null,
       error: null,
+      userError: null,
       lobbyId: this.props.lobbyId,
       mounted: true,
       players: null
@@ -87,10 +88,10 @@ class OnlineUsersInvite extends React.Component {
       });
 
       // Get the returned users and update the state.
-      this.setState({ users: filtered_users, error: null });
+      this.setState({ users: filtered_users, userError: null });
     } catch (error) {
       this.setState({
-        error:
+        userError:
           error && error.response
             ? error.response.data
             : error && error.message
@@ -124,6 +125,11 @@ class OnlineUsersInvite extends React.Component {
           success={false}
           show={this.state.error}
           message={this.state.error}
+        />
+        <MessageHandler
+          success={false}
+          show={this.state.userError}
+          message={this.state.userError}
         />
         {!this.state.users ? (
           !this.state.error && <Spinner />

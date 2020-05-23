@@ -77,9 +77,7 @@ const Guessing = ({ l }) => {
 
   return (
     <PlayingWrapper
-      headerText={
-        submitted && "You would submit the guess " + guess + " to the server."
-      }
+      headerText={submitted && "Submitting your guess: " + guess + "..."}
     >
       <PlayingTitle>Guess the Mystery Word</PlayingTitle>
       <PlayingDescription>Try to guess the mystery word!</PlayingDescription>
