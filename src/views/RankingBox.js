@@ -201,12 +201,7 @@ class RankingBox extends React.Component {
 
       console.log(stats);
 
-      if (this.state.stats.length === 0 && stats) {
-        // make API call every 1s to get Updated stats.
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getStats, 1000);
-      }
+      this.intervalID = setTimeout(this.getStats, 1000);
 
       this.setState({
         stats: stats,
@@ -218,7 +213,7 @@ class RankingBox extends React.Component {
       console.log(
         `Something went wrong while fetching the stats: \n${handleError(error)}`
       );
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
       /*
       const creatorStats = new Stats({
         playerId: lobby.creator.id,
@@ -285,7 +280,7 @@ class RankingBox extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearTimeout(this.intervalID);
   }
 
   setSortConfig(sortKey) {
