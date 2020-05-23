@@ -17,6 +17,14 @@ const Numbers = styled.div`
   margin-top: 2rem;
 `;
 
+export const Info = styled.div`
+  font-size: 0.7rem;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+  color: grey;
+`;
+
 const ChooseNumber = ({ match }) => {
   const [submitted, setSubmitted] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -61,6 +69,9 @@ const ChooseNumber = ({ match }) => {
         <BigNumber number={5} handleClick={numberAlert} />
       </Numbers>
       <Countdown functionWhenDone={numberAlert} time={30} />
+      <Info>
+        If you don't choose a number in time, the first word will be chosen.
+      </Info>
     </PlayingWrapper>
   );
 };
