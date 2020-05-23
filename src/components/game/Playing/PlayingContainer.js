@@ -213,9 +213,9 @@ class PlayingContainer extends React.Component {
           ) : (
             <Spinner />
           )}
-          {this.state.cancelGame ? (
+          {this.state.cancelGame && (
             <CancelGame goBackToDashboard={this.goBackToDashboard} />
-          ) : null}
+          )}
         </Container>
       </React.Fragment>
     );
