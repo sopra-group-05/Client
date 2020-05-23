@@ -252,7 +252,10 @@ class EndRoundContent extends React.Component {
   }
 
   setReady() {
-    if (this.state.playerStatus == false) {
+    let player = this.props.lobby.players.find(
+      player => player.id == localStorage.getItem("userId")
+    );
+    if (player.status !== "READY") {
       this.toggleCheckbox();
     }
   }

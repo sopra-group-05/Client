@@ -75,6 +75,7 @@ class PlayingContainer extends React.Component {
           `Something went wrong while fetching the game: \n        	        
         	        ${handleError(err)}`
         );
+        this.props.history.push("/game");
       }
     }
   };
