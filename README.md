@@ -194,12 +194,18 @@ As a user if I join a lobby that plays in German I want to play the whole game i
 
 ## Authors and acknowledgement
 
+### Authors
 - [Adiboeh](https://github.com/Adiboeh)
 - [Floribur](https://github.com/Floribur)
 - [nmulle](https://github.com/nmulle)
 - [yritz](https://github.com/yritz)
 - [mgoki](https://github.com/mgoki)
 - [InfoYak](https://github.com/InfoYak)
+
+### Credits to the APIs that werde used in this project:
+- [Adorable Avatars API](http://avatars.adorable.io/) for the profile pictures
+- [Language API](https://languages.oup.com/) for the definitions of the mystery words
+- [Datamuse API](https://www.datamuse.com/api/) for synonyms and antonyms of the bots.
 
 ## License
 
