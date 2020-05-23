@@ -123,7 +123,7 @@ class LobbyContainer extends React.Component {
         // automatically redirect to game when lobby status changes!
         this.redirectToGame(l.id);
       } else {
-        this.intervalID = setTimeout(this.getLobby, 1000);
+        this.intervalID = setTimeout(this.getLobby, 100);
 
         // Get the returned lobby and update the state.
         this.setState({

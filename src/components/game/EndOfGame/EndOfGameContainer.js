@@ -8,6 +8,7 @@ import { Button } from "../Playing/PlayingStyle";
 import RankingBox from "../../../views/RankingBox";
 import Lobby from "../../shared/models/Lobby";
 import CancelGame from "../Playing/CancelGame/CancelGame";
+import EndRound from "../Playing/EndRound/EndRound";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -40,6 +41,7 @@ class EndOfGameContainer extends React.Component {
     this.getLobby = this.getLobby.bind(this);
     this.restartGame = this.restartGame.bind(this);
     this.goBackToDashboard = this.goBackToDashboard.bind(this);
+    this.goToGameIfRestarted = this.goToGameIfRestarted.bind(this);
   }
 
   async getLobby() {
@@ -47,16 +49,11 @@ class EndOfGameContainer extends React.Component {
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + this.props.match.params.id);
 
-      if (this.state.lobby === null && response.data) {
-        // make API call every 1s to get Updated lobbies List.
-        // Will have to be destroyed in componentWIllUnmount()!
-        // only set interval the very first time you call the API
-        this.interval = setInterval(this.getLobby, 1000);
-      }
+      this.intervalID = setTimeout(this.getLobby, 1000);
 
       // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
-      console.log(response);
+      this.goToGameIfRestarted(response.data);
     } catch (error) {
       this.setState({
         error:
@@ -69,7 +66,7 @@ class EndOfGameContainer extends React.Component {
       console.log(
         `Something went wrong while fetching the lobby: \n${handleError(error)}`
       );
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
       if (
         error &&
         error.response &&
@@ -78,6 +75,18 @@ class EndOfGameContainer extends React.Component {
       ) {
         this.setState({ gameCancelled: true });
       }
+    }
+  }
+
+  goToGameIfRestarted(lobby) {
+    lobby = new Lobby(lobby);
+    // find your own Player
+    let player = lobby.players.find(
+      player => player.id == localStorage.getItem("userId")
+    );
+    let list = ["END_OF_TURN", "READY", "PLAYER_LEFT", "JOINED", "FINISHED"];
+    if (player && !list.includes(player.status)) {
+      this.props.history.push("/game/lobby/" + lobby.id + "/game");
     }
   }
 
@@ -92,7 +101,7 @@ class EndOfGameContainer extends React.Component {
   componentWillUnmount() {
     // stop Interval when Component gets hidden.
     // If you don't do this, it will call the API every 1s even the component is not active anymore!
-    clearInterval(this.interval);
+    clearTimeout(this.intervalID);
   }
 
   async restartGame() {
@@ -103,7 +112,7 @@ class EndOfGameContainer extends React.Component {
       );
       // redirect to game
       this.props.history.push("/game/lobby/" + this.state.lobby.id + "/game");
-      clearInterval(this.interval);
+      clearTimeout(this.intervalID);
     } catch (error) {
       this.setState({
         error:
@@ -123,7 +132,6 @@ class EndOfGameContainer extends React.Component {
 
   render() {
     const lobby = new Lobby(this.state.lobby);
-    console.log(lobby);
     return (
       <React.Fragment>
         <Sidebar disabled={true} />

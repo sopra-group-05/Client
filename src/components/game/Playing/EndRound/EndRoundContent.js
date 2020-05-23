@@ -106,29 +106,41 @@ const GuessDescription = styled(PlayingDescription)`
   color: ${props => (props.color ? props.color : "yellow")};
 `;
 
-const OutputText = ({ user, success, guess, mysteryWord }) => {
-  if (guess === "") {
+const OutputText = ({ user, success, playerLeft, guess, mysteryWord }) => {
+  if(playerLeft === "true")
+  {
     return (
-      <GuessDescription color={"#00a5ee"}>
-        {user} had no idea what the mystery word was!! <br />
-        The searched mystery word was {mysteryWord}!!
+      <GuessDescription color={"yellow"}>
+        A player has left the game!! <br />
+        The actual round is cancelled and the rest of the players can continue.
       </GuessDescription>
-    );
-  } else {
-    if (success) {
-      return (
-        <GuessDescription color={"#39b346"}>
-          {user}s guess was {guess} and this guess was correct!!
-        </GuessDescription>
-      );
-    } else {
-      return (
-        <GuessDescription color={"#ee232b"}>
-          {user}s guess was {guess} and this guess was wrong!! <br />
-          The searched mystery word was {mysteryWord}!!
-        </GuessDescription>
-      );
-    }
+     );
+  }
+  else
+  {
+	  if (guess === "") {
+	    return (
+	      <GuessDescription color={"#00a5ee"}>
+	        {user} had no idea what the mystery word was!! <br />
+	        The searched mystery word was {mysteryWord}!!
+	      </GuessDescription>
+	    );
+	  } else {
+	    if (success) {
+	      return (
+	        <GuessDescription color={"#39b346"}>
+	          {user}s guess was {guess} and this guess was correct!!
+	        </GuessDescription>
+	      );
+	    } else {
+	      return (
+	        <GuessDescription color={"#ee232b"}>
+	          {user}s guess was {guess} and this guess was wrong!! <br />
+	          The searched mystery word was {mysteryWord}!!
+	        </GuessDescription>
+	      );
+	    }
+	  }
   }
 };
 
@@ -145,7 +157,8 @@ class EndRoundContent extends React.Component {
       wonCards: 0,
       lostCards: 0,
       playersReady: false,
-      playerStatus: false
+      playerStatus: false,
+      playerHasLeft: false
     };
     this.getLobbyguess = this.getLobbyguess.bind(this);
     this.setReady = this.setReady.bind(this);
@@ -264,11 +277,25 @@ class EndRoundContent extends React.Component {
     this.props.history.push("/game/lobby/" + this.props.lobby.id + "/gameover");
     clearInterval(this.interval);
   }
+  
+  checkIfPlayerHasLeft(l)
+  {
+	  let player = l.players.find(
+		      player => player.id == localStorage.getItem("userId")
+		    );
+	  if((player.status == "PLAYER_LEFT")&&(!localStorage.getItem("playerLeft"))) 
+	  {
+		  localStorage.setItem("playerLeft",true);
+		  this.setReady();
+	  }
+	  
+  }
 
   componentWillUnmount() {
     // stop Interval when Component gets hidden.
     // If you don't do this, it will call the API every 1s even the component is not active anymore!
     clearInterval(this.interval);
+    localStorage.removeItem("playerLeft");
   }
 
   componentDidMount() {
@@ -276,11 +303,13 @@ class EndRoundContent extends React.Component {
   }
 
   render() {
+    this.checkIfPlayerHasLeft(this.props.lobby);
     return (
       <div>
         <OutputText
           user={this.props.user}
           success={this.state.success}
+          playerLeft={localStorage.getItem("playerLeft")}
           guess={this.state.guess}
           mysteryWord={this.state.mysteryWord}
         />
