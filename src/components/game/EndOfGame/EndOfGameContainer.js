@@ -7,6 +7,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import { Button } from "../Playing/PlayingStyle";
 import RankingBox from "../../../views/RankingBox";
 import Lobby from "../../shared/models/Lobby";
+import CancelGame from "../Playing/CancelGame/CancelGame";
 
 const Container = styled(BaseContainer)`
   padding-left: 3rem;
@@ -33,10 +34,12 @@ class EndOfGameContainer extends React.Component {
     super(props);
     this.state = {
       lobby: null,
-      error: null
+      error: null,
+      gameCancelled: false
     };
     this.getLobby = this.getLobby.bind(this);
     this.restartGame = this.restartGame.bind(this);
+    this.goBackToDashboard = this.goBackToDashboard.bind(this);
   }
 
   async getLobby() {
@@ -67,7 +70,19 @@ class EndOfGameContainer extends React.Component {
         `Something went wrong while fetching the lobby: \n${handleError(error)}`
       );
       clearInterval(this.interval);
+      if (
+        error &&
+        error.response &&
+        error.response.status &&
+        error.response.status == 404
+      ) {
+        this.setState({ gameCancelled: true });
+      }
     }
+  }
+
+  goBackToDashboard() {
+    this.props.history.push("/game/dashboard");
   }
 
   componentDidMount() {
@@ -110,32 +125,37 @@ class EndOfGameContainer extends React.Component {
     const lobby = new Lobby(this.state.lobby);
     console.log(lobby);
     return (
-      this.state.lobby && (
-        <React.Fragment>
-          <Sidebar disabled={true} />
-          <Container>
-            <RankingBox lobby={lobby} />
-            <ButtonContainer>
-              <Button
-                onClick={() => {
-                  this.props.history.push("/game/lobby/" + lobby.id);
-                }}
-              >
-                Back to Overview
-              </Button>
-              <ButtonSpacer />
-              {lobby.creator.id == localStorage.getItem("userId") && (
+      <React.Fragment>
+        <Sidebar disabled={true} />
+        <Container>
+          {this.state.lobby && !this.state.gameCancelled && (
+            <React.Fragment>
+              <RankingBox lobby={lobby} />
+              <ButtonContainer>
                 <Button
-                  onClick={() => this.restartGame()}
-                  background={"#44d63f"}
+                  onClick={() => {
+                    this.props.history.push("/game/lobby/" + lobby.id);
+                  }}
                 >
-                  Restart Game
+                  Back to Overview
                 </Button>
-              )}
-            </ButtonContainer>
-          </Container>
-        </React.Fragment>
-      )
+                <ButtonSpacer />
+                {lobby.creator.id == localStorage.getItem("userId") && (
+                  <Button
+                    onClick={() => this.restartGame()}
+                    background={"#44d63f"}
+                  >
+                    Restart Game
+                  </Button>
+                )}
+              </ButtonContainer>
+            </React.Fragment>
+          )}
+          {this.state.gameCancelled && (
+            <CancelGame goBackToDashboard={this.goBackToDashboard} />
+          )}
+        </Container>
+      </React.Fragment>
     );
   }
 }
