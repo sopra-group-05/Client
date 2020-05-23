@@ -37,6 +37,7 @@ const UserScore = styled.p`
   margin: 0;
   padding: 0;
   color: #8f8f8f;
+  font-size: 0.8rem;
 `;
 
 const UserInfo = styled.div`

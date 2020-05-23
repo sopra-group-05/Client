@@ -194,6 +194,7 @@ As a user if I join a lobby that plays in German I want to play the whole game i
 
 ## Authors and acknowledgement
 
+### Authors
 - [Adiboeh](https://github.com/Adiboeh)
 - [Floribur](https://github.com/Floribur)
 - [nmulle](https://github.com/nmulle)
@@ -201,8 +202,36 @@ As a user if I join a lobby that plays in German I want to play the whole game i
 - [mgoki](https://github.com/mgoki)
 - [InfoYak](https://github.com/InfoYak)
 
+We would like to extend our thanks to anyone who has supported us through this challenging project. 
+Also, we'd like to especially mention our TA Anja Koller whose advice and guidance was very valuable to us.
+
+### Credits to the APIs that werde used in this project:
+- [Adorable Avatars API](http://avatars.adorable.io/) for the profile pictures
+- [Language API](https://languages.oup.com/) for the definitions of the mystery words
+- [Datamuse API](https://www.datamuse.com/api/) for synonyms and antonyms of the bots.
+
 ## License
 
-[GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/) 
+[MIT License](https://choosealicense.com/licenses/mit/)
+
+Copyright (c) 2020 Sopra Group 05
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 >Thanks to Lucas Pelloni for the template
