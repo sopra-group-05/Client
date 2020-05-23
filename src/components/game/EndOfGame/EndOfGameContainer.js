@@ -40,6 +40,7 @@ class EndOfGameContainer extends React.Component {
     this.getLobby = this.getLobby.bind(this);
     this.restartGame = this.restartGame.bind(this);
     this.goBackToDashboard = this.goBackToDashboard.bind(this);
+    this.goToGameIfRestarted = this.goToGameIfRestarted.bind(this);
   }
 
   async getLobby() {
@@ -56,7 +57,7 @@ class EndOfGameContainer extends React.Component {
 
       // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
-      console.log(response);
+      this.goToGameIfRestarted(response.data);
     } catch (error) {
       this.setState({
         error:
@@ -78,6 +79,18 @@ class EndOfGameContainer extends React.Component {
       ) {
         this.setState({ gameCancelled: true });
       }
+    }
+  }
+
+  goToGameIfRestarted(lobby) {
+    lobby = new Lobby(lobby);
+    // find your own Player
+    let player = lobby.players.find(
+      player => player.id == localStorage.getItem("userId")
+    );
+    let list = ["END_OF_TURN", "READY", "PLAYER_LEFT", "JOINED", "FINISHED"];
+    if (player && !list.includes(player.status)) {
+      this.props.history.push("/game/lobby/" + lobby.id + "/game");
     }
   }
 
