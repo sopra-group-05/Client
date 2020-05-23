@@ -60,7 +60,7 @@ class PlayingContainer extends React.Component {
       const response = await api.get("/lobbies/" + this.props.match.params.id);
 
       // make a new call to the lobby to update data in 1s
-      this.intervalID = setTimeout(this.getLobbyStatus, 1000);
+      this.intervalID = setTimeout(this.getLobbyStatus, 250);
 
       // Get the returned lobby and update the state.
       this.setState({ lobby: response.data, error: null });
