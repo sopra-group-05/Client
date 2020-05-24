@@ -104,7 +104,10 @@ class CompareClues extends React.Component {
       const lobby = new Lobby(this.props.l);
       api.defaults.headers.common["Token"] = localStorage.getItem("token"); // set token to be allowed to request
       const response = await api.get("/lobbies/" + lobby.id + "/clues");
-      this.setState({ clues: response.data, waiting: false, error: null });
+      const clues = response.data.filter(clue => {
+        return clue.hint !== "";
+      });
+      this.setState({ clues: clues, waiting: false, error: null });
     } catch (error) {
       if (
         error.response &&
@@ -183,7 +186,7 @@ class CompareClues extends React.Component {
             {clues && clues.length > 0 ? (
               <Form>
                 {clues.map(clue => (
-                  <ClueContainer>
+                  <ClueContainer key={clue.id}>
                     <ClueStatus onClick={() => this.flagClue(clue.id)}>
                       <CheckBox>
                         <CheckboxTick
