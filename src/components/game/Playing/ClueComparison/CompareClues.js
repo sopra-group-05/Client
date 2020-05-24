@@ -108,9 +108,9 @@ class CompareClues extends React.Component {
         return clue.hint !== "";
       });
       this.setState({ clues: clues, waiting: false, error: null });
-      if (clues && clues.length === 0) {
+      /*if (clues && clues.length === 0) {
         this.zeroCluesInterval = setTimeout(this.submitClues, 5000);
-      }
+      }*/
     } catch (error) {
       if (
         error.response &&
@@ -190,10 +190,17 @@ class CompareClues extends React.Component {
         <Container>
           <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
           <ClueReview>
-            <MessageHandler
-              show={clues && clues.length === 0 && !this.state.waiting}
-              message="There are no valid clues for you to review. Redirecting to next state..."
-            />
+            {clues && clues.length === 0 && !this.state.waiting && (
+              <React.Fragment>
+                <MessageHandler
+                  show={true}
+                  message="There are no valid clues for you to review."
+                />
+                {!this.state.submitted && !this.state.waiting && (
+                  <Countdown functionWhenDone={this.submitClues} time={7} />
+                )}
+              </React.Fragment>
+            )}
             {clues && clues.length > 0 ? (
               <Form>
                 {clues.map(clue => (
