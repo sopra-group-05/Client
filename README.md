@@ -1,4 +1,4 @@
-# SoPra FS20 - Just One M4 - Client
+# SoPra FS20 - Just One (Client)
 
 ## Introduction
 
