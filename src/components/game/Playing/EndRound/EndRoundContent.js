@@ -107,40 +107,37 @@ const GuessDescription = styled(PlayingDescription)`
 `;
 
 const OutputText = ({ user, success, playerLeft, guess, mysteryWord }) => {
-  if(playerLeft === "true")
-  {
+  if (playerLeft === "true") {
     return (
       <GuessDescription color={"yellow"}>
         A player has left the game!! <br />
         The actual round is cancelled and the rest of the players can continue.
       </GuessDescription>
-     );
-  }
-  else
-  {
-	  if (guess === "") {
-	    return (
-	      <GuessDescription color={"#00a5ee"}>
-	        {user} had no idea what the mystery word was!! <br />
-	        The searched mystery word was {mysteryWord}!!
-	      </GuessDescription>
-	    );
-	  } else {
-	    if (success) {
-	      return (
-	        <GuessDescription color={"#39b346"}>
-	          {user}s guess was {guess} and this guess was correct!!
-	        </GuessDescription>
-	      );
-	    } else {
-	      return (
-	        <GuessDescription color={"#ee232b"}>
-	          {user}s guess was {guess} and this guess was wrong!! <br />
-	          The searched mystery word was {mysteryWord}!!
-	        </GuessDescription>
-	      );
-	    }
-	  }
+    );
+  } else {
+    if (guess === "") {
+      return (
+        <GuessDescription color={"#00a5ee"}>
+          {user} had no idea what the mystery word was!! <br />
+          The searched mystery word was {mysteryWord}!!
+        </GuessDescription>
+      );
+    } else {
+      if (success) {
+        return (
+          <GuessDescription color={"#39b346"}>
+            {user}s guess was {guess} and this guess was correct!!
+          </GuessDescription>
+        );
+      } else {
+        return (
+          <GuessDescription color={"#ee232b"}>
+            {user}s guess was {guess} and this guess was wrong!! <br />
+            The searched mystery word was {mysteryWord}!!
+          </GuessDescription>
+        );
+      }
+    }
   }
 };
 
@@ -277,18 +274,15 @@ class EndRoundContent extends React.Component {
     this.props.history.push("/game/lobby/" + this.props.lobby.id + "/gameover");
     clearInterval(this.interval);
   }
-  
-  checkIfPlayerHasLeft(l)
-  {
-	  let player = l.players.find(
-		      player => player.id == localStorage.getItem("userId")
-		    );
-	  if((player.status == "PLAYER_LEFT")&&(!localStorage.getItem("playerLeft"))) 
-	  {
-		  localStorage.setItem("playerLeft",true);
-		  this.setReady();
-	  }
-	  
+
+  checkIfPlayerHasLeft(l) {
+    let player = l.players.find(
+      player => player.id == localStorage.getItem("userId")
+    );
+    if (player.status == "PLAYER_LEFT" && !localStorage.getItem("playerLeft")) {
+      localStorage.setItem("playerLeft", true);
+      this.setReady();
+    }
   }
 
   componentWillUnmount() {
