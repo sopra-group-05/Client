@@ -191,7 +191,7 @@ class CompareClues extends React.Component {
           <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
           <ClueReview>
             <MessageHandler
-              show={clues && clues.length === 0}
+              show={clues && clues.length === 0 && !this.state.waiting}
               message="There are no valid clues for you to review. Redirecting to next state..."
             />
             {clues && clues.length > 0 ? (
