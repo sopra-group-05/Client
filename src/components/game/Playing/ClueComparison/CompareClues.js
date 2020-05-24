@@ -108,6 +108,9 @@ class CompareClues extends React.Component {
         return clue.hint !== "";
       });
       this.setState({ clues: clues, waiting: false, error: null });
+      if (clues && clues.length === 0) {
+        this.zeroCluesInterval = setTimeout(this.submitClues, 5000);
+      }
     } catch (error) {
       if (
         error.response &&
@@ -164,6 +167,10 @@ class CompareClues extends React.Component {
     this.getClues();
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.zeroCluesInterval);
+  }
+
   render() {
     const lobby = new Lobby(this.state.lobby); //transform input into Lobby Model
     const clues = this.state.clues;
@@ -183,6 +190,10 @@ class CompareClues extends React.Component {
         <Container>
           <MysteryCard lobbyLanguage={lobby.language} lobbyId={lobby.id} />
           <ClueReview>
+            <MessageHandler
+              show={clues && clues.length === 0}
+              message="There are no valid clues for you to review. Redirecting to next state..."
+            />
             {clues && clues.length > 0 ? (
               <Form>
                 {clues.map(clue => (
