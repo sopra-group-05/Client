@@ -36,6 +36,7 @@ const MysteryWordContainer = styled.div`
   width: 100%;
   ${props =>
     props.status === "IN_USE" &&
+    props.showHighlightedWord &&
     "border: 1px solid #ffff00; border-radius: 20px"}
 `;
 
@@ -47,7 +48,10 @@ const Information = styled.img`
 
 const MWText = styled.p`
   font-size: 1.1rem;
-  color: ${props => (props.status === "IN_USE" ? "#ffff00" : "#fff")};
+  color: ${props =>
+    props.status === "IN_USE" && props.showHighlightedWord
+      ? "#ffff00"
+      : "#fff"};
 `;
 
 class MysteryCard extends React.Component {
@@ -103,6 +107,7 @@ class MysteryCard extends React.Component {
                   lobbyLanguage={this.props.lobbyLanguage}
                   lobbyId={this.props.match.params.id}
                   word={w}
+                  dontShowActiveWords={this.props.dontShowActiveWords}
                 />
               );
             })
@@ -121,7 +126,8 @@ class MysteryCard extends React.Component {
   }
 }
 
-const MysteryWord = ({ lobbyId, word, lobbyLanguage }) => {
+const MysteryWord = ({ lobbyId, word, lobbyLanguage, dontShowActiveWords }) => {
+  const showHighlightedWord = dontShowActiveWords ? false : true;
   const [definition, setDefinition] = React.useState("");
   const [showPopup, setShowPopup] = React.useState(false);
 
@@ -151,15 +157,22 @@ const MysteryWord = ({ lobbyId, word, lobbyLanguage }) => {
   };
 
   return (
-    <MysteryWordContainer status={word.status}>
+    <MysteryWordContainer
+      status={word.status}
+      showHighlightedWord={showHighlightedWord}
+    >
       <BigNumber number={word.id} small={true} />
-      <MWText status={word.status}>{word.word}</MWText>
-      {word.status === "IN_USE" && lobbyLanguage === "EN" && (
-        <Information
-          src={InformationIcon}
-          onClick={() => getDefinition(word.word)}
-        />
-      )}
+      <MWText showHighlightedWord={showHighlightedWord} status={word.status}>
+        {word.word}
+      </MWText>
+      {showHighlightedWord &&
+        word.status === "IN_USE" &&
+        lobbyLanguage === "EN" && (
+          <Information
+            src={InformationIcon}
+            onClick={() => getDefinition(word.word)}
+          />
+        )}
       {showPopup && (
         <Popup
           word={word.word}
